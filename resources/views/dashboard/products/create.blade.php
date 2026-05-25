@@ -323,27 +323,40 @@ function removeVariantRow(btn) {
     updateBasePrice();
 }
 
-function toggleVariantAvail(btn) {
-    const isOn  = !btn.classList.contains('off');
-    const input = btn.querySelector('input[type="hidden"]');
+// function toggleVariantAvail(btn) {
+//     const isOn  = !btn.classList.contains('off');
+//     const input = btn.querySelector('input[type="hidden"]');
 
-    if (isOn) {
-        // Turn off
-        btn.classList.add('off');
-        input.value = '0';
-        btn.innerHTML = `
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            <input type="hidden" name="variant_available[]" value="0">
-        `;
-    } else {
-        // Turn on
-        btn.classList.remove('off');
-        input.value = '1';
-        btn.innerHTML = `
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            <input type="hidden" name="variant_available[]" value="1">
-        `;
-    }
+//     if (isOn) {
+//         // Turn off
+//         btn.classList.add('off');
+//         input.value = '0';
+//         btn.innerHTML = `
+//             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+//             <input type="hidden" name="variant_available[]" value="0">
+//         `;
+//     } else {
+//         // Turn on
+//         btn.classList.remove('off');
+//         input.value = '1';
+//         btn.innerHTML = `
+//             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+//             <input type="hidden" name="variant_available[]" value="1">
+//         `;
+//     }
+// }
+function toggleVariantAvail(btn) {
+    const isOn = !btn.classList.contains('off');
+    btn.classList.toggle('off', isOn);
+
+    btn.innerHTML = (!isOn
+        ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+           </svg>`
+        : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+           </svg>`)
+        + `<input type="hidden" name="variant_available[]" value="${!isOn ? '1' : '0'}">`;
 }
 
 function updateVariantCount() {

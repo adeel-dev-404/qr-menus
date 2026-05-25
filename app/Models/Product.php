@@ -73,17 +73,28 @@ class Product extends Model implements HasMedia
         return $query->where('is_available', true);
     }
     // Add relationship
+    // public function variants()
+    // {
+    //     return $this->hasMany(ProductVariant::class)->orderBy('sort_order');
+    // }
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class)->orderBy('sort_order');
+        return $this->hasMany(\App\Models\ProductVariant::class)->orderBy('sort_order');
     }
 
     // Check if product has variants
+    // public function hasVariants(): bool
+    // {
+    //     return $this->variants()->exists();
+    // }
     public function hasVariants(): bool
     {
+        // Use loaded relationship if available to avoid extra query
+        if ($this->relationLoaded('variants')) {
+            return $this->variants->isNotEmpty();
+        }
         return $this->variants()->exists();
     }
-
     // Get starting price (lowest variant or base price)
     public function getStartingPriceAttribute(): float
     {

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -35,57 +36,101 @@ class ProductController extends Controller
         return view('dashboard.products.create', compact('categories'));
     }
 
-    public function store(StoreProductRequest $request)
-    {
-        $restaurant = auth()->user()->restaurant;
-        if (!$restaurant->canAdd('products')) {
-            return redirect()->route('dashboard.products.index')
-                ->with('error', "Product limit reached. Please upgrade your plan.");
-        }
+    // public function store(StoreProductRequest $request)
+    // {
+    //     $restaurant = auth()->user()->restaurant;
+    //     if (!$restaurant->canAdd('products')) {
+    //         return redirect()->route('dashboard.products.index')
+    //             ->with('error', "Product limit reached. Please upgrade your plan.");
+    //     }
 
-        $product = Product::create([
-            ...$request->safe()->except(['variant_names', 'variant_prices', 'variant_discount_prices', 'variant_available']),
-            'restaurant_id' => $restaurant->id,
-            'is_available'  => $request->boolean('is_available', true),
-        ]);
+    //     $product = Product::create([
+    //         ...$request->safe()->except(['variant_names', 'variant_prices', 'variant_discount_prices', 'variant_available']),
+    //         'restaurant_id' => $restaurant->id,
+    //         'is_available'  => $request->boolean('is_available', true),
+    //     ]);
 
-        if ($request->hasFile('image')) {
-            $product->addMediaFromRequest('image')->toMediaCollection('image');
-        }
+    //     if ($request->hasFile('image')) {
+    //         $product->addMediaFromRequest('image')->toMediaCollection('image');
+    //     }
 
-        // Save variants
-        $this->saveVariants($product, $request);
+    //     // Save variants
+    //     $this->saveVariants($product, $request);
 
-        return redirect()->route('dashboard.products.index')
-            ->with('success', 'Product created successfully.');
-    }
+    //     return redirect()->route('dashboard.products.index')
+    //         ->with('success', 'Product created successfully.');
+    // }
 
     public function edit(Product $product)
     {
-        $product->load('variants');
+        $product->load('variants');  // ✅ Must be here
         $categories = Category::active()->orderBy('name')->get();
         return view('dashboard.products.edit', compact('product', 'categories'));
     }
+    // public function update(UpdateProductRequest $request, Product $product)
+    // {
+    //     $product->update([
+    //         ...$request->safe()->except(['variant_names', 'variant_prices', 'variant_discount_prices', 'variant_available']),
+    //         'is_available' => $request->boolean('is_available', true),
+    //     ]);
 
-    public function update(UpdateProductRequest $request, Product $product)
+    //     if ($request->hasFile('image')) {
+    //         $product->clearMediaCollection('image');
+    //         $product->addMediaFromRequest('image')->toMediaCollection('image');
+    //     }
+
+    //     // Delete old variants and re-save
+    //     $product->variants()->delete();
+    //     $this->saveVariants($product, $request);
+
+    //     return redirect()->route('dashboard.products.index')
+    //         ->with('success', 'Product updated successfully.');
+    // }
+
+    public function update(Request $request, Product $product)
     {
-        $product->update([
-            ...$request->safe()->except(['variant_names', 'variant_prices', 'variant_discount_prices', 'variant_available']),
-            'is_available' => $request->boolean('is_available', true),
+        // Validate manually to avoid Form Request stripping variant arrays
+        $validated = $request->validate([
+            'name'                      => 'required|string|max:255',
+            'category_id'               => 'required|exists:categories,id',
+            'description'               => 'nullable|string|max:1000',
+            'price'                     => 'required|numeric|min:0',
+            'discount_price'            => 'nullable|numeric|min:0',
+            'is_available'              => 'boolean',
+            'image'                     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'variant_names'             => 'nullable|array',
+            'variant_names.*'           => 'nullable|string|max:100',
+            'variant_prices'            => 'nullable|array',
+            'variant_prices.*'          => 'nullable|numeric|min:0',
+            'variant_discount_prices'   => 'nullable|array',
+            'variant_discount_prices.*' => 'nullable|numeric|min:0',
+            'variant_available'         => 'nullable|array',
         ]);
 
+        // Update base product
+        $product->update([
+            'name'           => $validated['name'],
+            'category_id'    => $validated['category_id'],
+            'description'    => $validated['description'] ?? null,
+            'price'          => $validated['price'],
+            'discount_price' => $validated['discount_price'] ?? null,
+            'is_available'   => $request->boolean('is_available', true),
+        ]);
+
+        // Replace image if new one uploaded
         if ($request->hasFile('image')) {
             $product->clearMediaCollection('image');
             $product->addMediaFromRequest('image')->toMediaCollection('image');
         }
 
-        // Delete old variants and re-save
+        // Delete ALL old variants then re-save fresh
         $product->variants()->delete();
         $this->saveVariants($product, $request);
 
         return redirect()->route('dashboard.products.index')
             ->with('success', 'Product updated successfully.');
     }
+
 
     public function destroy(Product $product)
     {
@@ -103,23 +148,73 @@ class ProductController extends Controller
         return response()->json(['is_available' => $product->is_available]);
     }
 
-    // Helper: save variants from request arrays
-    private function saveVariants(Product $product, $request): void
+    public function store(Request $request)
+    {
+        $restaurant = auth()->user()->restaurant;
+
+        if (!$restaurant->canAdd('products')) {
+            return redirect()->route('dashboard.products.index')
+                ->with('error', "Product limit reached. Please upgrade your plan.");
+        }
+
+        $validated = $request->validate([
+            'name'                      => 'required|string|max:255',
+            'category_id'               => 'required|exists:categories,id',
+            'description'               => 'nullable|string|max:1000',
+            'price'                     => 'required|numeric|min:0',
+            'discount_price'            => 'nullable|numeric|min:0',
+            'is_available'              => 'boolean',
+            'image'                     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'variant_names'             => 'nullable|array',
+            'variant_names.*'           => 'nullable|string|max:100',
+            'variant_prices'            => 'nullable|array',
+            'variant_prices.*'          => 'nullable|numeric|min:0',
+            'variant_discount_prices'   => 'nullable|array',
+            'variant_discount_prices.*' => 'nullable|numeric|min:0',
+            'variant_available'         => 'nullable|array',
+        ]);
+
+        $product = Product::create([
+            'name'          => $validated['name'],
+            'category_id'   => $validated['category_id'],
+            'description'   => $validated['description'] ?? null,
+            'price'         => $validated['price'],
+            'discount_price' => $validated['discount_price'] ?? null,
+            'restaurant_id' => $restaurant->id,
+            'is_available'  => $request->boolean('is_available', true),
+        ]);
+
+        if ($request->hasFile('image')) {
+            $product->addMediaFromRequest('image')->toMediaCollection('image');
+        }
+
+        $this->saveVariants($product, $request);
+
+        return redirect()->route('dashboard.products.index')
+            ->with('success', 'Product created successfully.');
+    }
+
+    // ✅ Fixed saveVariants — reads directly from $request not $validated
+    private function saveVariants(Product $product, Request $request): void
     {
         $names     = $request->input('variant_names', []);
         $prices    = $request->input('variant_prices', []);
         $discounts = $request->input('variant_discount_prices', []);
         $available = $request->input('variant_available', []);
 
-        foreach ($names as $i => $name) {
-            if (empty(trim($name)) || empty($prices[$i])) continue;
+        if (empty($names)) return;
 
-            ProductVariant::create([
+        foreach ($names as $i => $name) {
+            // Skip empty rows
+            if (empty(trim((string) $name))) continue;
+            if (empty($prices[$i])) continue;
+
+            \App\Models\ProductVariant::create([
                 'product_id'     => $product->id,
                 'name'           => trim($name),
-                'price'          => $prices[$i],
-                'discount_price' => !empty($discounts[$i]) ? $discounts[$i] : null,
-                'is_available'   => isset($available[$i]) ? true : false,
+                'price'          => (float) $prices[$i],
+                'discount_price' => !empty($discounts[$i]) ? (float) $discounts[$i] : null,
+                'is_available'   => isset($available[$i]) && $available[$i] == '1',
                 'sort_order'     => $i,
             ]);
         }

@@ -207,17 +207,29 @@ function addVariantRow(name='', price='', discount='', available=true) {
 
 function removeVariantRow(btn) { btn.closest('.variant-row').remove(); updateVariantCount(); updateBasePrice(); }
 
+// function toggleVariantAvail(btn) {
+//     const isOn = !btn.classList.contains('off');
+//     btn.classList.toggle('off', isOn);
+//     const input = btn.querySelector('input[type="hidden"]');
+//     input.value = isOn ? '0' : '1';
+//     btn.innerHTML = (!isOn
+//         ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
+//         : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`)
+//         + `<input type="hidden" name="variant_available[]" value="${!isOn ? '1' : '0'}">`;
+// }
 function toggleVariantAvail(btn) {
     const isOn = !btn.classList.contains('off');
     btn.classList.toggle('off', isOn);
-    const input = btn.querySelector('input[type="hidden"]');
-    input.value = isOn ? '0' : '1';
+
     btn.innerHTML = (!isOn
-        ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
-        : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`)
+        ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+           </svg>`
+        : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+           </svg>`)
         + `<input type="hidden" name="variant_available[]" value="${!isOn ? '1' : '0'}">`;
 }
-
 function updateVariantCount() {
     const count = document.querySelectorAll('.variant-row').length;
     document.getElementById('variantCount').textContent = count + ' variant' + (count !== 1 ? 's' : '');

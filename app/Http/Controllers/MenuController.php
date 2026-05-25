@@ -31,6 +31,7 @@ class MenuController extends Controller
         $products = collect();
         if ($activeCategory) {
             $products = Product::withoutGlobalScopes()
+                ->with('variants')                      // ✅ ADD THIS
                 ->where('restaurant_id', $restaurant->id)
                 ->where('category_id', $activeCategory->id)
                 ->where('is_available', true)
