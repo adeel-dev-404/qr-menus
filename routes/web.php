@@ -12,10 +12,9 @@ use App\Http\Controllers\Dashboard\BranchController;
 use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\InviteController;
 
-
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('auth.login');
+})->name('login');
 
 Route::middleware('auth')->group(function () {
 
