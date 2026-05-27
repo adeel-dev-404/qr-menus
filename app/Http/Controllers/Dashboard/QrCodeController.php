@@ -9,6 +9,7 @@ use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode as QrGenerator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class QrCodeController extends Controller
 {
@@ -99,18 +100,33 @@ class QrCodeController extends Controller
     }
 
     // Download QR as PNG
+    // public function download(QrCode $qrCode)
+    // {
+    //     $url = url('/m/' . $qrCode->token);
+
+    //     $image = QrGenerator::format('png')
+    //         ->size(400)
+    //         ->margin(2)
+    //         ->generate($url);
+
+    //     return response($image, 200, [
+    //         'Content-Type'        => 'image/png',
+    //         'Content-Disposition' => 'attachment; filename="qr-' . $qrCode->token . '.png"',
+    //     ]);
+    // }
+
     public function download(QrCode $qrCode)
     {
         $url = url('/m/' . $qrCode->token);
 
-        $image = QrGenerator::format('png')
+        $svg = QrGenerator::format('svg')
             ->size(400)
             ->margin(2)
             ->generate($url);
 
-        return response($image, 200, [
-            'Content-Type'        => 'image/png',
-            'Content-Disposition' => 'attachment; filename="qr-' . $qrCode->token . '.png"',
+        return response($svg, 200, [
+            'Content-Type' => 'image/svg+xml',
+            'Content-Disposition' => 'attachment; filename="qr-' . $qrCode->token . '.svg"',
         ]);
     }
 
@@ -127,5 +143,37 @@ class QrCodeController extends Controller
         return response($svg, 200, [
             'Content-Type' => 'image/svg+xml',
         ]);
+    }
+    public function print()
+    {
+        $qrCodes = QrCode::with(['table', 'branch'])
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $items = [];
+
+        foreach ($qrCodes as $qrCode) {
+            $url = url('/m/' . $qrCode->token);
+
+            $svg = base64_encode(
+                QrGenerator::format('svg')
+                    ->size(250)
+                    ->margin(1)
+                    ->generate($url)
+            );
+
+            $items[] = [
+                'token' => $qrCode->token,
+                'table' => optional($qrCode->table)->name,
+                'branch' => optional($qrCode->branch)->name,
+                'svg' => $svg,
+            ];
+        }
+
+        $pdf = Pdf::loadView('dashboard.qr-codes.print', compact('items'))
+            ->setPaper('a4');
+
+        return $pdf->download('restaurant-qr-codes.pdf');
     }
 }
