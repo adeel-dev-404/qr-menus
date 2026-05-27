@@ -10,20 +10,27 @@ use Spatie\Sluggable\SlugOptions;
 class Restaurant extends Model
 {
     use HasFactory, HasSlug;
-
     protected $fillable = [
         'name',
         'slug',
         'logo',
+        'cover_image',
+        'about',
         'phone',
         'email',
         'address',
         'status',
         'subscription_id',
+        'whatsapp',
+        'instagram',
+        'facebook',
+        'opening_hours',
         'active_subscription_id',
         'subscription_expires_at',
     ];
+
     protected $casts = [
+        'opening_hours'          => 'array',
         'subscription_expires_at' => 'datetime',
     ];
 

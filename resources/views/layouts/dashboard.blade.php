@@ -257,19 +257,38 @@
         </a>
         @endif
 
+        <p class="nav-label">Settings</p>
+        <a href="{{ route('dashboard.profile.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.profile.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Profile & Settings
+        </a>
+
+
     </nav>
 
     {{-- User Footer --}}
     <div style="padding:12px 10px;border-top:1px solid #1f1f1f;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;padding:0 4px;">
-            <div style="width:34px;height:34px;border-radius:99px;background:#1d4ed8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0;">
-                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-            </div>
+       <a href="{{ route('dashboard.profile.index') }}" style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;text-decoration:none;margin-bottom:8px;transition:background .15s;" onmouseover="this.style.background='#1f1f1f'" onmouseout="this.style.background=''">
+            {{-- Avatar --}}
+            @if(auth()->user()->avatar)
+                <img src="{{ Storage::url(auth()->user()->avatar) }}"
+                    style="width:34px;height:34px;border-radius:99px;object-fit:cover;border:1px solid #2a2a2a;flex-shrink:0;">
+            @else
+                <div style="width:34px;height:34px;border-radius:99px;background:#1d4ed8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0;">
+                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                </div>
+            @endif
             <div style="overflow:hidden;">
-                <p style="font-size:13px;font-weight:600;color:#fff;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ auth()->user()->name }}</p>
-                <p style="font-size:11px;color:#666;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ auth()->user()->email }}</p>
+                <p style="font-size:13px;font-weight:600;color:#fff;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    {{ auth()->user()->name }}
+                </p>
+                <p style="font-size:11px;color:#555;margin:0;">Edit Profile</p>
             </div>
-        </div>
+        </a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="nav-link" style="width:100%;border:none;cursor:pointer;background:none;text-align:left;">

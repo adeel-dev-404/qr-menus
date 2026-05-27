@@ -15,7 +15,9 @@ use App\Http\Controllers\InviteController;
 Route::get('/', function () {
     return view('auth.login');
 })->name('login');
-
+Route::post('/', function () {
+    return redirect('/dashboard');
+});
 Route::middleware('auth')->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])
@@ -90,6 +92,17 @@ Route::prefix('subscription')->name('dashboard.subscription.')->group(function (
     Route::get('/',                      [App\Http\Controllers\Dashboard\SubscriptionController::class, 'index'])->name('index');
     Route::get('/checkout/{plan}',       [App\Http\Controllers\Dashboard\SubscriptionController::class, 'checkout'])->name('checkout');
     Route::post('/submit/{plan}',        [App\Http\Controllers\Dashboard\SubscriptionController::class, 'submit'])->name('submit');
+});
+
+// Profile routes
+Route::prefix('profile')->name('dashboard.profile.')->group(function () {
+    Route::get('/',                   [App\Http\Controllers\Dashboard\ProfileController::class, 'index'])->name('index');
+    Route::post('/personal',          [App\Http\Controllers\Dashboard\ProfileController::class, 'updatePersonal'])->name('personal');
+    Route::post('/password',          [App\Http\Controllers\Dashboard\ProfileController::class, 'updatePassword'])->name('password');
+    Route::post('/restaurant',        [App\Http\Controllers\Dashboard\ProfileController::class, 'updateRestaurant'])->name('restaurant');
+    Route::delete('/logo',            [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteLogo'])->name('logo.delete');
+    Route::delete('/cover',           [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteCover'])->name('cover.delete');
+    Route::delete('/avatar',          [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
 });
 
 require __DIR__ . '/auth.php';
