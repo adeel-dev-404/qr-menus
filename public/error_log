@@ -1,0 +1,448 @@
+[26-May-2026 08:50:43 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:50:52 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:31 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:35 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:36 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:36 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:36 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:37 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:37 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:37 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:38 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:53:38 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:54:40 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:54:41 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:54:42 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:54:43 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:54:43 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:03 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:04 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:05 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:05 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:05 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:06 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:06 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:06 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:07 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:07 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 08:56:11 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:45:18 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:45:18 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:45:34 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:45:35 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:46:29 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:46:29 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:46:39 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:46:39 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:32 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:32 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:33 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:33 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:33 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:33 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:34 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 09:47:34 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 10:06:05 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 11:35:17 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 12:00:58 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 12:47:58 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:05:56 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:43:32 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:55:05 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:22 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:22 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:22 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 14:56:23 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 15:01:29 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 15:06:29 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
+[26-May-2026 16:13:18 UTC] PHP Fatal error:  Uncaught RuntimeException: Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.3.0". You are running 8.2.29. in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php:26
+Stack trace:
+#0 /home/acode/public_html/qr-menus/vendor/composer/autoload_real.php(25): require()
+#1 /home/acode/public_html/qr-menus/vendor/autoload.php(22): ComposerAutoloaderInit26e0f0a26e3d85cdae869fedf18f8fe6::getLoader()
+#2 /home/acode/public_html/qr-menus/public/index.php(13): require('/home/acode/pub...')
+#3 {main}
+  thrown in /home/acode/public_html/qr-menus/vendor/composer/platform_check.php on line 26
