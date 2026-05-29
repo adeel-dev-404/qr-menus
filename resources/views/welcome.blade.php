@@ -1,172 +1,816 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QR Menu SaaS — Digital menu system for Pakistani restaurants. Scan QR, view menu instantly.">
+    <title>QR Menu SaaS — Digital Menus for Restaurants</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <title>Laravel</title>
+        :root {
+            --bg:       #080808;
+            --surface:  #111111;
+            --surface2: #181818;
+            --border:   #1e1e1e;
+            --border2:  #2a2a2a;
+            --text:     #f0f0f0;
+            --text2:    #909090;
+            --text3:    #505050;
+            --accent:   #e8502a;
+            --accent2:  #c43e1c;
+            --accent-bg: rgba(232,80,42,.1);
+            --accent-border: rgba(232,80,42,.2);
+            --max:      1100px;
+        }
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
 
-        <!-- Styles -->
-        <style>
-            /* ! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Figtree, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: }.absolute{position:absolute}.relative{position:relative}.-left-20{left:-5rem}.top-0{top:0px}.-bottom-16{bottom:-4rem}.-left-16{left:-4rem}.-mx-3{margin-left:-0.75rem;margin-right:-0.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.flex{display:flex}.grid{display:grid}.hidden{display:none}.aspect-video{aspect-ratio:16 / 9}.size-12{width:3rem;height:3rem}.size-5{width:1.25rem;height:1.25rem}.size-6{width:1.5rem;height:1.5rem}.h-12{height:3rem}.h-40{height:10rem}.h-full{height:100%}.min-h-screen{min-height:100vh}.w-full{width:100%}.w-\[calc\(100\%\+8rem\)\]{width:calc(100% + 8rem)}.w-auto{width:auto}.max-w-\[877px\]{max-width:877px}.max-w-2xl{max-width:42rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.items-stretch{align-items:stretch}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.gap-2{gap:0.5rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.self-center{align-self:center}.overflow-hidden{overflow:hidden}.rounded-\[10px\]{border-radius:10px}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-sm{border-radius:0.125rem}.bg-\[\#FF2D20\]\/10{background-color:rgb(255 45 32 / 0.1)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity))}.bg-gradient-to-b{background-image:linear-gradient(to bottom, var(--tw-gradient-stops))}.from-transparent{--tw-gradient-from:transparent var(--tw-gradient-from-position);--tw-gradient-to:rgb(0 0 0 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.via-white{--tw-gradient-to:rgb(255 255 255 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), #fff var(--tw-gradient-via-position), var(--tw-gradient-to)}.to-white{--tw-gradient-to:#fff var(--tw-gradient-to-position)}.stroke-\[\#FF2D20\]{stroke:#FF2D20}.object-cover{object-fit:cover}.object-top{object-position:top}.p-6{padding:1.5rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.py-16{padding-top:4rem;padding-bottom:4rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-sans{font-family:Figtree, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-sm\/relaxed{font-size:0.875rem;line-height:1.625}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-semibold{font-weight:600}.text-black{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-\[0px_14px_34px_0px_rgba\(0\2c 0\2c 0\2c 0\.08\)\]{--tw-shadow:0px 14px 34px 0px rgba(0,0,0,0.08);--tw-shadow-colored:0px 14px 34px 0px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-transparent{--tw-ring-color:transparent}.ring-white\/\[0\.05\]{--tw-ring-color:rgb(255 255 255 / 0.05)}.drop-shadow-\[0px_4px_34px_rgba\(0\2c 0\2c 0\2c 0\.06\)\]{--tw-drop-shadow:drop-shadow(0px 4px 34px rgba(0,0,0,0.06));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.drop-shadow-\[0px_4px_34px_rgba\(0\2c 0\2c 0\2c 0\.25\)\]{--tw-drop-shadow:drop-shadow(0px 4px 34px rgba(0,0,0,0.25));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.selection\:bg-\[\#FF2D20\] *::selection{--tw-bg-opacity:1;background-color:rgb(255 45 32 / var(--tw-bg-opacity))}.selection\:text-white *::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.selection\:bg-\[\#FF2D20\]::selection{--tw-bg-opacity:1;background-color:rgb(255 45 32 / var(--tw-bg-opacity))}.selection\:text-white::selection{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.hover\:text-black:hover{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity))}.hover\:text-black\/70:hover{color:rgb(0 0 0 / 0.7)}.hover\:ring-black\/20:hover{--tw-ring-color:rgb(0 0 0 / 0.2)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus-visible\:ring-1:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus-visible\:ring-\[\#FF2D20\]:focus-visible{--tw-ring-opacity:1;--tw-ring-color:rgb(255 45 32 / var(--tw-ring-opacity))}@media (min-width: 640px){.sm\:size-16{width:4rem;height:4rem}.sm\:size-6{width:1.5rem;height:1.5rem}.sm\:pt-5{padding-top:1.25rem}}@media (min-width: 768px){.md\:row-span-3{grid-row:span 3 / span 3}}@media (min-width: 1024px){.lg\:col-start-2{grid-column-start:2}.lg\:h-16{height:4rem}.lg\:max-w-7xl{max-width:80rem}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.lg\:flex-col{flex-direction:column}.lg\:items-end{align-items:flex-end}.lg\:justify-center{justify-content:center}.lg\:gap-8{gap:2rem}.lg\:p-10{padding:2.5rem}.lg\:pb-10{padding-bottom:2.5rem}.lg\:pt-0{padding-top:0px}.lg\:text-\[\#FF2D20\]{--tw-text-opacity:1;color:rgb(255 45 32 / var(--tw-text-opacity))}}@media (prefers-color-scheme: dark){.dark\:block{display:block}.dark\:hidden{display:none}.dark\:bg-black{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity))}.dark\:bg-zinc-900{--tw-bg-opacity:1;background-color:rgb(24 24 27 / var(--tw-bg-opacity))}.dark\:via-zinc-900{--tw-gradient-to:rgb(24 24 27 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), #18181b var(--tw-gradient-via-position), var(--tw-gradient-to)}.dark\:to-zinc-900{--tw-gradient-to:#18181b var(--tw-gradient-to-position)}.dark\:text-white\/50{color:rgb(255 255 255 / 0.5)}.dark\:text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.dark\:text-white\/70{color:rgb(255 255 255 / 0.7)}.dark\:ring-zinc-800{--tw-ring-opacity:1;--tw-ring-color:rgb(39 39 42 / var(--tw-ring-opacity))}.dark\:hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.dark\:hover\:text-white\/70:hover{color:rgb(255 255 255 / 0.7)}.dark\:hover\:text-white\/80:hover{color:rgb(255 255 255 / 0.8)}.dark\:hover\:ring-zinc-700:hover{--tw-ring-opacity:1;--tw-ring-color:rgb(63 63 70 / var(--tw-ring-opacity))}.dark\:focus-visible\:ring-\[\#FF2D20\]:focus-visible{--tw-ring-opacity:1;--tw-ring-color:rgb(255 45 32 / var(--tw-ring-opacity))}.dark\:focus-visible\:ring-white:focus-visible{--tw-ring-opacity:1;--tw-ring-color:rgb(255 255 255 / var(--tw-ring-opacity))}}
-        </style>
-    </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-            <img id="background" class="absolute -left-20 top-0 max-w-[877px]" src="https://laravel.com/assets/img/welcome/background.svg" />
-            <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-                <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                    <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                        <div class="flex lg:justify-center lg:col-start-2">
-                            <svg class="h-12 w-auto text-white lg:h-16 lg:text-[#FF2D20]" viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M61.8548 14.6253C61.8778 14.7102 61.8895 14.7978 61.8897 14.8858V28.5615C61.8898 28.737 61.8434 28.9095 61.7554 29.0614C61.6675 29.2132 61.5409 29.3392 61.3887 29.4265L49.9104 36.0351V49.1337C49.9104 49.4902 49.7209 49.8192 49.4118 49.9987L25.4519 63.7916C25.3971 63.8227 25.3372 63.8427 25.2774 63.8639C25.255 63.8714 25.2338 63.8851 25.2101 63.8913C25.0426 63.9354 24.8666 63.9354 24.6991 63.8913C24.6716 63.8838 24.6467 63.8689 24.6205 63.8589C24.5657 63.8389 24.5084 63.8215 24.456 63.7916L0.501061 49.9987C0.348882 49.9113 0.222437 49.7853 0.134469 49.6334C0.0465019 49.4816 0.000120578 49.3092 0 49.1337L0 8.10652C0 8.01678 0.0124642 7.92953 0.0348998 7.84477C0.0423783 7.8161 0.0598282 7.78993 0.0697995 7.76126C0.0884958 7.70891 0.105946 7.65531 0.133367 7.6067C0.152063 7.5743 0.179485 7.54812 0.20192 7.51821C0.230588 7.47832 0.256763 7.43719 0.290416 7.40229C0.319084 7.37362 0.356476 7.35243 0.388883 7.32751C0.425029 7.29759 0.457436 7.26518 0.498568 7.2415L12.4779 0.345059C12.6296 0.257786 12.8015 0.211853 12.9765 0.211853C13.1515 0.211853 13.3234 0.257786 13.475 0.345059L25.4531 7.2415H25.4556C25.4955 7.26643 25.5292 7.29759 25.5653 7.32626C25.5977 7.35119 25.6339 7.37362 25.6625 7.40104C25.6974 7.43719 25.7224 7.47832 25.7523 7.51821C25.7735 7.54812 25.8021 7.5743 25.8196 7.6067C25.8483 7.65656 25.8645 7.70891 25.8844 7.76126C25.8944 7.78993 25.9118 7.8161 25.9193 7.84602C25.9423 7.93096 25.954 8.01853 25.9542 8.10652V33.7317L35.9355 27.9844V14.8846C35.9355 14.7973 35.948 14.7088 35.9704 14.6253C35.9792 14.5954 35.9954 14.5692 36.0053 14.5405C36.0253 14.4882 36.0427 14.4346 36.0702 14.386C36.0888 14.3536 36.1163 14.3274 36.1375 14.2975C36.1674 14.2576 36.1923 14.2165 36.2272 14.1816C36.2559 14.1529 36.292 14.1317 36.3244 14.1068C36.3618 14.0769 36.3942 14.0445 36.4341 14.0208L48.4147 7.12434C48.5663 7.03694 48.7383 6.99094 48.9133 6.99094C49.0883 6.99094 49.2602 7.03694 49.4118 7.12434L61.3899 14.0208C61.4323 14.0457 61.4647 14.0769 61.5021 14.1055C61.5333 14.1305 61.5694 14.1529 61.5981 14.1803C61.633 14.2165 61.6579 14.2576 61.6878 14.2975C61.7103 14.3274 61.7377 14.3536 61.7551 14.386C61.7838 14.4346 61.8 14.4882 61.8199 14.5405C61.8312 14.5692 61.8474 14.5954 61.8548 14.6253ZM59.893 27.9844V16.6121L55.7013 19.0252L49.9104 22.3593V33.7317L59.8942 27.9844H59.893ZM47.9149 48.5566V37.1768L42.2187 40.4299L25.953 49.7133V61.2003L47.9149 48.5566ZM1.99677 9.83281V48.5566L23.9562 61.199V49.7145L12.4841 43.2219L12.4804 43.2194L12.4754 43.2169C12.4368 43.1945 12.4044 43.1621 12.3682 43.1347C12.3371 43.1097 12.3009 43.0898 12.2735 43.0624L12.271 43.0586C12.2386 43.0275 12.2162 42.9888 12.1887 42.9539C12.1638 42.9203 12.1339 42.8916 12.114 42.8567L12.1127 42.853C12.0903 42.8156 12.0766 42.7707 12.0604 42.7283C12.0442 42.6909 12.023 42.656 12.013 42.6161C12.0005 42.5688 11.998 42.5177 11.9931 42.4691C11.9881 42.4317 11.9781 42.3943 11.9781 42.3569V15.5801L6.18848 12.2446L1.99677 9.83281ZM12.9777 2.36177L2.99764 8.10652L12.9752 13.8513L22.9541 8.10527L12.9752 2.36177H12.9777ZM18.1678 38.2138L23.9574 34.8809V9.83281L19.7657 12.2459L13.9749 15.5801V40.6281L18.1678 38.2138ZM48.9133 9.14105L38.9344 14.8858L48.9133 20.6305L58.8909 14.8846L48.9133 9.14105ZM47.9149 22.3593L42.124 19.0252L37.9323 16.6121V27.9844L43.7219 31.3174L47.9149 33.7317V22.3593ZM24.9533 47.987L39.59 39.631L46.9065 35.4555L36.9352 29.7145L25.4544 36.3242L14.9907 42.3482L24.9533 47.987Z" fill="currentColor"/></svg>
-                        </div>
-                        @if (Route::has('login'))
-                            <nav class="-mx-3 flex flex-1 justify-end">
-                                @auth
-                                    <a
-                                        href="{{ url('/dashboard') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
-                                        Dashboard
-                                    </a>
-                                @else
-                                    <a
-                                        href="{{ route('login') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
-                                        Log in
-                                    </a>
+        /* ── RTL for Urdu ── */
+        [lang="ur"] { direction: rtl; font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', sans-serif; }
+        [lang="ur"] .nav-links { flex-direction: row-reverse; }
 
-                                    @if (Route::has('register'))
-                                        <a
-                                            href="{{ route('register') }}"
-                                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                        >
-                                            Register
-                                        </a>
-                                    @endif
-                                @endauth
-                            </nav>
-                        @endif
-                    </header>
+        /* ── NAVBAR ── */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(8,8,8,.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-inner { max-width: var(--max); width: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(145deg,#e8a23a,#e8502a); display: flex; align-items: center; justify-content: center; font-size: 17px; }
+        .nav-logo-name { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+        .nav-links { display: flex; align-items: center; gap: 28px; }
+        .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color .2s; }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta { display: flex; align-items: center; gap: 10px; }
+        .btn-ghost { padding: 8px 16px; font-size: 13px; color: var(--text2); text-decoration: none; border-radius: 8px; border: 1px solid var(--border2); transition: all .2s; }
+        .btn-ghost:hover { color: var(--text); border-color: var(--border); }
+        .btn-accent { padding: 8px 18px; font-size: 13px; font-weight: 600; color: #fff; background: var(--accent); border: none; border-radius: 8px; text-decoration: none; cursor: pointer; transition: background .2s; }
+        .btn-accent:hover { background: var(--accent2); }
 
-                    <main class="mt-6">
-                        <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
-                            <a
-                                href="https://laravel.com/docs"
-                                id="docs-card"
-                                class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
-                            >
-                                <div id="screenshot-container" class="relative flex w-full flex-1 items-stretch">
-                                    <img
-                                        src="https://laravel.com/assets/img/welcome/docs-light.svg"
-                                        alt="Laravel documentation screenshot"
-                                        class="aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.06)] dark:hidden"
-                                        onerror="
-                                            document.getElementById('screenshot-container').classList.add('!hidden');
-                                            document.getElementById('docs-card').classList.add('!row-span-1');
-                                            document.getElementById('docs-card-content').classList.add('!flex-row');
-                                            document.getElementById('background').classList.add('!hidden');
-                                        "
-                                    />
-                                    <img
-                                        src="https://laravel.com/assets/img/welcome/docs-dark.svg"
-                                        alt="Laravel documentation screenshot"
-                                        class="hidden aspect-video h-full w-full flex-1 rounded-[10px] object-top object-cover drop-shadow-[0px_4px_34px_rgba(0,0,0,0.25)] dark:block"
-                                    />
-                                    <div
-                                        class="absolute -bottom-16 -left-16 h-40 w-[calc(100%+8rem)] bg-gradient-to-b from-transparent via-white to-white dark:via-zinc-900 dark:to-zinc-900"
-                                    ></div>
-                                </div>
+        /* Language toggle */
+        .lang-toggle { display: flex; align-items: center; gap: 2px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 3px; }
+        .lang-btn { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; background: none; color: var(--text3); transition: all .2s; }
+        .lang-btn.active { background: var(--accent); color: #fff; }
 
-                                <div class="relative flex items-center gap-6 lg:items-end">
-                                    <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
-                                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                            <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#FF2D20" d="M23 4a1 1 0 0 0-1.447-.894L12.224 7.77a.5.5 0 0 1-.448 0L2.447 3.106A1 1 0 0 0 1 4v13.382a1.99 1.99 0 0 0 1.105 1.79l9.448 4.728c.14.065.293.1.447.1.154-.005.306-.04.447-.105l9.453-4.724a1.99 1.99 0 0 0 1.1-1.789V4ZM3 6.023a.25.25 0 0 1 .362-.223l7.5 3.75a.251.251 0 0 1 .138.223v11.2a.25.25 0 0 1-.362.224l-7.5-3.75a.25.25 0 0 1-.138-.22V6.023Zm18 11.2a.25.25 0 0 1-.138.224l-7.5 3.75a.249.249 0 0 1-.329-.099.249.249 0 0 1-.033-.12V9.772a.251.251 0 0 1 .138-.224l7.5-3.75a.25.25 0 0 1 .362.224v11.2Z"/><path fill="#FF2D20" d="m3.55 1.893 8 4.048a1.008 1.008 0 0 0 .9 0l8-4.048a1 1 0 0 0-.9-1.785l-7.322 3.706a.506.506 0 0 1-.452 0L4.454.108a1 1 0 0 0-.9 1.785H3.55Z"/></svg>
-                                        </div>
+        /* Mobile menu */
+        .hamburger { display: none; background: none; border: none; cursor: pointer; color: var(--text2); padding: 4px; }
+        .hamburger svg { width: 22px; height: 22px; }
+        .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 20px 24px; z-index: 99; }
+        .mobile-menu.open { display: block; }
+        .mobile-menu a { display: block; padding: 12px 0; font-size: 15px; color: var(--text2); text-decoration: none; border-bottom: 1px solid var(--border); }
+        .mobile-menu a:last-child { border: none; }
 
-                                        <div class="pt-3 sm:pt-5 lg:pt-0">
-                                            <h2 class="text-xl font-semibold text-black dark:text-white">Documentation</h2>
+        @media(max-width: 768px) {
+            .nav-links, .nav-cta .btn-ghost { display: none; }
+            .hamburger { display: block; }
+            .lang-toggle { display: flex; }
+        }
 
-                                            <p class="mt-4 text-sm/relaxed">
-                                                Laravel has wonderful documentation covering every aspect of the framework. Whether you are a newcomer or have prior experience with Laravel, we recommend reading our documentation from beginning to end.
-                                            </p>
-                                        </div>
-                                    </div>
+        /* ── SECTIONS BASE ── */
+        section { padding: 96px 24px; }
+        .container { max-width: var(--max); margin: 0 auto; }
 
-                                    <svg class="size-6 shrink-0 stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
-                                </div>
-                            </a>
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 120px 24px 80px;
+            position: relative; overflow: hidden;
+        }
+        .hero-glow-1 {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,80,42,.08) 0%, transparent 65%);
+            top: -100px; left: 50%; transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .hero-glow-2 {
+            position: absolute; width: 400px; height: 400px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,162,58,.05) 0%, transparent 65%);
+            bottom: 0; right: -100px; pointer-events: none;
+        }
+        .hero-inner { position: relative; max-width: 780px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-bg); border: 1px solid var(--accent-border);
+            border-radius: 99px; padding: 6px 16px;
+            font-size: 12px; font-weight: 600; color: var(--accent);
+            margin-bottom: 28px; letter-spacing: .04em;
+        }
+        .hero-badge-dot { width: 6px; height: 6px; border-radius: 99px; background: var(--accent); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.4)} }
+        .hero-title {
+            font-size: clamp(36px, 6vw, 68px);
+            font-weight: 800; line-height: 1.1;
+            letter-spacing: -1.5px; color: var(--text);
+            margin-bottom: 20px;
+        }
+        .hero-title span { color: var(--accent); }
+        .hero-subtitle {
+            font-size: clamp(15px, 2vw, 18px);
+            color: var(--text2); line-height: 1.65;
+            max-width: 560px; margin: 0 auto 36px;
+        }
+        .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary-lg {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; background: var(--accent); color: #fff;
+            border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+            text-decoration: none; cursor: pointer; transition: all .2s;
+            box-shadow: 0 8px 24px rgba(232,80,42,.3);
+        }
+        .btn-primary-lg:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 12px 32px rgba(232,80,42,.4); }
+        .btn-secondary-lg {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; background: var(--surface2); color: var(--text);
+            border: 1px solid var(--border2); border-radius: 12px;
+            font-size: 15px; font-weight: 600; text-decoration: none;
+            transition: all .2s;
+        }
+        .btn-secondary-lg:hover { border-color: var(--border); background: var(--surface); }
+        .hero-stats {
+            display: flex; justify-content: center; gap: 40px;
+            margin-top: 56px; flex-wrap: wrap;
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat-num { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+        .hero-stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
 
-                            <a
-                                href="https://laracasts.com"
-                                class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
-                            >
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g fill="#FF2D20"><path d="M24 8.25a.5.5 0 0 0-.5-.5H.5a.5.5 0 0 0-.5.5v12a2.5 2.5 0 0 0 2.5 2.5h19a2.5 2.5 0 0 0 2.5-2.5v-12Zm-7.765 5.868a1.221 1.221 0 0 1 0 2.264l-6.626 2.776A1.153 1.153 0 0 1 8 18.123v-5.746a1.151 1.151 0 0 1 1.609-1.035l6.626 2.776ZM19.564 1.677a.25.25 0 0 0-.177-.427H15.6a.106.106 0 0 0-.072.03l-4.54 4.543a.25.25 0 0 0 .177.427h3.783c.027 0 .054-.01.073-.03l4.543-4.543ZM22.071 1.318a.047.047 0 0 0-.045.013l-4.492 4.492a.249.249 0 0 0 .038.385.25.25 0 0 0 .14.042h5.784a.5.5 0 0 0 .5-.5v-2a2.5 2.5 0 0 0-1.925-2.432ZM13.014 1.677a.25.25 0 0 0-.178-.427H9.101a.106.106 0 0 0-.073.03l-4.54 4.543a.25.25 0 0 0 .177.427H8.4a.106.106 0 0 0 .073-.03l4.54-4.543ZM6.513 1.677a.25.25 0 0 0-.177-.427H2.5A2.5 2.5 0 0 0 0 3.75v2a.5.5 0 0 0 .5.5h1.4a.106.106 0 0 0 .073-.03l4.54-4.543Z"/></g></svg>
-                                </div>
+        /* ── SECTION LABELS ── */
+        .section-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--accent-bg); border: 1px solid var(--accent-border);
+            border-radius: 99px; padding: 4px 14px;
+            font-size: 11px; font-weight: 700; color: var(--accent);
+            letter-spacing: .08em; text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .section-title { font-size: clamp(26px, 4vw, 40px); font-weight: 800; color: var(--text); letter-spacing: -1px; line-height: 1.15; margin-bottom: 14px; }
+        .section-sub   { font-size: 16px; color: var(--text2); line-height: 1.6; max-width: 520px; }
+        .text-center   { text-align: center; }
+        .section-sub.center { margin: 0 auto; }
 
-                                <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">Laracasts</h2>
+        /* ── PROBLEM ── */
+        .problem-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .problem-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; margin-top: 48px; }
+        @media(min-width:768px){ .problem-grid { grid-template-columns: repeat(4,1fr); } }
+        .problem-card {
+            background: var(--bg); border: 1px solid var(--border2);
+            border-radius: 14px; padding: 20px;
+        }
+        .problem-icon { font-size: 28px; margin-bottom: 12px; }
+        .problem-card h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .problem-card p  { font-size: 13px; color: var(--text3); line-height: 1.5; }
 
-                                    <p class="mt-4 text-sm/relaxed">
-                                        Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
-                                    </p>
-                                </div>
+        /* ── HOW IT WORKS ── */
+        .steps-grid { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 56px; position: relative; }
+        @media(min-width:768px) { .steps-grid { grid-template-columns: repeat(3,1fr); } }
+        .step-card { padding: 32px; position: relative; }
+        .step-card:not(:last-child)::after {
+            content: '→'; position: absolute;
+            right: -12px; top: 36px;
+            font-size: 20px; color: var(--text3);
+            display: none;
+        }
+        @media(min-width:768px){ .step-card:not(:last-child)::after { display: block; } }
+        .step-num {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: var(--accent-bg); border: 1px solid var(--accent-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 800; color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .step-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+        .step-card p  { font-size: 14px; color: var(--text2); line-height: 1.6; }
 
-                                <svg class="size-6 shrink-0 self-center stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
-                            </a>
+        /* ── FEATURES ── */
+        .features-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 56px; }
+        @media(min-width:640px)  { .features-grid { grid-template-columns: repeat(2,1fr); } }
+        @media(min-width:1024px) { .features-grid { grid-template-columns: repeat(3,1fr); } }
+        .feature-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px;
+            transition: border-color .2s;
+        }
+        .feature-card:hover { border-color: var(--border2); }
+        .feature-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            background: var(--surface2); border: 1px solid var(--border2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 14px;
+        }
+        .feature-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .feature-card p  { font-size: 13px; color: var(--text2); line-height: 1.55; }
 
-                            <a
-                                href="https://laravel-news.com"
-                                class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
-                            >
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g fill="#FF2D20"><path d="M8.75 4.5H5.5c-.69 0-1.25.56-1.25 1.25v4.75c0 .69.56 1.25 1.25 1.25h3.25c.69 0 1.25-.56 1.25-1.25V5.75c0-.69-.56-1.25-1.25-1.25Z"/><path d="M24 10a3 3 0 0 0-3-3h-2V2.5a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2V20a3.5 3.5 0 0 0 3.5 3.5h17A3.5 3.5 0 0 0 24 20V10ZM3.5 21.5A1.5 1.5 0 0 1 2 20V3a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 .5.5v17c0 .295.037.588.11.874a.5.5 0 0 1-.484.625L3.5 21.5ZM22 20a1.5 1.5 0 1 1-3 0V9.5a.5.5 0 0 1 .5-.5H21a1 1 0 0 1 1 1v10Z"/><path d="M12.751 6.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 7.3v-.5a.75.75 0 0 1 .751-.753ZM12.751 10.047h2a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-2A.75.75 0 0 1 12 11.3v-.5a.75.75 0 0 1 .751-.753ZM4.751 14.047h10a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-10A.75.75 0 0 1 4 15.3v-.5a.75.75 0 0 1 .751-.753ZM4.75 18.047h7.5a.75.75 0 0 1 .75.75v.5a.75.75 0 0 1-.75.75h-7.5A.75.75 0 0 1 4 19.3v-.5a.75.75 0 0 1 .75-.753Z"/></g></svg>
-                                </div>
+        /* ── PRICING ── */
+        .pricing-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 56px; }
+        @media(min-width:640px) { .pricing-grid { grid-template-columns: repeat(3,1fr); } }
+        .pricing-card {
+            background: var(--bg); border: 2px solid var(--border);
+            border-radius: 20px; padding: 28px; display: flex; flex-direction: column;
+            transition: border-color .2s;
+        }
+        .pricing-card:hover { border-color: var(--border2); }
+        .pricing-card.popular { border-color: var(--accent); position: relative; }
+        .popular-badge {
+            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: #fff; font-size: 10px; font-weight: 800;
+            padding: 4px 14px; border-radius: 99px; letter-spacing: .08em;
+            text-transform: uppercase; white-space: nowrap;
+        }
+        .plan-name  { font-size: 14px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+        .plan-price { font-size: 36px; font-weight: 800; color: var(--text); letter-spacing: -1px; margin-bottom: 4px; }
+        .plan-price span { font-size: 14px; font-weight: 400; color: var(--text3); }
+        .plan-desc  { font-size: 13px; color: var(--text3); margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .plan-features { list-style: none; flex: 1; margin-bottom: 24px; }
+        .plan-features li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); padding: 7px 0; border-bottom: 1px solid var(--border); }
+        .plan-features li:last-child { border: none; }
+        .plan-features li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+        .plan-btn {
+            display: block; text-align: center; padding: 12px;
+            border-radius: 10px; font-size: 14px; font-weight: 700;
+            text-decoration: none; transition: all .2s;
+        }
+        .plan-btn-outline { background: none; border: 1px solid var(--border2); color: var(--text2); }
+        .plan-btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .plan-btn-filled  { background: var(--accent); color: #fff; border: none; }
+        .plan-btn-filled:hover { background: var(--accent2); }
 
-                                <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">Laravel News</h2>
+        /* ── TESTIMONIALS ── */
+        .testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; }
+        @media(min-width:640px)  { .testimonials-grid { grid-template-columns: repeat(2,1fr); } }
+        @media(min-width:1024px) { .testimonials-grid { grid-template-columns: repeat(3,1fr); } }
+        .testimonial-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 22px;
+        }
+        .testimonial-stars { color: #f59e0b; font-size: 14px; margin-bottom: 10px; }
+        .testimonial-text  { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 10px; }
+        .author-avatar {
+            width: 36px; height: 36px; border-radius: 99px;
+            background: linear-gradient(135deg,#e8a23a,#e8502a);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0;
+        }
+        .author-name { font-size: 13px; font-weight: 600; color: var(--text); }
+        .author-role { font-size: 11px; color: var(--text3); }
 
-                                    <p class="mt-4 text-sm/relaxed">
-                                        Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
-                                    </p>
-                                </div>
+        /* ── FAQ ── */
+        .faq-list { margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-question {
+            width: 100%; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 0; text-align: left;
+            font-size: 15px; font-weight: 600; color: var(--text);
+            gap: 16px;
+        }
+        .faq-question svg { width: 18px; height: 18px; color: var(--text3); flex-shrink: 0; transition: transform .25s; }
+        .faq-question.open svg { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+        .faq-answer.open { max-height: 300px; }
+        .faq-answer p { padding-bottom: 18px; font-size: 14px; color: var(--text2); line-height: 1.65; }
 
-                                <svg class="size-6 shrink-0 self-center stroke-[#FF2D20]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
-                            </a>
+        /* ── CTA BANNER ── */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--surface) 0%, #1a0f0a 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px; padding: 56px 40px;
+            text-align: center; position: relative; overflow: hidden;
+            margin: 0 24px;
+        }
+        .cta-glow {
+            position: absolute; width: 400px; height: 400px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,80,42,.08) 0%, transparent 65%);
+            top: -100px; left: 50%; transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .cta-banner h2 { font-size: clamp(24px, 4vw, 40px); font-weight: 800; color: var(--text); letter-spacing: -1px; margin-bottom: 14px; position: relative; }
+        .cta-banner h2 span { color: var(--accent); }
+        .cta-banner p  { font-size: 16px; color: var(--text2); margin-bottom: 32px; position: relative; }
 
-                            <div class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800">
-                                <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                                    <svg class="size-5 sm:size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <g fill="#FF2D20">
-                                            <path
-                                                d="M16.597 12.635a.247.247 0 0 0-.08-.237 2.234 2.234 0 0 1-.769-1.68c.001-.195.03-.39.084-.578a.25.25 0 0 0-.09-.267 8.8 8.8 0 0 0-4.826-1.66.25.25 0 0 0-.268.181 2.5 2.5 0 0 1-2.4 1.824.045.045 0 0 0-.045.037 12.255 12.255 0 0 0-.093 3.86.251.251 0 0 0 .208.214c2.22.366 4.367 1.08 6.362 2.118a.252.252 0 0 0 .32-.079 10.09 10.09 0 0 0 1.597-3.733ZM13.616 17.968a.25.25 0 0 0-.063-.407A19.697 19.697 0 0 0 8.91 15.98a.25.25 0 0 0-.287.325c.151.455.334.898.548 1.328.437.827.981 1.594 1.619 2.28a.249.249 0 0 0 .32.044 29.13 29.13 0 0 0 2.506-1.99ZM6.303 14.105a.25.25 0 0 0 .265-.274 13.048 13.048 0 0 1 .205-4.045.062.062 0 0 0-.022-.07 2.5 2.5 0 0 1-.777-.982.25.25 0 0 0-.271-.149 11 11 0 0 0-5.6 2.815.255.255 0 0 0-.075.163c-.008.135-.02.27-.02.406.002.8.084 1.598.246 2.381a.25.25 0 0 0 .303.193 19.924 19.924 0 0 1 5.746-.438ZM9.228 20.914a.25.25 0 0 0 .1-.393 11.53 11.53 0 0 1-1.5-2.22 12.238 12.238 0 0 1-.91-2.465.248.248 0 0 0-.22-.187 18.876 18.876 0 0 0-5.69.33.249.249 0 0 0-.179.336c.838 2.142 2.272 4 4.132 5.353a.254.254 0 0 0 .15.048c1.41-.01 2.807-.282 4.117-.802ZM18.93 12.957l-.005-.008a.25.25 0 0 0-.268-.082 2.21 2.21 0 0 1-.41.081.25.25 0 0 0-.217.2c-.582 2.66-2.127 5.35-5.75 7.843a.248.248 0 0 0-.09.299.25.25 0 0 0 .065.091 28.703 28.703 0 0 0 2.662 2.12.246.246 0 0 0 .209.037c2.579-.701 4.85-2.242 6.456-4.378a.25.25 0 0 0 .048-.189 13.51 13.51 0 0 0-2.7-6.014ZM5.702 7.058a.254.254 0 0 0 .2-.165A2.488 2.488 0 0 1 7.98 5.245a.093.093 0 0 0 .078-.062 19.734 19.734 0 0 1 3.055-4.74.25.25 0 0 0-.21-.41 12.009 12.009 0 0 0-10.4 8.558.25.25 0 0 0 .373.281 12.912 12.912 0 0 1 4.826-1.814ZM10.773 22.052a.25.25 0 0 0-.28-.046c-.758.356-1.55.635-2.365.833a.25.25 0 0 0-.022.48c1.252.43 2.568.65 3.893.65.1 0 .2 0 .3-.008a.25.25 0 0 0 .147-.444c-.526-.424-1.1-.917-1.673-1.465ZM18.744 8.436a.249.249 0 0 0 .15.228 2.246 2.246 0 0 1 1.352 2.054c0 .337-.08.67-.23.972a.25.25 0 0 0 .042.28l.007.009a15.016 15.016 0 0 1 2.52 4.6.25.25 0 0 0 .37.132.25.25 0 0 0 .096-.114c.623-1.464.944-3.039.945-4.63a12.005 12.005 0 0 0-5.78-10.258.25.25 0 0 0-.373.274c.547 2.109.85 4.274.901 6.453ZM9.61 5.38a.25.25 0 0 0 .08.31c.34.24.616.561.8.935a.25.25 0 0 0 .3.127.631.631 0 0 1 .206-.034c2.054.078 4.036.772 5.69 1.991a.251.251 0 0 0 .267.024c.046-.024.093-.047.141-.067a.25.25 0 0 0 .151-.23A29.98 29.98 0 0 0 15.957.764a.25.25 0 0 0-.16-.164 11.924 11.924 0 0 0-2.21-.518.252.252 0 0 0-.215.076A22.456 22.456 0 0 0 9.61 5.38Z"
-                                            />
-                                        </g>
-                                    </svg>
-                                </div>
+        /* ── FOOTER ── */
+        footer {
+            background: var(--surface); border-top: 1px solid var(--border);
+            padding: 48px 24px 32px;
+        }
+        .footer-inner { max-width: var(--max); margin: 0 auto; }
+        .footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; }
+        @media(min-width:640px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        .footer-brand p  { font-size: 13px; color: var(--text3); line-height: 1.6; margin-top: 10px; max-width: 220px; }
+        .footer-col h4   { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; }
+        .footer-col a    { display: block; font-size: 13px; color: var(--text3); text-decoration: none; margin-bottom: 8px; transition: color .2s; }
+        .footer-col a:hover { color: var(--text2); }
+        .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .footer-bottom p { font-size: 12px; color: var(--text3); }
 
-                                <div class="pt-3 sm:pt-5">
-                                    <h2 class="text-xl font-semibold text-black dark:text-white">Vibrant Ecosystem</h2>
+        /* ── SCROLL ANIMATION ── */
+        .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-                                    <p class="mt-4 text-sm/relaxed">
-                                        Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white dark:focus-visible:ring-[#FF2D20]">Forge</a>, <a href="https://vapor.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Vapor</a>, <a href="https://nova.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Nova</a>, <a href="https://envoyer.io" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Envoyer</a>, and <a href="https://herd.laravel.com" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Herd</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Echo</a>, <a href="https://laravel.com/docs/horizon" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="rounded-sm underline hover:text-black focus:outline-none focus-visible:ring-1 focus-visible:ring-[#FF2D20] dark:hover:text-white">Telescope</a>, and more.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
+        /* ── RESPONSIVE HELPERS ── */
+        @media(max-width:640px) {
+            section { padding: 64px 20px; }
+            .hero-stats { gap: 24px; }
+            .cta-banner { padding: 36px 24px; margin: 0 16px; }
+        }
+    </style>
+</head>
+<body>
 
-                    <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
-                    </footer>
-                </div>
+{{-- ══════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════ --}}
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo">
+            <div class="nav-logo-icon">🍽</div>
+            <span class="nav-logo-name">QR Menu</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="#how-it-works" class="en-text">How it Works</a>
+            <a href="#features"     class="en-text">Features</a>
+            <a href="#pricing"      class="en-text">Pricing</a>
+            <a href="#faq"          class="en-text">FAQ</a>
+            <a href="#how-it-works" class="ur-text" style="display:none;">یہ کیسے کام کرتا ہے</a>
+            <a href="#features"     class="ur-text" style="display:none;">خصوصیات</a>
+            <a href="#pricing"      class="ur-text" style="display:none;">قیمتیں</a>
+            <a href="#faq"          class="ur-text" style="display:none;">سوالات</a>
+        </div>
+
+        <div class="nav-cta">
+            <div class="lang-toggle">
+                <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+                <button class="lang-btn"         id="btn-ur" onclick="setLang('ur')">اردو</button>
+            </div>
+            <a href="/login"    class="btn-ghost en-text">Login</a>
+            <a href="/register" class="btn-accent en-text">Get Started</a>
+            <a href="/login"    class="btn-ghost ur-text" style="display:none;">لاگ ان</a>
+            <a href="/register" class="btn-accent ur-text" style="display:none;">شروع کریں</a>
+        </div>
+
+        <button class="hamburger" onclick="toggleMenu()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+    </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#how-it-works">How it Works / یہ کیسے کام کرتا ہے</a>
+    <a href="#features">Features / خصوصیات</a>
+    <a href="#pricing">Pricing / قیمتیں</a>
+    <a href="#faq">FAQ / سوالات</a>
+    <a href="/login">Login / لاگ ان</a>
+    <a href="/register" style="color:var(--accent);font-weight:700;">Get Started / شروع کریں</a>
+</div>
+
+{{-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ --}}
+<section class="hero">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-inner">
+
+        <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            <span class="en-text">🇵🇰 Built for Pakistani Restaurants</span>
+            <span class="ur-text" style="display:none;">🇵🇰 پاکستانی ریسٹورانٹس کے لیے</span>
+        </div>
+
+        <h1 class="hero-title en-text">
+            Your Restaurant Menu,<br><span>Always Up to Date.</span>
+        </h1>
+        <h1 class="hero-title ur-text" style="display:none;">
+            آپ کا ریسٹورانٹ مینو،<br><span>ہمیشہ تازہ ترین۔</span>
+        </h1>
+
+        <p class="hero-subtitle en-text">
+            Customers scan a QR code and instantly see your full digital menu — no app needed.
+            Update prices, add dishes, and track scans in real time.
+        </p>
+        <p class="hero-subtitle ur-text" style="display:none;">
+            کسٹمر QR کوڈ اسکین کریں اور فوری طور پر آپ کا مکمل ڈیجیٹل مینو دیکھیں — کوئی ایپ ضروری نہیں۔
+            قیمتیں اپ ڈیٹ کریں، ڈشز شامل کریں اور اسکین ریئل ٹائم میں ٹریک کریں۔
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/register" class="btn-primary-lg en-text">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Start Free Today
+            </a>
+            <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
+                آج مفت شروع کریں
+            </a>
+            <a href="#how-it-works" class="btn-secondary-lg en-text">See How it Works</a>
+            <a href="#how-it-works" class="btn-secondary-lg ur-text" style="display:none;">دیکھیں کیسے کام کرتا ہے</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-num">500+</div>
+                <div class="hero-stat-label en-text">Restaurants</div>
+                <div class="hero-stat-label ur-text" style="display:none;">ریسٹورانٹس</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">50k+</div>
+                <div class="hero-stat-label en-text">Menu Scans</div>
+                <div class="hero-stat-label ur-text" style="display:none;">مینو اسکین</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">Rs.0</div>
+                <div class="hero-stat-label en-text">To Get Started</div>
+                <div class="hero-stat-label ur-text" style="display:none;">شروع کرنے کے لیے</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">24/7</div>
+                <div class="hero-stat-label en-text">Menu Available</div>
+                <div class="hero-stat-label ur-text" style="display:none;">مینو دستیاب</div>
             </div>
         </div>
-    </body>
+
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     PROBLEM SECTION
+══════════════════════════════════════════ --}}
+<section class="problem-section">
+    <div class="container text-center fade-up">
+        <div class="section-label">❌ <span class="en-text">The Problem</span><span class="ur-text" style="display:none;">مسئلہ</span></div>
+        <h2 class="section-title en-text">Printed menus are costing you money</h2>
+        <h2 class="section-title ur-text" style="display:none;">پرنٹڈ مینو آپ کا پیسہ ضائع کر رہے ہیں</h2>
+        <p class="section-sub center en-text">Every time prices change, you reprint. Every time a dish runs out, customers order it. Here's what restaurants lose with paper menus.</p>
+        <p class="section-sub center ur-text" style="display:none;">جب بھی قیمتیں بدلتی ہیں، آپ دوبارہ پرنٹ کرتے ہیں۔ جب بھی کوئی ڈش ختم ہوتی ہے، کسٹمر اسے آرڈر کرتے ہیں۔</p>
+    </div>
+    <div class="container">
+        <div class="problem-grid">
+            @foreach([
+                ['icon'=>'💸','en_title'=>'Expensive Reprinting','en_desc'=>'Every price change means paying for new menus. Costs add up fast.','ur_title'=>'مہنگا دوبارہ پرنٹ','ur_desc'=>'ہر قیمت تبدیلی پر نئے مینو پرنٹ کرنے کے اخراجات۔'],
+                ['icon'=>'⏰','en_title'=>'Outdated Information','en_desc'=>'Customers see old prices and unavailable dishes, causing confusion.','ur_title'=>'پرانی معلومات','ur_desc'=>'کسٹمر پرانی قیمتیں اور ناموجود ڈشز دیکھتے ہیں۔'],
+                ['icon'=>'📉','en_title'=>'No Analytics','en_desc'=>'You have no idea which dishes are most popular or when customers visit.','ur_title'=>'کوئی تجزیہ نہیں','ur_desc'=>'آپ کو نہیں پتہ کون سی ڈش مقبول ہے یا کسٹمر کب آتے ہیں۔'],
+                ['icon'=>'😓','en_title'=>'Hard to Manage','en_desc'=>'Multiple branches mean multiple menus, all out of sync.','ur_title'=>'مشکل انتظام','ur_desc'=>'متعدد برانچوں کے لیے متعدد مینو، سب غیر ہم آہنگ۔'],
+            ] as $p)
+            <div class="problem-card fade-up">
+                <div class="problem-icon">{{ $p['icon'] }}</div>
+                <h4 class="en-text">{{ $p['en_title'] }}</h4>
+                <h4 class="ur-text" style="display:none;">{{ $p['ur_title'] }}</h4>
+                <p class="en-text">{{ $p['en_desc'] }}</p>
+                <p class="ur-text" style="display:none;">{{ $p['ur_desc'] }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════ --}}
+<section id="how-it-works">
+    <div class="container text-center fade-up">
+        <div class="section-label">✨ <span class="en-text">How It Works</span><span class="ur-text" style="display:none;">یہ کیسے کام کرتا ہے</span></div>
+        <h2 class="section-title en-text">Live in 3 simple steps</h2>
+        <h2 class="section-title ur-text" style="display:none;">3 آسان مراحل میں لائیو</h2>
+    </div>
+    <div class="container">
+        <div class="steps-grid">
+            @foreach([
+                ['n'=>'1','en_h'=>'Register & Add Menu','en_p'=>'Sign up, add your categories and products with images and prices. Takes less than 30 minutes.','ur_h'=>'رجسٹر کریں اور مینو شامل کریں','ur_p'=>'سائن اپ کریں، اپنی کیٹیگریز اور پروڈکٹس شامل کریں۔ 30 منٹ سے کم وقت لگتا ہے۔'],
+                ['n'=>'2','en_h'=>'Generate QR Code','en_p'=>'Generate a QR code for your restaurant, branch, or table. Download and print it anywhere.','ur_h'=>'QR کوڈ بنائیں','ur_p'=>'اپنے ریسٹورانٹ، برانچ یا ٹیبل کے لیے QR کوڈ بنائیں۔ کہیں بھی پرنٹ کریں۔'],
+                ['n'=>'3','en_h'=>'Customers Scan & Order','en_p'=>'Customers point their phone camera at the QR. Instantly see your beautiful digital menu. No app needed.','ur_h'=>'کسٹمر اسکین کریں','ur_p'=>'کسٹمر فون کیمرہ QR پر پوائنٹ کریں۔ فوری طور پر خوبصورت ڈیجیٹل مینو دیکھیں۔'],
+            ] as $s)
+            <div class="step-card fade-up">
+                <div class="step-num">{{ $s['n'] }}</div>
+                <h3 class="en-text">{{ $s['en_h'] }}</h3>
+                <h3 class="ur-text" style="display:none;">{{ $s['ur_h'] }}</h3>
+                <p class="en-text">{{ $s['en_p'] }}</p>
+                <p class="ur-text" style="display:none;">{{ $s['ur_p'] }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     FEATURES
+══════════════════════════════════════════ --}}
+<section id="features" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="container text-center fade-up">
+        <div class="section-label">⚡ <span class="en-text">Features</span><span class="ur-text" style="display:none;">خصوصیات</span></div>
+        <h2 class="section-title en-text">Everything your restaurant needs</h2>
+        <h2 class="section-title ur-text" style="display:none;">آپ کے ریسٹورانٹ کو جو کچھ چاہیے</h2>
+    </div>
+    <div class="container">
+        <div class="features-grid">
+            @foreach([
+                ['icon'=>'📱','en_h'=>'Mobile-First Menu','en_p'=>'Beautiful, fast menu that works perfectly on any phone. No app download needed.','ur_h'=>'موبائل فرسٹ مینو','ur_p'=>'خوبصورت، تیز مینو جو کسی بھی فون پر کام کرتا ہے۔'],
+                ['icon'=>'✏️','en_h'=>'Instant Updates','en_p'=>'Change prices, add items, mark dishes unavailable — changes go live in seconds.','ur_h'=>'فوری اپ ڈیٹس','ur_p'=>'قیمتیں تبدیل کریں، آئٹمز شامل کریں — تبدیلیاں فوری لائیو ہوتی ہیں۔'],
+                ['icon'=>'📊','en_h'=>'Scan Analytics','en_p'=>'See daily scan counts, most popular QR codes, and weekly trends in your dashboard.','ur_h'=>'اسکین تجزیہ','ur_p'=>'روزانہ اسکین، مقبول QR کوڈز اور ہفتہ وار رجحانات دیکھیں۔'],
+                ['icon'=>'🏢','en_h'=>'Multi-Branch Support','en_p'=>'Manage all your branches from one dashboard. Each branch gets its own QR code.','ur_h'=>'کثیر برانچ سپورٹ','ur_p'=>'ایک ڈیش بورڈ سے تمام برانچیں مینیج کریں۔'],
+                ['icon'=>'🔀','en_h'=>'Product Variants','en_p'=>'Set different prices for Small, Medium, Large or any custom size/option.','ur_h'=>'پروڈکٹ ویریئنٹس','ur_p'=>'Small، Medium، Large یا کسی بھی سائز کے لیے الگ قیمتیں۔'],
+                ['icon'=>'🔐','en_h'=>'Secure & Reliable','en_p'=>'Each restaurant gets its own secure login. Data is fully isolated between restaurants.','ur_h'=>'محفوظ اور قابل اعتماد','ur_p'=>'ہر ریسٹورانٹ کا اپنا محفوظ لاگ ان۔ ڈیٹا مکمل طور پر الگ۔'],
+                ['icon'=>'📲','en_h'=>'QR Code Generator','en_p'=>'Generate, download and print QR codes for your restaurant, branches, or individual tables.','ur_h'=>'QR کوڈ جنریٹر','ur_p'=>'ریسٹورانٹ، برانچ یا ٹیبل کے لیے QR کوڈ بنائیں اور پرنٹ کریں۔'],
+                ['icon'=>'👥','en_h'=>'Staff Management','en_p'=>'Add staff accounts with limited access. Keep your menu management organized.','ur_h'=>'اسٹاف مینجمنٹ','ur_p'=>'محدود رسائی کے ساتھ اسٹاف اکاؤنٹس شامل کریں۔'],
+                ['icon'=>'💳','en_h'=>'Simple Billing','en_p'=>'Submit payment via bank transfer. Admin approves and your plan activates instantly.','ur_h'=>'آسان بلنگ','ur_p'=>'بینک ٹرانسفر سے ادائیگی جمع کریں۔ ایڈمن منظور کرے اور پلان فوری فعال ہو۔'],
+            ] as $f)
+            <div class="feature-card fade-up">
+                <div class="feature-icon">{{ $f['icon'] }}</div>
+                <h3 class="en-text">{{ $f['en_h'] }}</h3>
+                <h3 class="ur-text" style="display:none;">{{ $f['ur_h'] }}</h3>
+                <p class="en-text">{{ $f['en_p'] }}</p>
+                <p class="ur-text" style="display:none;">{{ $f['ur_p'] }}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════ --}}
+<section id="pricing" class="pricing-section">
+    <div class="container text-center fade-up">
+        <div class="section-label">💳 <span class="en-text">Pricing</span><span class="ur-text" style="display:none;">قیمتیں</span></div>
+        <h2 class="section-title en-text">Simple, transparent pricing</h2>
+        <h2 class="section-title ur-text" style="display:none;">سادہ، شفاف قیمتیں</h2>
+        <p class="section-sub center en-text">Start free. Upgrade when you're ready. No hidden fees, no contracts.</p>
+        <p class="section-sub center ur-text" style="display:none;">مفت شروع کریں۔ جب تیار ہوں اپ گریڈ کریں۔ کوئی پوشیدہ فیس نہیں۔</p>
+    </div>
+    <div class="container">
+        <div class="pricing-grid">
+
+            {{-- Free --}}
+            <div class="pricing-card fade-up">
+                <p class="plan-name en-text">Free</p>
+                <p class="plan-name ur-text" style="display:none;">مفت</p>
+                <p class="plan-price">Rs.0 <span class="en-text">/ month</span><span class="ur-text" style="display:none;">/ مہینہ</span></p>
+                <p class="plan-desc en-text">Perfect to get started</p>
+                <p class="plan-desc ur-text" style="display:none;">شروع کرنے کے لیے بہترین</p>
+                <ul class="plan-features">
+                    <li class="en-text">10 Products</li><li class="ur-text" style="display:none;">10 پروڈکٹس</li>
+                    <li class="en-text">1 QR Code</li><li class="ur-text" style="display:none;">1 QR کوڈ</li>
+                    <li class="en-text">1 Branch</li><li class="ur-text" style="display:none;">1 برانچ</li>
+                    <li class="en-text">Basic Analytics</li><li class="ur-text" style="display:none;">بنیادی تجزیہ</li>
+                </ul>
+                <a href="/register" class="plan-btn plan-btn-outline en-text">Get Started Free</a>
+                <a href="/register" class="plan-btn plan-btn-outline ur-text" style="display:none;">مفت شروع کریں</a>
+            </div>
+
+            {{-- Basic --}}
+            <div class="pricing-card popular fade-up">
+                <div class="popular-badge en-text">MOST POPULAR</div>
+                <div class="popular-badge ur-text" style="display:none;">سب سے مقبول</div>
+                <p class="plan-name en-text">Basic</p>
+                <p class="plan-name ur-text" style="display:none;">بیسک</p>
+                <p class="plan-price">Rs.1,999 <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
+                <p class="plan-desc en-text">For growing restaurants</p>
+                <p class="plan-desc ur-text" style="display:none;">بڑھتے ریسٹورانٹس کے لیے</p>
+                <ul class="plan-features">
+                    <li class="en-text">50 Products</li><li class="ur-text" style="display:none;">50 پروڈکٹس</li>
+                    <li class="en-text">5 QR Codes</li><li class="ur-text" style="display:none;">5 QR کوڈز</li>
+                    <li class="en-text">2 Branches</li><li class="ur-text" style="display:none;">2 برانچیں</li>
+                    <li class="en-text">Full Analytics</li><li class="ur-text" style="display:none;">مکمل تجزیہ</li>
+                    <li class="en-text">Staff Accounts</li><li class="ur-text" style="display:none;">اسٹاف اکاؤنٹس</li>
+                </ul>
+                <a href="/register" class="plan-btn plan-btn-filled en-text">Get Basic</a>
+                <a href="/register" class="plan-btn plan-btn-filled ur-text" style="display:none;">بیسک لیں</a>
+            </div>
+
+            {{-- Pro --}}
+            <div class="pricing-card fade-up">
+                <p class="plan-name en-text">Pro</p>
+                <p class="plan-name ur-text" style="display:none;">پرو</p>
+                <p class="plan-price">Rs.4,999 <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
+                <p class="plan-desc en-text">For established restaurants</p>
+                <p class="plan-desc ur-text" style="display:none;">قائم ریسٹورانٹس کے لیے</p>
+                <ul class="plan-features">
+                    <li class="en-text">Unlimited Products</li><li class="ur-text" style="display:none;">لامحدود پروڈکٹس</li>
+                    <li class="en-text">20 QR Codes</li><li class="ur-text" style="display:none;">20 QR کوڈز</li>
+                    <li class="en-text">10 Branches</li><li class="ur-text" style="display:none;">10 برانچیں</li>
+                    <li class="en-text">Advanced Analytics</li><li class="ur-text" style="display:none;">ایڈوانس تجزیہ</li>
+                    <li class="en-text">Priority Support</li><li class="ur-text" style="display:none;">ترجیحی سپورٹ</li>
+                </ul>
+                <a href="/register" class="plan-btn plan-btn-outline en-text">Get Pro</a>
+                <a href="/register" class="plan-btn plan-btn-outline ur-text" style="display:none;">پرو لیں</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════════ --}}
+<section>
+    <div class="container text-center fade-up">
+        <div class="section-label">⭐ <span class="en-text">Testimonials</span><span class="ur-text" style="display:none;">تجربات</span></div>
+        <h2 class="section-title en-text">Loved by restaurants across Pakistan</h2>
+        <h2 class="section-title ur-text" style="display:none;">پاکستان بھر کے ریسٹورانٹس کا پسندیدہ</h2>
+    </div>
+    <div class="container">
+        <div class="testimonials-grid">
+            @foreach([
+                ['name'=>'Ahmed Khan','role_en'=>'Owner, Kababjees Karachi','role_ur'=>'مالک، کبابجیز کراچی','en'=>'We switched to QR Menu and our customers love it. No more confusing over outdated prices. Saved us thousands on printing.','ur'=>'ہم نے QR Menu پر سوئچ کیا اور ہمارے کسٹمر اسے پسند کرتے ہیں۔ پرنٹنگ پر ہزاروں روپے بچائے۔'],
+                ['name'=>'Fatima Malik','role_en'=>'Manager, Pizza Hub Lahore','role_ur'=>'مینیجر، پیزا ہب لاہور','en'=>'Setting up took less than an hour. Our menu looks amazing on phone screens. The analytics are very helpful.','ur'=>'سیٹ اپ میں ایک گھنٹے سے کم وقت لگا۔ ہمارا مینو فون اسکرین پر شاندار لگتا ہے۔'],
+                ['name'=>'Usman Shah','role_en'=>'CEO, Burger Factory Islamabad','role_ur'=>'سی ای او، برگر فیکٹری اسلام آباد','en'=>'Managing 3 branches from one dashboard is a game changer. QR codes for each table was exactly what we needed.','ur'=>'ایک ڈیش بورڈ سے 3 برانچیں مینیج کرنا گیم چینجر ہے۔ ہر ٹیبل کے لیے QR کوڈز بالکل وہی تھے جو ہمیں چاہیے تھا۔'],
+            ] as $t)
+            <div class="testimonial-card fade-up">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text en-text">"{{ $t['en'] }}"</p>
+                <p class="testimonial-text ur-text" style="display:none;">"{{ $t['ur'] }}"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">{{ strtoupper(substr($t['name'],0,1)) }}</div>
+                    <div>
+                        <p class="author-name">{{ $t['name'] }}</p>
+                        <p class="author-role en-text">{{ $t['role_en'] }}</p>
+                        <p class="author-role ur-text" style="display:none;">{{ $t['role_ur'] }}</p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════ --}}
+<section id="faq" style="background:var(--surface);border-top:1px solid var(--border);">
+    <div class="container text-center fade-up">
+        <div class="section-label">❓ FAQ</div>
+        <h2 class="section-title en-text">Frequently Asked Questions</h2>
+        <h2 class="section-title ur-text" style="display:none;">اکثر پوچھے جانے والے سوالات</h2>
+    </div>
+    <div class="container">
+        <div class="faq-list">
+            @foreach([
+                ['en_q'=>'Do customers need to download an app?','en_a'=>'No. Customers simply point their phone camera at the QR code. The menu opens instantly in their browser — no app download required.','ur_q'=>'کیا کسٹمر کو ایپ ڈاؤن لوڈ کرنی ہوگی؟','ur_a'=>'نہیں۔ کسٹمر صرف اپنا فون کیمرہ QR کوڈ پر پوائنٹ کریں۔ مینو فوری طور پر ان کے براؤزر میں کھل جاتا ہے۔'],
+                ['en_q'=>'Can I update my menu anytime?','en_a'=>'Yes. You can update prices, add or remove items, and mark dishes as unavailable instantly. Changes go live immediately.','ur_q'=>'کیا میں اپنا مینو کسی بھی وقت اپ ڈیٹ کر سکتا ہوں؟','ur_a'=>'جی ہاں۔ آپ فوری طور پر قیمتیں تبدیل کر سکتے ہیں، آئٹمز شامل یا ہٹا سکتے ہیں۔'],
+                ['en_q'=>'What happens if I exceed my plan limit?','en_a'=>'You will see a clear message when you reach your limit. Simply upgrade your plan to add more products, QR codes, or branches.','ur_q'=>'اگر میں اپنے پلان کی حد پار کر لوں تو کیا ہوگا؟','ur_a'=>'جب آپ اپنی حد تک پہنچیں گے تو آپ کو واضح پیغام نظر آئے گا۔ مزید شامل کرنے کے لیے پلان اپ گریڈ کریں۔'],
+                ['en_q'=>'How do I pay for a subscription?','en_a'=>'We accept bank transfers (HBL, Meezan, UBL). You submit your payment screenshot and transaction reference. Our team verifies within 24 hours.','ur_q'=>'میں سبسکرپشن کے لیے کیسے ادائیگی کروں؟','ur_a'=>'ہم بینک ٹرانسفر (HBL، میزان، UBL) قبول کرتے ہیں۔ آپ ادائیگی کا اسکرین شاٹ اور ٹرانزیکشن ریفرنس جمع کریں۔ ہماری ٹیم 24 گھنٹوں میں تصدیق کرتی ہے۔'],
+                ['en_q'=>'Can I manage multiple branches?','en_a'=>'Yes. The Basic plan supports 2 branches and Pro supports 10. Each branch can have its own QR codes and tables.','ur_q'=>'کیا میں متعدد برانچیں مینیج کر سکتا ہوں؟','ur_a'=>'جی ہاں۔ بیسک پلان 2 برانچیں اور پرو 10 برانچیں سپورٹ کرتا ہے۔'],
+                ['en_q'=>'Is my data secure?','en_a'=>'Yes. Each restaurant\'s data is completely isolated. Only your staff can access your dashboard and menu data.','ur_q'=>'کیا میرا ڈیٹا محفوظ ہے؟','ur_a'=>'جی ہاں۔ ہر ریسٹورانٹ کا ڈیٹا مکمل طور پر الگ ہے۔ صرف آپ کا اسٹاف آپ کے ڈیش بورڈ تک رسائی حاصل کر سکتا ہے۔'],
+            ] as $i => $faq)
+            <div class="faq-item fade-up">
+                <button class="faq-question" onclick="toggleFaq({{ $i }}, this)">
+                    <span class="en-text">{{ $faq['en_q'] }}</span>
+                    <span class="ur-text" style="display:none;">{{ $faq['ur_q'] }}</span>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+                <div class="faq-answer" id="faq-{{ $i }}">
+                    <p class="en-text">{{ $faq['en_a'] }}</p>
+                    <p class="ur-text" style="display:none;">{{ $faq['ur_a'] }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════ --}}
+<section style="padding: 80px 0;">
+    <div class="cta-banner fade-up">
+        <div class="cta-glow"></div>
+        <h2 class="en-text">Ready to go <span>digital?</span></h2>
+        <h2 class="ur-text" style="display:none;">کیا آپ <span>ڈیجیٹل</span> جانے کے لیے تیار ہیں؟</h2>
+        <p class="en-text">Join 500+ Pakistani restaurants already using QR Menu. Start free today.</p>
+        <p class="ur-text" style="display:none;">500+ پاکستانی ریسٹورانٹس میں شامل ہوں جو پہلے سے QR Menu استعمال کر رہے ہیں۔ آج مفت شروع کریں۔</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;">
+            <a href="/register" class="btn-primary-lg en-text">
+                🚀 Start Free — No Credit Card
+            </a>
+            <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
+                🚀 مفت شروع کریں — کریڈٹ کارڈ نہیں
+            </a>
+            <a href="https://wa.me/923001234567" target="_blank"
+               style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:#25D366;color:#fff;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:opacity .2s;"
+               onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                💬 <span class="en-text">WhatsApp Us</span><span class="ur-text" style="display:none;">واٹس ایپ کریں</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ --}}
+<footer>
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(145deg,#e8a23a,#e8502a);display:flex;align-items:center;justify-content:center;font-size:15px;">🍽</div>
+                    <span style="font-size:15px;font-weight:700;color:var(--text);">QR Menu SaaS</span>
+                </div>
+                <p class="en-text">Digital menu solution built for Pakistani restaurants. Fast, beautiful, always up to date.</p>
+                <p class="ur-text" style="display:none;">پاکستانی ریسٹورانٹس کے لیے ڈیجیٹل مینو حل۔ تیز، خوبصورت، ہمیشہ تازہ ترین۔</p>
+            </div>
+            <div class="footer-col">
+                <h4 class="en-text">Product</h4>
+                <h4 class="ur-text" style="display:none;">پروڈکٹ</h4>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#how-it-works">How it Works</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="en-text">Account</h4>
+                <h4 class="ur-text" style="display:none;">اکاؤنٹ</h4>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+                <a href="/dashboard">Dashboard</a>
+            </div>
+            <div class="footer-col">
+                <h4 class="en-text">Contact</h4>
+                <h4 class="ur-text" style="display:none;">رابطہ</h4>
+                <a href="https://wa.me/923001234567">WhatsApp</a>
+                <a href="mailto:hello@qrmenu.pk">Email Us</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="en-text">© {{ date('Y') }} QR Menu SaaS. All rights reserved. 🇵🇰 Made in Pakistan.</p>
+            <p class="ur-text" style="display:none;">© {{ date('Y') }} QR Menu SaaS۔ تمام حقوق محفوظ ہیں۔ 🇵🇰 پاکستان میں بنایا گیا۔</p>
+            <div style="display:flex;gap:16px;">
+                <a href="#" style="font-size:12px;color:var(--text3);text-decoration:none;">Privacy</a>
+                <a href="#" style="font-size:12px;color:var(--text3);text-decoration:none;">Terms</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ── Language Toggle ──
+function setLang(lang) {
+    const isUr = lang === 'ur';
+    document.querySelectorAll('.en-text').forEach(el => el.style.display = isUr ? 'none' : '');
+    document.querySelectorAll('.ur-text').forEach(el => el.style.display = isUr ? '' : 'none');
+    document.getElementById('btn-en').classList.toggle('active', !isUr);
+    document.getElementById('btn-ur').classList.toggle('active',  isUr);
+    document.getElementById('html-root').setAttribute('lang', isUr ? 'ur' : 'en');
+    localStorage.setItem('lang', lang);
+}
+
+// Restore saved language
+const saved = localStorage.getItem('lang');
+if (saved === 'ur') setLang('ur');
+
+// ── Mobile Menu ──
+function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+}
+document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+});
+
+// ── FAQ ──
+function toggleFaq(i, btn) {
+    const answer = document.getElementById('faq-' + i);
+    const isOpen = answer.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-question').forEach(b => b.classList.remove('open'));
+    // Open clicked if was closed
+    if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
+}
+
+// ── Scroll Animations ──
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── Smooth scroll for nav links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+});
+</script>
+
+</body>
 </html>

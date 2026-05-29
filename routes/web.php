@@ -13,8 +13,8 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\InviteController;
 
 Route::get('/', function () {
-    return view('auth.login');
-})->name('login');
+    return view('welcome');
+})->name('home');
 Route::post('/', function () {
     return redirect('/dashboard');
 });
