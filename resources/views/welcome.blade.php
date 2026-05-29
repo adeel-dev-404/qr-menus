@@ -746,8 +746,8 @@
             <div class="footer-col">
                 <h4 class="en-text">Contact</h4>
                 <h4 class="ur-text" style="display:none;">رابطہ</h4>
-                <a href="https://wa.me/923001234567">WhatsApp</a>
-                <a href="mailto:hello@qrmenu.pk">Email Us</a>
+                <a href="https://wa.me/923263598498">WhatsApp</a>
+                <a href="mailto:adeel.dev@gmail.com">Email Us</a>
                 <a href="#faq">FAQ</a>
             </div>
         </div>
