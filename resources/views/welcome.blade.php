@@ -706,7 +706,7 @@
             <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
                 🚀 مفت شروع کریں — کریڈٹ کارڈ نہیں
             </a>
-            <a href="https://wa.me/923001234567" target="_blank"
+            <a href="https://wa.me/923263598498" target="_blank"
                style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:#25D366;color:#fff;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:opacity .2s;"
                onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
                 💬 <span class="en-text">WhatsApp Us</span><span class="ur-text" style="display:none;">واٹس ایپ کریں</span>
