@@ -18,7 +18,9 @@ Route::get('/', function () {
 Route::post('/', function () {
     return redirect('/dashboard');
 });
+Route::view('/pending', 'auth.pending')->name('pending');
 Route::middleware('auth')->group(function () {
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
@@ -104,5 +106,6 @@ Route::prefix('profile')->name('dashboard.profile.')->group(function () {
     Route::delete('/cover',           [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteCover'])->name('cover.delete');
     Route::delete('/avatar',          [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
 });
+
 
 require __DIR__ . '/auth.php';

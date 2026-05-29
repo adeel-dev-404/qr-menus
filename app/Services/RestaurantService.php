@@ -13,13 +13,32 @@ class RestaurantService
     /**
      * Create a new restaurant and assign an owner.
      */
-    public function createWithOwner(array $restaurantData, array $ownerData): Restaurant
+    // public function createWithOwner(array $restaurantData, array $ownerData): Restaurant
+    // {
+    //     return DB::transaction(function () use ($restaurantData, $ownerData) {
+    //         // Create restaurant
+    //         $restaurant = Restaurant::create($restaurantData);
+
+    //         // Create owner user
+    //         $owner = User::create([
+    //             'name'          => $ownerData['name'],
+    //             'email'         => $ownerData['email'],
+    //             'password'      => Hash::make($ownerData['password']),
+    //             'restaurant_id' => $restaurant->id,
+    //         ]);
+
+    //         $owner->assignRole('restaurant_owner');
+
+    //         return $restaurant;
+    //     });
+    // }
+
+    public function createWithOwner(array $restaurantData, array $ownerData): array
     {
         return DB::transaction(function () use ($restaurantData, $ownerData) {
-            // Create restaurant
+
             $restaurant = Restaurant::create($restaurantData);
 
-            // Create owner user
             $owner = User::create([
                 'name'          => $ownerData['name'],
                 'email'         => $ownerData['email'],
@@ -29,10 +48,12 @@ class RestaurantService
 
             $owner->assignRole('restaurant_owner');
 
-            return $restaurant;
+            return [
+                'restaurant' => $restaurant,
+                'owner'      => $owner,
+            ];
         });
     }
-
     /**
      * Get current authenticated user's restaurant.
      */

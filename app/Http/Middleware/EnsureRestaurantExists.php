@@ -4,23 +4,33 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EnsureRestaurantExists
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->hasRole('super_admin')) {
             return $next($request);
         }
 
+        // No restaurant assigned at all
         if (!$user->restaurant_id || !$user->restaurant) {
-            abort(403, 'No restaurant assigned to your account.');
+            return redirect()->route('pending')
+                ->with('error', 'No restaurant assigned to your account.');
         }
 
-        if ($user->restaurant->status !== 'active') {
-            abort(403, 'Your restaurant account is inactive or pending approval.');
+        // Restaurant pending approval
+        if ($user->restaurant->status === 'pending') {
+            return redirect()->route('pending');
+        }
+
+        // Restaurant inactive/suspended
+        if ($user->restaurant->status === 'inactive') {
+            return redirect()->route('pending')
+                ->with('error', 'Your restaurant account has been suspended. Contact support.');
         }
 
         return $next($request);

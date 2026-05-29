@@ -109,15 +109,15 @@ class RestaurantResource extends Resource
                     ->label('Activate')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn (Restaurant $r) => $r->status !== 'active')
-                    ->action(fn (Restaurant $r) => $r->update(['status' => 'active']))
+                    ->visible(fn(Restaurant $r) => $r->status !== 'active')
+                    ->action(fn(Restaurant $r) => $r->update(['status' => 'active']))
                     ->requiresConfirmation(),
                 Tables\Actions\Action::make('suspend')
                     ->label('Suspend')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->visible(fn (Restaurant $r) => $r->status === 'active')
-                    ->action(fn (Restaurant $r) => $r->update(['status' => 'inactive']))
+                    ->visible(fn(Restaurant $r) => $r->status === 'active')
+                    ->action(fn(Restaurant $r) => $r->update(['status' => 'inactive']))
                     ->requiresConfirmation(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -143,13 +143,31 @@ class RestaurantResource extends Resource
     {
         $service = new RestaurantService();
 
-        return $service->createWithOwner(
-            array_except($data, ['owner_name', 'owner_email', 'owner_password']),
+        $result = $service->createWithOwner(
             [
-                'name'     => $data['owner_name'],
-                'email'    => $data['owner_email'],
-                'password' => $data['owner_password'],
+                'name'    => $request->restaurant_name,
+                'phone'   => $request->restaurant_phone,
+                'address' => $request->restaurant_address,
+                'status'  => 'pending',
+            ],
+            [
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => $request->password,
             ]
         );
+
+        $user = $result['owner'];
+        
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::where('status', 'pending')->count();
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 }
