@@ -33,8 +33,6 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
-
-        /* ── RTL for Urdu ── */
         [lang="ur"] { direction: rtl; font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', sans-serif; }
         [lang="ur"] .nav-links { flex-direction: row-reverse; }
 
