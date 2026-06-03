@@ -106,6 +106,20 @@ Route::prefix('profile')->name('dashboard.profile.')->group(function () {
     Route::delete('/cover',           [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteCover'])->name('cover.delete');
     Route::delete('/avatar',          [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteAvatar'])->name('avatar.delete');
 });
+// ── Public Order Routes (no auth needed) ──
+Route::prefix('order')->name('order.')->group(function () {
+    Route::post('/{restaurant:slug}',            [App\Http\Controllers\OrderController::class, 'store'])->name('store');
+    Route::get('/{restaurant:slug}/{order}',    [App\Http\Controllers\OrderController::class, 'show'])->name('show');
+    Route::post('/{restaurant:slug}/{order}/pay', [App\Http\Controllers\OrderController::class, 'submitPayment'])->name('pay');
+});
+
+// ── Dashboard Order Routes ──
+Route::prefix('dashboard/orders')->name('dashboard.orders.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+    Route::get('/',                     [App\Http\Controllers\Dashboard\OrderController::class, 'index'])->name('index');
+    Route::get('/{order}',              [App\Http\Controllers\Dashboard\OrderController::class, 'show'])->name('show');
+    Route::patch('/{order}/status',      [App\Http\Controllers\Dashboard\OrderController::class, 'updateStatus'])->name('status');
+    Route::patch('/{order}/confirm-pay', [App\Http\Controllers\Dashboard\OrderController::class, 'confirmPayment'])->name('confirm-pay');
+});
 
 
 require __DIR__ . '/auth.php';

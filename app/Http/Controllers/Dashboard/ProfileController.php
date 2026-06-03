@@ -15,11 +15,13 @@ class ProfileController extends Controller
         $user       = auth()->user();
         $restaurant = $user->restaurant;
 
-        $days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         $openingHours = $restaurant->opening_hours ?? [];
 
-        return view('dashboard.profile.index',
-            compact('user', 'restaurant', 'days', 'openingHours'));
+        return view(
+            'dashboard.profile.index',
+            compact('user', 'restaurant', 'days', 'openingHours')
+        );
     }
 
     // ── Update personal info ──
@@ -29,7 +31,7 @@ class ProfileController extends Controller
 
         $request->validate([
             'name'   => 'required|string|max:255',
-            'email'  => ['required','email', Rule::unique('users')->ignore($user->id)],
+            'email'  => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'phone'  => 'nullable|string|max:20',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
@@ -81,16 +83,35 @@ class ProfileController extends Controller
             'email'     => 'nullable|email|max:255',
             'address'   => 'nullable|string|max:500',
             'about'     => 'nullable|string|max:1000',
+
+            'ordering_enabled' => 'nullable',
+            'jazzcash_number'  => 'nullable|string|max:20',
+            'easypaisa_number' => 'nullable|string|max:20',
+            'whatsapp_number'  => 'nullable|string|max:20',
+
             'whatsapp'  => 'nullable|string|max:20',
             'instagram' => 'nullable|string|max:100',
             'facebook'  => 'nullable|string|max:100',
+
             'logo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
         $data = $request->only([
-            'name','phone','email','address','about','whatsapp','instagram','facebook'
+            'name',
+            'phone',
+            'email',
+            'address',
+            'about',
+            'whatsapp',
+            'instagram',
+            'facebook',
+            'jazzcash_number',
+            'easypaisa_number',
+            'whatsapp_number',
         ]);
+
+        $data['ordering_enabled'] = $request->boolean('ordering_enabled');
 
         // Logo upload
         if ($request->hasFile('logo')) {
@@ -106,7 +127,7 @@ class ProfileController extends Controller
 
         // Opening hours
         $hours = [];
-        $days  = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+        $days  = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         foreach ($days as $day) {
             $hours[$day] = [
                 'open'   => $request->boolean("hours_{$day}_open"),

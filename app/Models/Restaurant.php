@@ -16,15 +16,19 @@ class Restaurant extends Model
         'logo',
         'cover_image',
         'about',
-        'phone',
-        'email',
-        'address',
-        'status',
-        'subscription_id',
         'whatsapp',
         'instagram',
         'facebook',
         'opening_hours',
+        'phone',
+        'email',
+        'address',
+        'status',
+        'ordering_enabled',
+        'jazzcash_number',
+        'easypaisa_number',
+        'whatsapp_number',
+        'subscription_id',
         'active_subscription_id',
         'subscription_expires_at',
     ];
@@ -168,5 +172,14 @@ class Restaurant extends Model
             'branches'  => $this->branches()->count(),
             default     => 0,
         };
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function isOrderingEnabled(): bool
+    {
+        return (bool) $this->ordering_enabled;
     }
 }
