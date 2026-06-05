@@ -13,10 +13,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Mail\NewRestaurantRegisteredMail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
-    
+
     public function create(): View
     {
         return view('auth.register');
@@ -97,6 +100,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user, true);
         $request->session()->regenerate();
+        $admins = User::role('super_admin')->get();
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->queue(new NewRestaurantRegisteredMail($restaurant));
+        }
 
         event(new Registered($user));
 

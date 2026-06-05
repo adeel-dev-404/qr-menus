@@ -6,6 +6,8 @@ use App\Models\Restaurant;
 use App\Models\RestaurantSubscription;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentApprovedMail;
 
 class SubscriptionService
 {
@@ -51,6 +53,13 @@ class SubscriptionService
                 'subscription_expires_at' => $expiresAt,
                 'status'                  => 'active',
             ]);
+            $ownerEmail = $request->restaurant->users()
+                ->whereHas('roles', fn($q) => $q->where('name', 'restaurant_owner'))
+                ->value('email');
+
+            if ($ownerEmail) {
+                Mail::to($ownerEmail)->queue(new PaymentApprovedMail($request->load('subscription')));
+            }
         });
     }
 

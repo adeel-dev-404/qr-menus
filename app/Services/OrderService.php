@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewOrderMail;
 
 class OrderService
 {
@@ -54,21 +56,40 @@ class OrderService
 
             // Send WhatsApp notification
             $this->sendWhatsAppNotification($restaurant, $order);
+            $ownerEmail = $order->restaurant->users()
+                ->whereHas('roles', fn($q) => $q->where('name', 'restaurant_owner'))
+                ->value('email');
 
+            if ($ownerEmail) {
+                Mail::to($ownerEmail)->queue(new NewOrderMail($order->load('items', 'table', 'branch')));
+            }
             return $order;
         });
     }
 
+    // public function updateStatus(Order $order, string $status): void
+    // {
+    //     $updates = ['status' => $status];
+
+    //     if ($status === 'confirmed') $updates['confirmed_at'] = now();
+    //     if ($status === 'ready')     $updates['ready_at']     = now();
+
+    //     $order->update($updates);
+    // }
     public function updateStatus(Order $order, string $status): void
     {
         $updates = ['status' => $status];
-
         if ($status === 'confirmed') $updates['confirmed_at'] = now();
         if ($status === 'ready')     $updates['ready_at']     = now();
-
         $order->update($updates);
-    }
+        $order->refresh();
 
+        // Send customer email if available
+        if ($order->customer_email && in_array($status, ['confirmed', 'preparing', 'ready', 'delivered', 'cancelled'])) {
+            Mail::to($order->customer_email)
+                ->queue(new OrderStatusUpdatedMail($order->load('items'), $status));
+        }
+    }
     public function confirmPayment(Order $order, string $reference, ?string $proofPath = null): void
     {
         $order->update([
