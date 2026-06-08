@@ -244,6 +244,18 @@
             background: #333;
             border-radius: 99px;
         }
+
+        @keyframes pulse-badge {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(232, 80, 42, .5)
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(232, 80, 42, 0)
+            }
+        }
     </style>
 </head>
 
@@ -274,6 +286,7 @@
         {{-- Navigation --}}
         <nav style="flex:1;overflow-y:auto;padding:10px 10px;">
 
+            {{-- Home --}}
             <a href="{{ route('dashboard.home') }}"
                 class="nav-link {{ request()->routeIs('dashboard.home') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -284,12 +297,15 @@
                 Dashboard
             </a>
 
+            {{-- ── Operations ── --}}
+            <p class="nav-label">Operations</p>
+
             <a href="{{ route('dashboard.orders.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.orders.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     style="width:18px;height:18px;flex-shrink:0">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 3h16v4H4V3zm0 6h16v12H4V9zm3 3h10M7 15h10" />
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 Orders
                 @php
@@ -304,6 +320,22 @@
                 @endif
             </a>
 
+            @if(auth()->user()->restaurant?->waiter_call_enabled)
+            <a href="{{ route('dashboard.waiter-calls.index') }}"
+                class="nav-link {{ request()->routeIs('dashboard.waiter-calls.*') ? 'active' : '' }}"
+                id="waiter-nav-link">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    style="width:18px;height:18px;flex-shrink:0">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                Waiter Calls
+                <span id="waiter-badge"
+                    style="display:none;margin-left:auto;background:#e8502a;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;animation:pulse-badge 2s infinite;">0</span>
+            </a>
+            @endif
+
+            {{-- ── Menu ── --}}
             <p class="nav-label">Menu</p>
 
             <a href="{{ route('dashboard.categories.index') }}"
@@ -326,6 +358,7 @@
                 Products
             </a>
 
+            {{-- ── QR Codes ── --}}
             <p class="nav-label">QR Codes</p>
 
             <a href="{{ route('dashboard.qr-codes.index') }}"
@@ -338,23 +371,30 @@
                 QR Codes
             </a>
 
+            {{-- ── Restaurant ── --}}
             <p class="nav-label">Restaurant</p>
 
-            {{-- <a href="{{ route('dashboard.branches.index') }}"
-           class="nav-link {{ request()->routeIs('dashboard.branches.*') ? 'active' : '' }}">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-            </svg>
-            Branches
-        </a> --}}
+            <a href="{{ route('dashboard.branches.index') }}"
+                class="nav-link {{ request()->routeIs('dashboard.branches.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    style="width:18px;height:18px;flex-shrink:0">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                Branches
+            </a>
 
-            {{-- <a href="{{ route('staff.index') }}"
-           class="nav-link {{ request()->routeIs('dashboard.staff.*') ? 'active' : '' }}">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;flex-shrink:0">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            Staff
-        </a> --}}
+            @if(auth()->user()->hasRole('restaurant_owner|super_admin'))
+            <a href="{{ route('staff.index') }}"
+                class="nav-link {{ request()->routeIs('dashboard.staff.*') || request()->routeIs('staff.*') ? 'active' : '' }}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    style="width:18px;height:18px;flex-shrink:0">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Staff
+            </a>
+            @endif
 
             <a href="{{ route('dashboard.subscription.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.subscription.*') ? 'active' : '' }}">
@@ -369,6 +409,7 @@
                 @endif
             </a>
 
+            {{-- ── Preview ── --}}
             <p class="nav-label">Preview</p>
 
             @if (auth()->user()->restaurant)
@@ -382,6 +423,7 @@
                 </a>
             @endif
 
+            {{-- ── Settings ── --}}
             <p class="nav-label">Settings</p>
             <a href="{{ route('dashboard.profile.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.profile.*') ? 'active' : '' }}">
@@ -392,7 +434,6 @@
                 </svg>
                 Profile & Settings
             </a>
-
 
         </nav>
 
@@ -508,6 +549,16 @@
                 Home
             </a>
 
+            <a href="{{ route('dashboard.orders.index') }}"
+                class="bnav-item {{ request()->routeIs('dashboard.orders.*') ? 'active' : '' }}"
+                style="position:relative;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Orders
+            </a>
+
             <a href="{{ route('dashboard.products.index') }}"
                 class="bnav-item {{ request()->routeIs('dashboard.products.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -524,15 +575,6 @@
                         d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                 </svg>
                 QR Codes
-            </a>
-
-            <a href="{{ route('dashboard.categories.index') }}"
-                class="bnav-item {{ request()->routeIs('dashboard.categories.*') ? 'active' : '' }}">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-                Categories
             </a>
 
             <button onclick="openSidebar()" class="bnav-item" style="background:none;border:none;cursor:pointer;">
@@ -562,6 +604,55 @@
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape') closeSidebar();
         });
+
+        // Poll for pending waiter calls every 10 seconds
+        function pollWaiterCalls() {
+            fetch('/dashboard/waiter-calls/count', {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    const badge = document.getElementById('waiter-badge');
+                    if (!badge) return;
+                    if (data.count > 0) {
+                        badge.textContent = data.count;
+                        badge.style.display = 'inline-block';
+                        // Play sound on new call
+                        if (parseInt(badge.dataset.prev || 0) < data.count) {
+                            playCallSound();
+                        }
+                        badge.dataset.prev = data.count;
+                    } else {
+                        badge.style.display = 'none';
+                        badge.dataset.prev = 0;
+                    }
+                })
+                .catch(() => {});
+        }
+
+        function playCallSound() {
+            try {
+                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                osc.frequency.setValueAtTime(660, ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.4);
+            } catch (e) {}
+        }
+
+        // Only run on dashboard pages
+        if (document.getElementById('waiter-badge') && {{ auth()->user()->restaurant?->waiter_call_enabled ? 'true' : 'false' }}) {
+            pollWaiterCalls();
+            setInterval(pollWaiterCalls, 10000);
+        }
     </script>
 
 </body>

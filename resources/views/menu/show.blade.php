@@ -990,6 +990,83 @@
             height: 15px;
         }
 
+        /* ── WAITER CALL ── */
+        #waiterCallBtn {
+            position: fixed;
+            bottom: calc(130px + var(--safe-b));
+            right: 14px;
+            width: 44px;
+            height: 44px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 50%;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 60;
+            transition: all .2s;
+        }
+
+        #waiterCallBtn:hover {
+            background: var(--surface);
+            border-color: var(--accent);
+        }
+
+        .waiter-opt {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .waiter-opt:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+        }
+
+        .waiter-opt-icon {
+            font-size: 24px;
+        }
+
+        .waiter-opt-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--surface);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: 99px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border2);
+            z-index: 9999;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         @media(max-width:400px) {
             .thumb {
                 width: 88px;
@@ -1004,24 +1081,24 @@
     <header class="header">
         <div class="header-inner">
             @if ($restaurant->logo)
-                <img src="{{ Storage::url($restaurant->logo) }}" alt="{{ $restaurant->name }}" class="logo">
+            <img src="{{ Storage::url($restaurant->logo) }}" alt="{{ $restaurant->name }}" class="logo">
             @else
-                <div class="logo-placeholder">{{ strtoupper(substr($restaurant->name, 0, 1)) }}</div>
+            <div class="logo-placeholder">{{ strtoupper(substr($restaurant->name, 0, 1)) }}</div>
             @endif
             <div class="header-info">
                 <h1>{{ $restaurant->name }}</h1>
                 <div class="header-meta">
                     @if ($restaurant->address)
-                        <span>
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            {{ Str::limit($restaurant->address, 30) }}
-                        </span>
+                    <span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        {{ Str::limit($restaurant->address, 30) }}
+                    </span>
                     @endif
                     @if ($restaurant->isOrderingEnabled())
-                        <span style="color:#4ade80;">● Accepting Orders</span>
+                    <span style="color:#4ade80;">● Accepting Orders</span>
                     @endif
                 </div>
             </div>
@@ -1046,152 +1123,152 @@
 
     {{-- CATEGORY BAR --}}
     @if ($categories->count() > 0)
-        <nav class="cat-bar">
-            <div class="cat-bar-inner">
-                @foreach ($categories as $cat)
-                    <a href="{{ route('menu.show', $restaurant->slug) }}?category={{ $cat->slug }}"
-                        class="cat-pill {{ isset($activeCategory) && $activeCategory->id === $cat->id ? 'active' : '' }}">
-                        @if ($cat->getFirstMediaUrl('image'))
-                            <img src="{{ $cat->image_url }}" alt="">
-                        @endif
-                        {{ $cat->name }}
-                    </a>
-                @endforeach
-            </div>
-        </nav>
+    <nav class="cat-bar">
+        <div class="cat-bar-inner">
+            @foreach ($categories as $cat)
+            <a href="{{ route('menu.show', $restaurant->slug) }}?category={{ $cat->slug }}"
+                class="cat-pill {{ isset($activeCategory) && $activeCategory->id === $cat->id ? 'active' : '' }}">
+                @if ($cat->getFirstMediaUrl('image'))
+                <img src="{{ $cat->image_url }}" alt="">
+                @endif
+                {{ $cat->name }}
+            </a>
+            @endforeach
+        </div>
+    </nav>
     @endif
 
     {{-- MAIN --}}
     <main class="main">
 
         @if (!$restaurant->isOrderingEnabled())
-            <div class="ordering-disabled">📋 Viewing menu only — ordering is not available at this time.</div>
+        <div class="ordering-disabled">📋 Viewing menu only — ordering is not available at this time.</div>
         @endif
 
         @if (isset($activeCategory) && $products->count() > 0)
 
-            <div class="section-heading">
-                @if ($activeCategory->getFirstMediaUrl('image'))
-                    <img src="{{ $activeCategory->image_url }}" alt="">
-                @endif
-                <h2>{{ $activeCategory->name }}</h2>
-                <span class="item-count">{{ $products->count() }} items</span>
-            </div>
+        <div class="section-heading">
+            @if ($activeCategory->getFirstMediaUrl('image'))
+            <img src="{{ $activeCategory->image_url }}" alt="">
+            @endif
+            <h2>{{ $activeCategory->name }}</h2>
+            <span class="item-count">{{ $products->count() }} items</span>
+        </div>
 
-            <div class="product-list" id="productList">
-                @foreach ($products as $product)
-                    @php
-                        $variants = $product->relationLoaded('variants') ? $product->variants : collect();
-                        $availV = $variants->where('is_available', true);
-                        $unavailV = $variants->where('is_available', false);
-                        $hasV = $variants->isNotEmpty();
-                        $basePrice = $hasV ? $availV->min('price') : $product->discount_price ?? $product->price;
-                    @endphp
+        <div class="product-list" id="productList">
+            @foreach ($products as $product)
+            @php
+            $variants = $product->relationLoaded('variants') ? $product->variants : collect();
+            $availV = $variants->where('is_available', true);
+            $unavailV = $variants->where('is_available', false);
+            $hasV = $variants->isNotEmpty();
+            $basePrice = $hasV ? $availV->min('price') : $product->discount_price ?? $product->price;
+            @endphp
 
-                    <article class="product-card"
-                        data-name="{{ strtolower($product->name . ' ' . ($product->description ?? '')) }}"
-                        data-id="{{ $product->id }}" data-name-text="{{ $product->name }}"
-                        data-price="{{ $basePrice }}" data-image="{{ $product->image_url }}"
-                        data-has-variants="{{ $hasV ? '1' : '0' }}">
+            <article class="product-card"
+                data-name="{{ strtolower($product->name . ' ' . ($product->description ?? '')) }}"
+                data-id="{{ $product->id }}" data-name-text="{{ $product->name }}"
+                data-price="{{ $basePrice }}" data-image="{{ $product->image_url }}"
+                data-has-variants="{{ $hasV ? '1' : '0' }}">
 
-                        <div class="thumb">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
-                            @if (!$product->is_available)
-                                <div class="thumb-na"><span>Unavailable</span></div>
-                            @endif
-                        </div>
-
-                        <div class="card-body">
-                            <p class="card-name">{{ $product->name }}</p>
-                            @if ($product->description)
-                                <p class="card-desc">{{ $product->description }}</p>
-                            @endif
-
-                            @if ($hasV)
-                                <div class="variants-block">
-                                    <p class="v-title">Choose size / option</p>
-                                    <div class="v-grid">
-                                        @foreach ($availV as $v)
-                                            <div class="v-pill"
-                                                onclick="selectVariant(this, {{ $product->id }}, {{ $v->id }}, '{{ addslashes($v->name) }}', {{ $v->discount_price ?? $v->price }})"
-                                                data-variant-id="{{ $v->id }}"
-                                                data-variant-name="{{ $v->name }}"
-                                                data-variant-price="{{ $v->discount_price ?? $v->price }}">
-                                                <span class="v-pill-name">{{ $v->name }}</span>
-                                                <span
-                                                    class="v-pill-price">Rs.&nbsp;{{ number_format($v->discount_price ?? $v->price, 0) }}</span>
-                                                @if ($v->discount_price)
-                                                    <span
-                                                        class="v-pill-old">Rs.&nbsp;{{ number_format($v->price, 0) }}</span>
-                                                @endif
-                                            </div>
-                                        @endforeach
-                                        @foreach ($unavailV as $v)
-                                            <div class="v-pill na">
-                                                <span class="v-pill-name">{{ $v->name }}</span>
-                                                <span class="v-pill-price">Sold out</span>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @else
-                                <div class="price-block">
-                                    @if ($product->discount_price)
-                                        <span class="p-main">Rs.
-                                            {{ number_format($product->discount_price, 0) }}</span>
-                                        <span class="p-old">Rs. {{ number_format($product->price, 0) }}</span>
-                                        @php $pct = round((($product->price - $product->discount_price)/$product->price)*100); @endphp
-                                        <span class="p-off">{{ $pct }}% off</span>
-                                    @else
-                                        <span class="p-main">Rs. {{ number_format($product->price, 0) }}</span>
-                                    @endif
-                                </div>
-                            @endif
-
-                            @if ($product->is_available && $restaurant->isOrderingEnabled())
-                                <div style="display:flex;align-items:center;gap:8px;">
-                                    <button class="add-btn" id="add-btn-{{ $product->id }}"
-                                        onclick="addToCart({{ $product->id }})">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            style="width:13px;height:13px">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                                d="M12 4v16m8-8H4" />
-                                        </svg>
-                                        Add
-                                    </button>
-                                    <div class="qty-control" id="qty-{{ $product->id }}">
-                                        <button class="qty-btn"
-                                            onclick="changeQty({{ $product->id }}, -1)">−</button>
-                                        <div class="qty-num" id="qty-num-{{ $product->id }}">1</div>
-                                        <button class="qty-btn"
-                                            onclick="changeQty({{ $product->id }}, 1)">+</button>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-
-            <div class="no-results" id="noResults">
-                <div class="empty">
-                    <div class="empty-icon">🔍</div>
-                    <h3>No results</h3>
-                    <p>Try a different keyword</p>
+                <div class="thumb">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
+                    @if (!$product->is_available)
+                    <div class="thumb-na"><span>Unavailable</span></div>
+                    @endif
                 </div>
+
+                <div class="card-body">
+                    <p class="card-name">{{ $product->name }}</p>
+                    @if ($product->description)
+                    <p class="card-desc">{{ $product->description }}</p>
+                    @endif
+
+                    @if ($hasV)
+                    <div class="variants-block">
+                        <p class="v-title">Choose size / option</p>
+                        <div class="v-grid">
+                            @foreach ($availV as $v)
+                            <div class="v-pill"
+                                onclick="selectVariant(this, {{ $product->id }}, {{ $v->id }}, '{{ addslashes($v->name) }}', {{ $v->discount_price ?? $v->price }})"
+                                data-variant-id="{{ $v->id }}"
+                                data-variant-name="{{ $v->name }}"
+                                data-variant-price="{{ $v->discount_price ?? $v->price }}">
+                                <span class="v-pill-name">{{ $v->name }}</span>
+                                <span
+                                    class="v-pill-price">Rs.&nbsp;{{ number_format($v->discount_price ?? $v->price, 0) }}</span>
+                                @if ($v->discount_price)
+                                <span
+                                    class="v-pill-old">Rs.&nbsp;{{ number_format($v->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @endforeach
+                            @foreach ($unavailV as $v)
+                            <div class="v-pill na">
+                                <span class="v-pill-name">{{ $v->name }}</span>
+                                <span class="v-pill-price">Sold out</span>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @else
+                    <div class="price-block">
+                        @if ($product->discount_price)
+                        <span class="p-main">Rs.
+                            {{ number_format($product->discount_price, 0) }}</span>
+                        <span class="p-old">Rs. {{ number_format($product->price, 0) }}</span>
+                        @php $pct = round((($product->price - $product->discount_price)/$product->price)*100); @endphp
+                        <span class="p-off">{{ $pct }}% off</span>
+                        @else
+                        <span class="p-main">Rs. {{ number_format($product->price, 0) }}</span>
+                        @endif
+                    </div>
+                    @endif
+
+                    @if ($product->is_available && $restaurant->isOrderingEnabled())
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <button class="add-btn" id="add-btn-{{ $product->id }}"
+                            onclick="addToCart({{ $product->id }})">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width:13px;height:13px">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add
+                        </button>
+                        <div class="qty-control" id="qty-{{ $product->id }}">
+                            <button class="qty-btn"
+                                onclick="changeQty({{ $product->id }}, -1)">−</button>
+                            <div class="qty-num" id="qty-num-{{ $product->id }}">1</div>
+                            <button class="qty-btn"
+                                onclick="changeQty({{ $product->id }}, 1)">+</button>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </article>
+            @endforeach
+        </div>
+
+        <div class="no-results" id="noResults">
+            <div class="empty">
+                <div class="empty-icon">🔍</div>
+                <h3>No results</h3>
+                <p>Try a different keyword</p>
             </div>
+        </div>
         @elseif(isset($activeCategory))
-            <div class="empty">
-                <div class="empty-icon">🍽</div>
-                <h3>Nothing here yet</h3>
-                <p>This category is being prepared</p>
-            </div>
+        <div class="empty">
+            <div class="empty-icon">🍽</div>
+            <h3>Nothing here yet</h3>
+            <p>This category is being prepared</p>
+        </div>
         @else
-            <div class="empty">
-                <div class="empty-icon">🍽</div>
-                <h3>Menu coming soon</h3>
-                <p>We're setting things up</p>
-            </div>
+        <div class="empty">
+            <div class="empty-icon">🍽</div>
+            <h3>Menu coming soon</h3>
+            <p>We're setting things up</p>
+        </div>
         @endif
 
     </main>
@@ -1200,17 +1277,17 @@
 
     {{-- CART BUTTON --}}
     @if ($restaurant->isOrderingEnabled())
-        <div class="cart-btn-wrap" id="cartBtnWrap">
-            <div style="max-width:640px;margin:0 auto;">
-                <button class="cart-btn" onclick="openCart()">
-                    <div class="cart-btn-left">
-                        <span class="cart-count-badge" id="cartCountBadge">0</span>
-                        View Cart
-                    </div>
-                    <span id="cartTotalDisplay">Rs. 0</span>
-                </button>
-            </div>
+    <div class="cart-btn-wrap" id="cartBtnWrap">
+        <div style="max-width:640px;margin:0 auto;">
+            <button class="cart-btn" onclick="openCart()">
+                <div class="cart-btn-left">
+                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+                    View Cart
+                </div>
+                <span id="cartTotalDisplay">Rs. 0</span>
+            </button>
         </div>
+    </div>
     @endif
 
     {{-- SCROLL TOP --}}
@@ -1222,135 +1299,159 @@
 
     {{-- CART DRAWER --}}
     @if ($restaurant->isOrderingEnabled())
-        <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
-        <div class="drawer" id="cartDrawer">
-            <div class="drawer-handle"></div>
-            <div class="drawer-title">Your Order 🛒</div>
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
+    <div class="drawer" id="cartDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-title">Your Order 🛒</div>
 
-            {{-- Cart items --}}
-            <div id="cartItemsContainer">
-                <div class="empty-cart" id="emptyCartMsg">
-                    <div style="font-size:32px;">🛒</div>
-                    <p>Your cart is empty</p>
-                </div>
+        {{-- Cart items --}}
+        <div id="cartItemsContainer">
+            <div class="empty-cart" id="emptyCartMsg">
+                <div style="font-size:32px;">🛒</div>
+                <p>Your cart is empty</p>
             </div>
-
-            {{-- Cart total --}}
-            <div class="cart-total" id="cartTotalRow" style="display:none;">
-                <span class="cart-total-label">Total</span>
-                <span class="cart-total-amount" id="cartTotalAmount">Rs. 0</span>
-            </div>
-
-            {{-- Order form --}}
-            <div id="orderForm" style="display:none;">
-
-                {{-- Order type --}}
-                <p
-                    style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
-                    Order Type</p>
-                <div class="order-type-row">
-                    <button class="order-type-btn active" id="type-dine" onclick="setOrderType('dine_in')">🍽
-                        Dine-in</button>
-                    <button class="order-type-btn" id="type-take" onclick="setOrderType('takeaway')">🥡
-                        Takeaway</button>
-                </div>
-
-                {{-- Customer details --}}
-                <p
-                    style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
-                    Your Details</p>
-                <div class="drawer-field">
-                    <label class="drawer-label">Name *</label>
-                    <input type="text" id="customerName" class="drawer-input" placeholder="Your name">
-                </div>
-                <div class="drawer-field">
-                    <label class="drawer-label">Phone *</label>
-                    <input type="tel" id="customerPhone" class="drawer-input" placeholder="0300-1234567">
-                </div>
-                <div class="drawer-field">
-                    <label class="drawer-label">Email (for order updates)</label>
-                    <input type="email" id="customerEmail" class="drawer-input"
-                        placeholder="your@email.com (optional)">
-                </div>
-                <div class="drawer-field" id="addressField" style="display:none;">
-                    <label class="drawer-label">Delivery Address *</label>
-                    <textarea id="customerAddress" class="drawer-input" rows="2" placeholder="Your delivery address"
-                        style="resize:none;"></textarea>
-                </div>
-                <div class="drawer-field">
-                    <label class="drawer-label">Special Notes</label>
-                    <input type="text" id="orderNotes" class="drawer-input"
-                        placeholder="Any special requests...">
-                </div>
-
-                {{-- Payment method --}}
-                <p
-                    style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
-                    Payment Method</p>
-                <div class="payment-row">
-                    @if ($restaurant->jazzcash_number)
-                        <label class="payment-opt" onclick="setPayment('jazzcash', this)">
-                            <input type="radio" name="payment" value="jazzcash"
-                                style="accent-color:var(--accent);">
-                            <span class="payment-opt-icon">💚</span>
-                            <div class="payment-opt-info">
-                                <h4>JazzCash</h4>
-                                <p>Pay via JazzCash mobile account</p>
-                            </div>
-                        </label>
-                    @endif
-                    @if ($restaurant->easypaisa_number)
-                        <label class="payment-opt" onclick="setPayment('easypaisa', this)">
-                            <input type="radio" name="payment" value="easypaisa"
-                                style="accent-color:var(--accent);">
-                            <span class="payment-opt-icon">💙</span>
-                            <div class="payment-opt-info">
-                                <h4>Easypaisa</h4>
-                                <p>Pay via Easypaisa account</p>
-                            </div>
-                        </label>
-                    @endif
-                    <label class="payment-opt" onclick="setPayment('pay_later', this)">
-                        <input type="radio" name="payment" value="pay_later" style="accent-color:var(--accent);"
-                            checked>
-                        <span class="payment-opt-icon">💵</span>
-                        <div class="payment-opt-info">
-                            <h4>Pay at Counter</h4>
-                            <p>Pay when order is ready</p>
-                        </div>
-                    </label>
-                </div>
-
-                {{-- JazzCash account info --}}
-                <div class="payment-account" id="jazzcash-info">
-                    <p>Send payment to JazzCash:</p>
-                    <strong>{{ $restaurant->jazzcash_number }}</strong>
-                </div>
-                <div class="payment-account" id="easypaisa-info">
-                    <p>Send payment to Easypaisa:</p>
-                    <strong>{{ $restaurant->easypaisa_number }}</strong>
-                </div>
-
-                <button class="place-order-btn" onclick="placeOrder()">
-                    Place Order →
-                </button>
-            </div>
-
-            {{-- Hidden form that actually submits --}}
-            <form method="POST" action="{{ route('order.store', $restaurant->slug) }}" id="hiddenOrderForm"
-                style="display:none;">
-                @csrf
-                <input type="hidden" name="customer_name" id="f_name">
-                <input type="hidden" name="customer_phone" id="f_phone">
-                <input type="hidden" name="customer_email" id="f_email">
-                <input type="hidden" name="customer_address" id="f_address">
-                <input type="hidden" name="type" id="f_type" value="dine_in">
-                <input type="hidden" name="payment_method" id="f_payment" value="pay_later">
-                <input type="hidden" name="notes" id="f_notes">
-                <input type="hidden" name="cart" id="f_cart">
-            </form>
-
         </div>
+
+        {{-- Cart total --}}
+        <div class="cart-total" id="cartTotalRow" style="display:none;">
+            <span class="cart-total-label">Total</span>
+            <span class="cart-total-amount" id="cartTotalAmount">Rs. 0</span>
+        </div>
+
+        {{-- Order form --}}
+        <div id="orderForm" style="display:none;">
+
+            {{-- Order type --}}
+            <p
+                style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
+                Order Type</p>
+            <div class="order-type-row">
+                <button class="order-type-btn active" id="type-dine" onclick="setOrderType('dine_in')">🍽
+                    Dine-in</button>
+                <button class="order-type-btn" id="type-take" onclick="setOrderType('takeaway')">🥡
+                    Takeaway</button>
+            </div>
+
+            {{-- Customer details --}}
+            <p
+                style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
+                Your Details</p>
+            <div class="drawer-field">
+                <label class="drawer-label">Name *</label>
+                <input type="text" id="customerName" class="drawer-input" placeholder="Your name">
+            </div>
+            <div class="drawer-field">
+                <label class="drawer-label">Phone *</label>
+                <input type="tel" id="customerPhone" class="drawer-input" placeholder="0300-1234567">
+            </div>
+            <div class="drawer-field">
+                <label class="drawer-label">Email (for order updates)</label>
+                <input type="email" id="customerEmail" class="drawer-input"
+                    placeholder="your@email.com (optional)">
+            </div>
+            <div class="drawer-field" id="addressField" style="display:none;">
+                <label class="drawer-label">Delivery Address *</label>
+                <textarea id="customerAddress" class="drawer-input" rows="2" placeholder="Your delivery address"
+                    style="resize:none;"></textarea>
+            </div>
+            <div class="drawer-field">
+                <label class="drawer-label">Special Notes</label>
+                <input type="text" id="orderNotes" class="drawer-input"
+                    placeholder="Any special requests...">
+            </div>
+
+            {{-- Payment method --}}
+            <p
+                style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
+                Payment Method</p>
+            <div class="payment-row">
+                @if ($restaurant->jazzcash_number)
+                <label class="payment-opt" onclick="setPayment('jazzcash', this)">
+                    <input type="radio" name="payment" value="jazzcash"
+                        style="accent-color:var(--accent);">
+                    <span class="payment-opt-icon">💚</span>
+                    <div class="payment-opt-info">
+                        <h4>JazzCash</h4>
+                        <p>Pay via JazzCash mobile account</p>
+                    </div>
+                </label>
+                @endif
+                @if ($restaurant->easypaisa_number)
+                <label class="payment-opt" onclick="setPayment('easypaisa', this)">
+                    <input type="radio" name="payment" value="easypaisa"
+                        style="accent-color:var(--accent);">
+                    <span class="payment-opt-icon">💙</span>
+                    <div class="payment-opt-info">
+                        <h4>Easypaisa</h4>
+                        <p>Pay via Easypaisa account</p>
+                    </div>
+                </label>
+                @endif
+                <label class="payment-opt" onclick="setPayment('pay_later', this)">
+                    <input type="radio" name="payment" value="pay_later" style="accent-color:var(--accent);"
+                        checked>
+                    <span class="payment-opt-icon">💵</span>
+                    <div class="payment-opt-info">
+                        <h4>Pay at Counter</h4>
+                        <p>Pay when order is ready</p>
+                    </div>
+                </label>
+            </div>
+
+            {{-- JazzCash account info --}}
+            <div class="payment-account" id="jazzcash-info">
+                <p>Send payment to JazzCash:</p>
+                <strong>{{ $restaurant->jazzcash_number }}</strong>
+            </div>
+            <div class="payment-account" id="easypaisa-info">
+                <p>Send payment to Easypaisa:</p>
+                <strong>{{ $restaurant->easypaisa_number }}</strong>
+            </div>
+
+            <button class="place-order-btn" onclick="placeOrder()">
+                Place Order →
+            </button>
+        </div>
+
+        <form method="POST" action="{{ route('order.store', $restaurant->slug) }}" id="hiddenOrderForm"
+            style="display:none;">
+            @csrf
+            <input type="hidden" name="customer_name" id="f_name">
+            <input type="hidden" name="customer_phone" id="f_phone">
+            <input type="hidden" name="customer_email" id="f_email">
+            <input type="hidden" name="customer_address" id="f_address">
+            <input type="hidden" name="type" id="f_type" value="dine_in">
+            <input type="hidden" name="payment_method" id="f_payment" value="pay_later">
+            <input type="hidden" name="notes" id="f_notes">
+            <input type="hidden" name="cart" id="f_cart">
+            <input type="hidden" name="table_id" id="f_table_id">
+            <input type="hidden" name="branch_id" id="f_branch_id">
+        </form>
+
+    </div>
+    @endif
+
+    {{-- TOAST --}}
+    <div id="toast"></div>
+
+    @if($restaurant->waiter_call_enabled)
+    {{-- WAITER CALL BUTTON --}}
+    <button id="waiterCallBtn" onclick="openWaiterDrawer()">
+        🛎️
+    </button>
+
+    {{-- WAITER DRAWER --}}
+    <div class="drawer-overlay" id="waiterDrawerOverlay" onclick="closeWaiterDrawer()"></div>
+    <div class="drawer" id="waiterDrawer">
+        <div class="drawer-handle"></div>
+        <div class="drawer-title">
+            Call Waiter 🛎️
+            <span id="waiterTableBadge" style="display:none;font-size:13px;font-weight:500;color:var(--text3);margin-left:8px;"></span>
+        </div>
+        <div id="waiterOptionsContainer" style="display:flex; flex-direction:column; gap:10px;">
+            <div style="text-align:center; padding: 20px; color: var(--text3);">Loading options...</div>
+        </div>
+    </div>
     @endif
 
     <script>
@@ -1358,6 +1459,15 @@
         let cart = {};
         let orderType = 'dine_in';
         let paymentMethod = 'pay_later';
+
+        // ── Read table/branch from URL (set by QR redirect) ──
+        const _urlParams = new URLSearchParams(window.location.search);
+        const _tableId  = _urlParams.get('table')  || '';
+        const _branchId = _urlParams.get('branch') || '';
+
+        // Pre-fill hidden order form fields if table QR was scanned
+        if (_tableId)  document.getElementById('f_table_id').value  = _tableId;
+        if (_branchId) document.getElementById('f_branch_id').value = _branchId;
 
         // ── Product data from DOM ──
         function getProductData(productId) {
@@ -1664,6 +1774,83 @@
             };
             img.complete ? show() : (img.onload = show);
         });
+
+        // ── Waiter Call ──
+        function openWaiterDrawer() {
+            document.getElementById('waiterDrawer').classList.add('open');
+            document.getElementById('waiterDrawerOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Show table badge if a table QR was scanned
+            const badge = document.getElementById('waiterTableBadge');
+            if (badge && _tableId) {
+                badge.textContent = '— Table ' + _tableId;
+                badge.style.display = 'inline';
+            }
+
+            fetch(`{{ route('waiter.options', $restaurant->slug) }}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('waiterOptionsContainer');
+                    if (data.length === 0) {
+                        container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text3);">No options available right now.</div>';
+                        return;
+                    }
+                    let html = '';
+                    data.forEach(opt => {
+                        html += `
+                        <div class="waiter-opt" onclick="callWaiter(${opt.id})">
+                            <span class="waiter-opt-icon">${opt.icon || '🛎️'}</span>
+                            <span class="waiter-opt-label">${opt.label}</span>
+                        </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    document.getElementById('waiterOptionsContainer').innerHTML = '<div style="text-align:center; padding: 20px; color: #ef4444;">Failed to load options.</div>';
+                });
+        }
+
+        function closeWaiterDrawer() {
+            document.getElementById('waiterDrawer').classList.remove('open');
+            document.getElementById('waiterDrawerOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function callWaiter(optionId) {
+            fetch(`{{ route('waiter.call', $restaurant->slug) }}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        option_id: optionId,
+                        table_id:  _tableId  ? parseInt(_tableId)  : null,
+                        branch_id: _branchId ? parseInt(_branchId) : null,
+                    })
+                })
+                .then(async res => {
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'Something went wrong');
+                    showToast(data.message || 'Waiter called!');
+                    closeWaiterDrawer();
+                })
+                .catch(err => {
+                    showToast(err.message);
+                });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
     </script>
 
 </body>

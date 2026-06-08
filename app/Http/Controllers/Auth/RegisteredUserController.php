@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Mail\NewRestaurantRegisteredMail;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
@@ -97,12 +96,13 @@ class RegisteredUserController extends Controller
         );
 
         $user = $result['owner'];
+        $restaurant = $result['restaurant']; // Added this line
 
         Auth::login($user, true);
         $request->session()->regenerate();
         $admins = User::role('super_admin')->get();
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->queue(new NewRestaurantRegisteredMail($restaurant));
+            Mail::to($admin->email)->queue(new NewRestaurantRegisteredMail($restaurant->name, $user->name));
         }
 
         event(new Registered($user));

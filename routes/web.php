@@ -46,6 +46,12 @@ Route::prefix('dashboard')->name('dashboard.')->middleware([
     Route::resource('categories', CategoryController::class);
     Route::resource('qr-codes', QrCodeController::class);
     Route::resource('branches', BranchController::class);
+
+    // ── Nested table management under branches ──
+    Route::post('branches/{branch}/tables',              [BranchController::class, 'storeTable'])->name('branches.tables.store');
+    Route::post('branches/{branch}/tables/bulk',         [BranchController::class, 'bulkStoreTables'])->name('branches.tables.bulk');
+    Route::patch('branches/{branch}/tables/{table}',     [BranchController::class, 'updateTable'])->name('branches.tables.update');
+    Route::delete('branches/{branch}/tables/{table}',    [BranchController::class, 'destroyTable'])->name('branches.tables.destroy');
 });
 
 Route::patch('products/{product}/toggle', [App\Http\Controllers\Dashboard\ProductController::class, 'toggleAvailability'])
@@ -121,5 +127,27 @@ Route::prefix('dashboard/orders')->name('dashboard.orders.')->middleware(['auth'
     Route::patch('/{order}/confirm-pay', [App\Http\Controllers\Dashboard\OrderController::class, 'confirmPayment'])->name('confirm-pay');
 });
 
+// ── Public waiter call (no auth — customer facing) ──
+Route::prefix('waiter')->name('waiter.')->group(function () {
+    Route::get('/{restaurant:slug}/options', [App\Http\Controllers\WaiterCallController::class, 'options'])->name('options');
+    Route::post('/{restaurant:slug}/call',    [App\Http\Controllers\WaiterCallController::class, 'call'])->name('call');
+});
+
+// ── Dashboard waiter calls ──
+Route::prefix('dashboard/waiter-calls')->name('dashboard.waiter-calls.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+    Route::get('/',               [App\Http\Controllers\Dashboard\WaiterCallController::class, 'index'])->name('index');
+    Route::get('/live',           [App\Http\Controllers\Dashboard\WaiterCallController::class, 'live'])->name('live');
+    Route::patch('/{call}/seen',   [App\Http\Controllers\Dashboard\WaiterCallController::class, 'markSeen'])->name('seen');
+    Route::patch('/{call}/resolve', [App\Http\Controllers\Dashboard\WaiterCallController::class, 'resolve'])->name('resolve');
+    Route::get('/count',          [App\Http\Controllers\Dashboard\WaiterCallController::class, 'count'])->name('count');
+});
+
+// ── Dashboard call options management ──
+Route::prefix('dashboard/call-options')->name('dashboard.call-options.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+    Route::get('/',          [App\Http\Controllers\Dashboard\CallOptionController::class, 'index'])->name('index');
+    Route::post('/',          [App\Http\Controllers\Dashboard\CallOptionController::class, 'store'])->name('store');
+    Route::patch('/{option}', [App\Http\Controllers\Dashboard\CallOptionController::class, 'update'])->name('update');
+    Route::delete('/{option}', [App\Http\Controllers\Dashboard\CallOptionController::class, 'destroy'])->name('destroy');
+});
 
 require __DIR__ . '/auth.php';

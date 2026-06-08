@@ -12,4 +12,9 @@ class Table extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public function qrCodes()
+    {
+        return $this->hasMany(QrCode::class);
+    }
 }

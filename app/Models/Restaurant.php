@@ -25,6 +25,7 @@ class Restaurant extends Model
         'address',
         'status',
         'ordering_enabled',
+        'waiter_call_enabled',
         'jazzcash_number',
         'easypaisa_number',
         'whatsapp_number',

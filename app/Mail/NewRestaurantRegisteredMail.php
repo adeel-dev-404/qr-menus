@@ -13,12 +13,12 @@ class NewRestaurantRegisteredMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Restaurant $restaurant) {}
+    public function __construct(public $restaurantName) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '🏠 New Restaurant Pending Approval — ' . $this->restaurant->name,
+            subject: '🏠 New Restaurant Pending Approval — ' . $this->restaurantName,
         );
     }
 

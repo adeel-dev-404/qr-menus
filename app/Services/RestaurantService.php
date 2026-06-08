@@ -47,6 +47,20 @@ class RestaurantService
             ]);
 
             $owner->assignRole('restaurant_owner');
+            $defaults = [
+                ['label' => 'Call Waiter',   'icon' => '🙋', 'sort_order' => 1],
+                ['label' => 'Request Bill',  'icon' => '🧾', 'sort_order' => 2],
+                ['label' => 'Request Water', 'icon' => '💧', 'sort_order' => 3],
+            ];
+
+            foreach ($defaults as $option) {
+                \App\Models\WaiterCallOption::create([
+                    'restaurant_id' => $restaurant->id,
+                    ...$option,
+                    'is_active' => true,
+                ]);
+            }
+
 
             return [
                 'restaurant' => $restaurant,

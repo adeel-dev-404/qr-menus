@@ -38,10 +38,15 @@ class QrCodeController extends Controller
                 ->with('error', "You've reached the {$restaurant->limitFor('qr_codes')} QR code limit on your current plan. Please upgrade.");
         }
 
-        $branches = Branch::orderBy('name')->get();
-        $tables   = Table::with('branch')->get();
+        // Load branches WITH their tables so the JS dropdown can work
+        $branches = Branch::with(['tables' => fn($q) => $q->orderBy('table_number')])
+            ->orderBy('name')
+            ->get();
+
+        $tables = Table::with('branch')->get(); // kept for backward compat
         return view('dashboard.qr-codes.create', compact('branches', 'tables'));
     }
+
 
     // public function store(Request $request)
     // {

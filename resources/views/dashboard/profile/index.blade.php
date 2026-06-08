@@ -627,10 +627,15 @@
                     <div class="section-body">
 
                         <div style="margin-bottom:15px;">
-                            <label>
+                            <label style="display:block; margin-bottom: 8px;">
                                 <input type="checkbox" name="ordering_enabled" value="1"
                                     {{ $restaurant->ordering_enabled ? 'checked' : '' }}>
                                 Enable Online Ordering
+                            </label>
+                            <label style="display:block;">
+                                <input type="checkbox" name="waiter_call_enabled" value="1"
+                                    {{ $restaurant->waiter_call_enabled ? 'checked' : '' }}>
+                                Enable Waiter Call Feature
                             </label>
                         </div>
 

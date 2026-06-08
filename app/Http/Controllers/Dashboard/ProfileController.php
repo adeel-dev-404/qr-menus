@@ -85,6 +85,7 @@ class ProfileController extends Controller
             'about'     => 'nullable|string|max:1000',
 
             'ordering_enabled' => 'nullable',
+            'waiter_call_enabled' => 'nullable',
             'jazzcash_number'  => 'nullable|string|max:20',
             'easypaisa_number' => 'nullable|string|max:20',
             'whatsapp_number'  => 'nullable|string|max:20',
@@ -112,6 +113,7 @@ class ProfileController extends Controller
         ]);
 
         $data['ordering_enabled'] = $request->boolean('ordering_enabled');
+        $data['waiter_call_enabled'] = $request->boolean('waiter_call_enabled');
 
         // Logo upload
         if ($request->hasFile('logo')) {
