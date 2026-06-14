@@ -5,9 +5,12 @@ namespace App\Services;
 use App\Models\Restaurant;
 use App\Models\RestaurantSubscription;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentApprovedMail;
+use App\Mail\PaymentRejectedMail;
+use App\Mail\PaymentRequestSubmittedMail;
 
 class SubscriptionService
 {
@@ -20,7 +23,7 @@ class SubscriptionService
         string $transactionRef,
         string $paymentProofPath
     ): RestaurantSubscription {
-        return RestaurantSubscription::create([
+        $request = RestaurantSubscription::create([
             'restaurant_id'   => $restaurant->id,
             'subscription_id' => $plan->id,
             'status'          => 'pending',
@@ -28,6 +31,14 @@ class SubscriptionService
             'payment_proof'   => $paymentProofPath,
             'amount_paid'     => $plan->price,
         ]);
+
+        // Notify all super admins about the new payment request
+        $admins = User::role('super_admin')->get();
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->queue(new PaymentRequestSubmittedMail($request->load('restaurant', 'subscription')));
+        }
+
+        return $request;
     }
 
     /**
@@ -72,6 +83,15 @@ class SubscriptionService
             'status' => 'rejected',
             'notes'  => $reason,
         ]);
+
+        // Notify the restaurant owner about the rejection
+        $ownerEmail = $request->restaurant->users()
+            ->whereHas('roles', fn($q) => $q->where('name', 'restaurant_owner'))
+            ->value('email');
+
+        if ($ownerEmail) {
+            Mail::to($ownerEmail)->queue(new PaymentRejectedMail($request->load('subscription'), $reason));
+        }
     }
 
     /**

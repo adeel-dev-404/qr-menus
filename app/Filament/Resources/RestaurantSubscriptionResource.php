@@ -16,8 +16,8 @@ class RestaurantSubscriptionResource extends Resource
     protected static ?string $model = RestaurantSubscription::class;
     protected static ?string $navigationIcon  = 'heroicon-o-banknotes';
     protected static ?string $navigationLabel = 'Payment Requests';
-    protected static ?string $navigationGroup = 'Platform';
-    protected static ?int    $navigationSort  = 4;
+    protected static ?string $navigationGroup = 'Finance';
+    protected static ?int    $navigationSort  = 1;
 
     // Show badge count for pending
     public static function getNavigationBadge(): ?string
@@ -33,16 +33,36 @@ class RestaurantSubscriptionResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('transaction_ref')->disabled(),
-            Forms\Components\TextInput::make('amount_paid')->disabled()->prefix('Rs.'),
-            Forms\Components\Select::make('status')
-                ->options([
-                    'pending'  => 'Pending',
-                    'active'   => 'Active',
-                    'rejected' => 'Rejected',
-                    'expired'  => 'Expired',
-                ]),
-            Forms\Components\Textarea::make('notes')->label('Admin Notes'),
+            Forms\Components\Section::make('Payment Details')
+                ->schema([
+                    Forms\Components\TextInput::make('transaction_ref')
+                        ->label('Transaction Reference')
+                        ->disabled()
+                        ->prefix('#'),
+                    Forms\Components\TextInput::make('amount_paid')
+                        ->label('Amount Paid')
+                        ->disabled()
+                        ->prefix('Rs.'),
+                    Forms\Components\Select::make('status')
+                        ->options([
+                            'pending'  => '⏳ Pending',
+                            'active'   => '✅ Active',
+                            'rejected' => '❌ Rejected',
+                            'expired'  => '⏰ Expired',
+                        ])
+                        ->native(false),
+                    Forms\Components\Textarea::make('notes')
+                        ->label('Admin Notes')
+                        ->rows(3)
+                        ->columnSpanFull(),
+                ])->columns(3),
+
+            Forms\Components\Section::make('Payment Proof')
+                ->schema([
+                    Forms\Components\ViewField::make('payment_proof_preview')
+                        ->view('filament.forms.payment-proof-preview')
+                        ->columnSpanFull(),
+                ])->collapsible(),
         ]);
     }
 
@@ -52,13 +72,33 @@ class RestaurantSubscriptionResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('restaurant.name')
-                    ->label('Restaurant')->searchable()->weight('bold'),
+                    ->label('Restaurant')
+                    ->searchable()
+                    ->weight('bold')
+                    ->icon('heroicon-o-building-storefront')
+                    ->description(fn (RestaurantSubscription $record): ?string =>
+                        $record->restaurant?->owner?->email
+                    ),
+
                 Tables\Columns\TextColumn::make('subscription.name')
-                    ->label('Plan')->badge()->color('info'),
+                    ->label('Plan')
+                    ->badge()
+                    ->color('info')
+                    ->icon('heroicon-o-credit-card'),
+
                 Tables\Columns\TextColumn::make('amount_paid')
-                    ->label('Amount')->money('PKR'),
+                    ->label('Amount')
+                    ->money('PKR')
+                    ->weight('bold')
+                    ->color('success'),
+
                 Tables\Columns\TextColumn::make('transaction_ref')
-                    ->label('Ref')->fontFamily('mono')->color('gray'),
+                    ->label('Reference')
+                    ->fontFamily('mono')
+                    ->color('gray')
+                    ->copyable()
+                    ->limit(15),
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
                         'warning' => 'pending',
@@ -66,17 +106,45 @@ class RestaurantSubscriptionResource extends Resource
                         'danger'  => 'rejected',
                         'gray'    => 'expired',
                     ]),
+
                 Tables\Columns\ImageColumn::make('payment_proof')
-                    ->label('Proof')->disk('public')->height(40)->width(60),
-                Tables\Columns\TextColumn::make('created_at')->label('Submitted')->since(),
+                    ->label('Proof')
+                    ->disk('public')
+                    ->height(40)
+                    ->width(60)
+                    ->circular(false)
+                    ->extraAttributes(['class' => 'rounded-lg cursor-pointer']),
+
+                Tables\Columns\TextColumn::make('notes')
+                    ->label('Notes')
+                    ->limit(30)
+                    ->tooltip(fn (RestaurantSubscription $record): ?string => $record->notes)
+                    ->color('gray')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('approved_at')
+                    ->label('Approved')
+                    ->dateTime('M d, Y H:i')
+                    ->color('gray')
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Submitted')
+                    ->since()
+                    ->sortable()
+                    ->color('gray'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'pending'  => 'Pending',
-                        'active'   => 'Active',
-                        'rejected' => 'Rejected',
-                    ]),
+                        'pending'  => '⏳ Pending',
+                        'active'   => '✅ Active',
+                        'rejected' => '❌ Rejected',
+                        'expired'  => '⏰ Expired',
+                    ])
+                    ->multiple()
+                    ->label('Status'),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
@@ -85,10 +153,15 @@ class RestaurantSubscriptionResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->visible(fn (RestaurantSubscription $r) => $r->status === 'pending')
                     ->requiresConfirmation()
+                    ->modalHeading('Approve Payment')
+                    ->modalDescription(fn (RestaurantSubscription $r): string =>
+                        "Approve payment of Rs." . number_format($r->amount_paid, 0) . " from \"{$r->restaurant?->name}\" for the \"{$r->subscription?->name}\" plan?"
+                    )
+                    ->modalIcon('heroicon-o-check-circle')
                     ->action(function (RestaurantSubscription $record) {
                         (new SubscriptionService())->approve($record);
                     })
-                    ->successNotificationTitle('Subscription activated!'),
+                    ->successNotificationTitle('Subscription activated! ✅'),
 
                 Tables\Actions\Action::make('reject')
                     ->label('Reject')
@@ -98,22 +171,29 @@ class RestaurantSubscriptionResource extends Resource
                     ->form([
                         Forms\Components\Textarea::make('reason')
                             ->label('Rejection Reason')
-                            ->required(),
+                            ->required()
+                            ->rows(3)
+                            ->placeholder('Explain why this payment is being rejected...'),
                     ])
                     ->action(function (RestaurantSubscription $record, array $data) {
                         (new SubscriptionService())->reject($record, $data['reason']);
                     })
-                    ->requiresConfirmation(),
+                    ->requiresConfirmation()
+                    ->modalHeading('Reject Payment')
+                    ->modalIcon('heroicon-o-x-circle'),
 
-                Tables\Actions\ViewAction::make(),
-            ]);
+                Tables\Actions\ViewAction::make()
+                    ->color('gray'),
+            ])
+            ->emptyStateHeading('No payment requests')
+            ->emptyStateDescription('Payment requests from restaurants will appear here.')
+            ->emptyStateIcon('heroicon-o-banknotes');
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListRestaurantSubscriptions::route('/'),
-            // 'view'  => Pages\ViewRestaurantSubscription::route('/{record}'),
         ];
     }
 }

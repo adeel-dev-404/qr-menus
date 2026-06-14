@@ -31,5 +31,15 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('public-menu', function (Request $request) {
             return Limit::perMinute(120)->by($request->ip());
         });
+
+        \Illuminate\Support\Facades\Event::listen(function (\Illuminate\Mail\Events\MessageSent $event) {
+            $message = $event->message;
+            $to = collect($message->getTo())->map(fn($addr) => $addr->getAddress())->implode(', ');
+            
+            \Illuminate\Support\Facades\Log::channel('emails')->info("Email successfully sent", [
+                'subject' => $message->getSubject(),
+                'to'      => $to,
+            ]);
+        });
     }
 }

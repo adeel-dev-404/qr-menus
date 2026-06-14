@@ -13,7 +13,8 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\InviteController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $plans = \App\Models\Subscription::all();
+    return view('welcome', compact('plans'));
 })->name('home');
 Route::post('/', function () {
     return redirect('/dashboard');

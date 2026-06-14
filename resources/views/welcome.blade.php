@@ -216,7 +216,7 @@
         /* ── PRICING ── */
         .pricing-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
         .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 56px; }
-        @media(min-width:640px) { .pricing-grid { grid-template-columns: repeat(3,1fr); } }
+        @media(min-width:640px) { .pricing-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); justify-content: center; } }
         .pricing-card {
             background: var(--bg); border: 2px solid var(--border);
             border-radius: 20px; padding: 28px; display: flex; flex-direction: column;
@@ -522,13 +522,13 @@
         <div class="features-grid">
             @foreach([
                 ['icon'=>'📱','en_h'=>'Mobile-First Menu','en_p'=>'Beautiful, fast menu that works perfectly on any phone. No app download needed.','ur_h'=>'موبائل فرسٹ مینو','ur_p'=>'خوبصورت، تیز مینو جو کسی بھی فون پر کام کرتا ہے۔'],
+                ['icon'=>'⚡','en_h'=>'Real-Time Email Alerts','en_p'=>'Get instantly notified via email for new orders, successful payments, and account updates.','ur_h'=>'فوری ای میل الرٹس','ur_p'=>'نئے آرڈرز، ادائیگیوں اور اکاؤنٹ اپ ڈیٹس کے لیے ای میل پر فوری اطلاع حاصل کریں۔'],
+                ['icon'=>'🔔','en_h'=>'Live Waiter Calls','en_p'=>'Customers can request a waiter, ask for the bill, or request water directly from their table.','ur_h'=>'لائیو ویٹر کالز','ur_p'=>'کسٹمرز براہ راست اپنی ٹیبل سے ویٹر یا بل طلب کر سکتے ہیں۔'],
                 ['icon'=>'✏️','en_h'=>'Instant Updates','en_p'=>'Change prices, add items, mark dishes unavailable — changes go live in seconds.','ur_h'=>'فوری اپ ڈیٹس','ur_p'=>'قیمتیں تبدیل کریں، آئٹمز شامل کریں — تبدیلیاں فوری لائیو ہوتی ہیں۔'],
                 ['icon'=>'📊','en_h'=>'Scan Analytics','en_p'=>'See daily scan counts, most popular QR codes, and weekly trends in your dashboard.','ur_h'=>'اسکین تجزیہ','ur_p'=>'روزانہ اسکین، مقبول QR کوڈز اور ہفتہ وار رجحانات دیکھیں۔'],
                 ['icon'=>'🏢','en_h'=>'Multi-Branch Support','en_p'=>'Manage all your branches from one dashboard. Each branch gets its own QR code.','ur_h'=>'کثیر برانچ سپورٹ','ur_p'=>'ایک ڈیش بورڈ سے تمام برانچیں مینیج کریں۔'],
                 ['icon'=>'🔀','en_h'=>'Product Variants','en_p'=>'Set different prices for Small, Medium, Large or any custom size/option.','ur_h'=>'پروڈکٹ ویریئنٹس','ur_p'=>'Small، Medium، Large یا کسی بھی سائز کے لیے الگ قیمتیں۔'],
-                ['icon'=>'🔐','en_h'=>'Secure & Reliable','en_p'=>'Each restaurant gets its own secure login. Data is fully isolated between restaurants.','ur_h'=>'محفوظ اور قابل اعتماد','ur_p'=>'ہر ریسٹورانٹ کا اپنا محفوظ لاگ ان۔ ڈیٹا مکمل طور پر الگ۔'],
-                ['icon'=>'📲','en_h'=>'QR Code Generator','en_p'=>'Generate, download and print QR codes for your restaurant, branches, or individual tables.','ur_h'=>'QR کوڈ جنریٹر','ur_p'=>'ریسٹورانٹ، برانچ یا ٹیبل کے لیے QR کوڈ بنائیں اور پرنٹ کریں۔'],
-                ['icon'=>'👥','en_h'=>'Staff Management','en_p'=>'Add staff accounts with limited access. Keep your menu management organized.','ur_h'=>'اسٹاف مینجمنٹ','ur_p'=>'محدود رسائی کے ساتھ اسٹاف اکاؤنٹس شامل کریں۔'],
+                ['icon'=>'👥','en_h'=>'Role-Based Staff','en_p'=>'Invite staff members with restricted roles to manage orders or menus safely.','ur_h'=>'رول بیسڈ اسٹاف','ur_p'=>'آرڈرز یا مینو کو محفوظ طریقے سے مینیج کرنے کے لیے محدود رسائی کے ساتھ اسٹاف کو مدعو کریں۔'],
                 ['icon'=>'💳','en_h'=>'Simple Billing','en_p'=>'Submit payment via bank transfer. Admin approves and your plan activates instantly.','ur_h'=>'آسان بلنگ','ur_p'=>'بینک ٹرانسفر سے ادائیگی جمع کریں۔ ایڈمن منظور کرے اور پلان فوری فعال ہو۔'],
             ] as $f)
             <div class="feature-card fade-up">
@@ -556,62 +556,51 @@
     </div>
     <div class="container">
         <div class="pricing-grid">
-
-            {{-- Free --}}
-            <div class="pricing-card fade-up">
-                <p class="plan-name en-text">Free</p>
-                <p class="plan-name ur-text" style="display:none;">مفت</p>
-                <p class="plan-price">Rs.0 <span class="en-text">/ month</span><span class="ur-text" style="display:none;">/ مہینہ</span></p>
-                <p class="plan-desc en-text">Perfect to get started</p>
-                <p class="plan-desc ur-text" style="display:none;">شروع کرنے کے لیے بہترین</p>
-                <ul class="plan-features">
-                    <li class="en-text">10 Products</li><li class="ur-text" style="display:none;">10 پروڈکٹس</li>
-                    <li class="en-text">1 QR Code</li><li class="ur-text" style="display:none;">1 QR کوڈ</li>
-                    <li class="en-text">1 Branch</li><li class="ur-text" style="display:none;">1 برانچ</li>
-                    <li class="en-text">Basic Analytics</li><li class="ur-text" style="display:none;">بنیادی تجزیہ</li>
-                </ul>
-                <a href="/register" class="plan-btn plan-btn-outline en-text">Get Started Free</a>
-                <a href="/register" class="plan-btn plan-btn-outline ur-text" style="display:none;">مفت شروع کریں</a>
-            </div>
-
-            {{-- Basic --}}
-            <div class="pricing-card popular fade-up">
+            @foreach($plans as $plan)
+            @php
+                // Highlight the middle plan (e.g., Basic / ID 3) as popular
+                $isPopular = ($plan->id == 3);
+            @endphp
+            <div class="pricing-card {{ $isPopular ? 'popular' : '' }} fade-up">
+                @if($isPopular)
                 <div class="popular-badge en-text">MOST POPULAR</div>
                 <div class="popular-badge ur-text" style="display:none;">سب سے مقبول</div>
-                <p class="plan-name en-text">Basic</p>
-                <p class="plan-name ur-text" style="display:none;">بیسک</p>
-                <p class="plan-price">Rs.1,999 <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
-                <p class="plan-desc en-text">For growing restaurants</p>
-                <p class="plan-desc ur-text" style="display:none;">بڑھتے ریسٹورانٹس کے لیے</p>
+                @endif
+                <p class="plan-name en-text">{{ $plan->name }}</p>
+                <p class="plan-name ur-text" style="display:none;">{{ $plan->name }}</p>
+                
+                @if($plan->price == 0)
+                <p class="plan-price">Rs.0 <span class="en-text">/ month</span><span class="ur-text" style="display:none;">/ مہینہ</span></p>
+                @else
+                <p class="plan-price">Rs.{{ number_format($plan->price) }} <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
+                @endif
+                
+                <p class="plan-desc en-text">Perfect for your restaurant</p>
+                <p class="plan-desc ur-text" style="display:none;">آپ کے ریسٹورانٹ کے لیے بہترین</p>
+                
                 <ul class="plan-features">
-                    <li class="en-text">50 Products</li><li class="ur-text" style="display:none;">50 پروڈکٹس</li>
-                    <li class="en-text">5 QR Codes</li><li class="ur-text" style="display:none;">5 QR کوڈز</li>
-                    <li class="en-text">2 Branches</li><li class="ur-text" style="display:none;">2 برانچیں</li>
-                    <li class="en-text">Full Analytics</li><li class="ur-text" style="display:none;">مکمل تجزیہ</li>
-                    <li class="en-text">Staff Accounts</li><li class="ur-text" style="display:none;">اسٹاف اکاؤنٹس</li>
+                    @php
+                        $products = $plan->features['products'] ?? 0;
+                        $productsText = $products >= 999 ? 'Unlimited Products' : $products . ' Products';
+                        
+                        $qrCodes = $plan->features['qr_codes'] ?? 0;
+                        $qrCodesText = $qrCodes >= 999 ? 'Unlimited QR Codes' : $qrCodes . ' QR Codes';
+                        
+                        $branches = $plan->features['branches'] ?? 0;
+                        $branchesText = $branches >= 999 ? 'Unlimited Branches' : $branches . ' Branch' . ($branches > 1 ? 'es' : '');
+                    @endphp
+                    <li class="en-text">{{ $productsText }}</li>
+                    <li class="en-text">{{ $qrCodesText }}</li>
+                    <li class="en-text">{{ $branchesText }}</li>
+                    @if($plan->price > 0)
+                    <li class="en-text">Full Analytics</li>
+                    <li class="en-text">Staff Accounts</li>
+                    @endif
                 </ul>
-                <a href="/register" class="plan-btn plan-btn-filled en-text">Get Basic</a>
-                <a href="/register" class="plan-btn plan-btn-filled ur-text" style="display:none;">بیسک لیں</a>
+                <a href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} en-text">Get {{ $plan->name }}</a>
+                <a href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} ur-text" style="display:none;">{{ $plan->name }} لیں</a>
             </div>
-
-            {{-- Pro --}}
-            <div class="pricing-card fade-up">
-                <p class="plan-name en-text">Pro</p>
-                <p class="plan-name ur-text" style="display:none;">پرو</p>
-                <p class="plan-price">Rs.4,999 <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
-                <p class="plan-desc en-text">For established restaurants</p>
-                <p class="plan-desc ur-text" style="display:none;">قائم ریسٹورانٹس کے لیے</p>
-                <ul class="plan-features">
-                    <li class="en-text">Unlimited Products</li><li class="ur-text" style="display:none;">لامحدود پروڈکٹس</li>
-                    <li class="en-text">20 QR Codes</li><li class="ur-text" style="display:none;">20 QR کوڈز</li>
-                    <li class="en-text">10 Branches</li><li class="ur-text" style="display:none;">10 برانچیں</li>
-                    <li class="en-text">Advanced Analytics</li><li class="ur-text" style="display:none;">ایڈوانس تجزیہ</li>
-                    <li class="en-text">Priority Support</li><li class="ur-text" style="display:none;">ترجیحی سپورٹ</li>
-                </ul>
-                <a href="/register" class="plan-btn plan-btn-outline en-text">Get Pro</a>
-                <a href="/register" class="plan-btn plan-btn-outline ur-text" style="display:none;">پرو لیں</a>
-            </div>
-
+            @endforeach
         </div>
     </div>
 </section>

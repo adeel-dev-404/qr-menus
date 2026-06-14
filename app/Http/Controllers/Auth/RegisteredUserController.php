@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Mail\NewRestaurantRegisteredMail;
+use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
@@ -104,6 +105,9 @@ class RegisteredUserController extends Controller
         foreach ($admins as $admin) {
             Mail::to($admin->email)->queue(new NewRestaurantRegisteredMail($restaurant->name, $user->name));
         }
+
+        // Send welcome email to the new restaurant owner
+        Mail::to($user->email)->queue(new WelcomeMail($user, $restaurant));
 
         event(new Registered($user));
 
