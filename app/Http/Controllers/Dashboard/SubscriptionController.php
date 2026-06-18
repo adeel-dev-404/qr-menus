@@ -41,7 +41,7 @@ class SubscriptionController extends Controller
     public function checkout(Subscription $plan, SubscriptionPeriod $period)
     {
         // Make sure the period belongs to this plan
-        abort_if($period->subscription_id !== $plan->id, 404);
+        abort_if($period->subscription_id != $plan->id, 404);
 
         $restaurant = auth()->user()->restaurant;
         return view('dashboard.subscription.checkout', compact('restaurant', 'plan', 'period'));
@@ -52,7 +52,7 @@ class SubscriptionController extends Controller
      */
     public function submit(Request $request, Subscription $plan, SubscriptionPeriod $period)
     {
-        abort_if($period->subscription_id !== $plan->id, 404);
+        abort_if($period->subscription_id != $plan->id, 404);
 
         $request->validate([
             'transaction_ref' => 'required|string|max:100',

@@ -97,7 +97,7 @@ Route::resource('staff', App\Http\Controllers\Dashboard\StaffController::class)
 Route::get('/invite/{token}',  [InviteController::class, 'show'])->name('invite.accept');
 Route::post('/invite/{token}', [InviteController::class, 'store'])->name('invite.accept.store');
 
-Route::prefix('subscription')->name('dashboard.subscription.')->group(function () {
+Route::prefix('subscription')->name('dashboard.subscription.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
     Route::get('/',                                   [App\Http\Controllers\Dashboard\SubscriptionController::class, 'index'])->name('index');
     Route::get('/checkout/{plan}/{period}',           [App\Http\Controllers\Dashboard\SubscriptionController::class, 'checkout'])->name('checkout');
     Route::post('/submit/{plan}/{period}',            [App\Http\Controllers\Dashboard\SubscriptionController::class, 'submit'])->name('submit');
