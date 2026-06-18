@@ -146,4 +146,36 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Restaurant profile updated.');
     }
+
+    // ── Update language settings ──
+    public function updateLanguages(Request $request)
+    {
+        $restaurant = auth()->user()->restaurant;
+
+        $request->validate([
+            'supported_languages'   => 'required|array|min:1',
+            'supported_languages.*' => 'string|in:' . implode(',', array_keys(\App\Models\Restaurant::AVAILABLE_LANGUAGES)),
+            'default_language'      => 'required|string|in:' . implode(',', array_keys(\App\Models\Restaurant::AVAILABLE_LANGUAGES)),
+        ]);
+
+        $langs = $request->input('supported_languages', ['en']);
+
+        // Ensure 'en' is always included
+        if (!in_array('en', $langs)) {
+            array_unshift($langs, 'en');
+        }
+
+        // Ensure default language is in the supported list
+        $defaultLang = $request->input('default_language', 'en');
+        if (!in_array($defaultLang, $langs)) {
+            $defaultLang = 'en';
+        }
+
+        $restaurant->update([
+            'supported_languages' => array_values(array_unique($langs)),
+            'default_language'    => $defaultLang,
+        ]);
+
+        return back()->with('success', 'Language settings updated.');
+    }
 }

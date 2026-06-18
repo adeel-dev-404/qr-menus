@@ -18,23 +18,25 @@
 
 /* Variant rows */
 .variant-row {
-    display:grid;
-    grid-template-columns: 1fr 100px 100px 36px 36px;
-    gap:8px;
-    align-items:center;
     background:#111;
     border:1px solid #222;
     border-radius:10px;
     padding:10px 12px;
     margin-bottom:8px;
 }
+.variant-grid {
+    display:grid;
+    grid-template-columns: 1fr 100px 100px 36px 36px;
+    gap:8px;
+    align-items:center;
+}
 @media(max-width:560px){
-    .variant-row {
+    .variant-grid {
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto auto auto;
     }
-    .variant-row .v-avail { grid-column: 1; }
-    .variant-row .v-del   { grid-column: 2; justify-self:end; }
+    .variant-grid .v-avail { grid-column: 1; }
+    .variant-grid .v-del   { grid-column: 2; justify-self:end; }
 }
 .variant-input {
     background:#0f0f0f;
@@ -123,7 +125,7 @@
         <p class="section-sub">Basic details shown on the menu</p>
 
         <div style="margin-bottom:16px;">
-            <label class="form-label">Product Name *</label>
+            <label class="form-label">Product Name (English) *</label>
             <input type="text" name="name" value="{{ old('name') }}" placeholder="e.g. Margherita Pizza"
                    class="form-input {{ $errors->has('name') ? 'error' : '' }}">
             @error('name') <p class="form-error">{{ $message }}</p> @enderror
@@ -143,10 +145,42 @@
         </div>
 
         <div style="margin-bottom:16px;">
-            <label class="form-label">Description</label>
+            <label class="form-label">Description (English)</label>
             <textarea name="description" rows="3" placeholder="Short description shown on the menu..."
                       class="form-input" style="resize:vertical;">{{ old('description') }}</textarea>
         </div>
+
+        {{-- Translation fields for enabled languages --}}
+        @if(count($languages) > 1)
+        <div style="margin-bottom:16px; background:#111; border:1px solid #222; border-radius:10px; padding:16px;">
+            <p style="font-size:12px; font-weight:600; color:#888; text-transform:uppercase; letter-spacing:.05em; margin:0 0 12px;">
+                🌐 Translations
+            </p>
+            @foreach($languages as $lang)
+                @if($lang === 'en') @continue @endif
+                @php $langInfo = \App\Models\Restaurant::AVAILABLE_LANGUAGES[$lang] ?? null; @endphp
+                @if(!$langInfo) @continue @endif
+                <div style="margin-bottom:12px; border-bottom:1px solid #222; padding-bottom:12px; margin-top:12px;">
+                    <p style="font-size:13px; font-weight:700; color:#3b82f6; margin:0 0 8px;">{{ $langInfo['name'] }} ({{ $langInfo['native'] }})</p>
+                    
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" name="translations[{{ $lang }}][name]"
+                               value="{{ old('translations.' . $lang . '.name') }}"
+                               placeholder="Product name in {{ $langInfo['name'] }}"
+                               class="form-input" dir="{{ $langInfo['rtl'] ? 'rtl' : 'ltr' }}">
+                    </div>
+                    <div>
+                        <label class="form-label">Description</label>
+                        <textarea name="translations[{{ $lang }}][description]" rows="2"
+                                  placeholder="Description in {{ $langInfo['name'] }}"
+                                  class="form-input" dir="{{ $langInfo['rtl'] ? 'rtl' : 'ltr' }}"
+                                  style="resize:vertical;">{{ old('translations.' . $lang . '.description') }}</textarea>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @endif
 
         {{-- Image --}}
         <div>
@@ -264,52 +298,81 @@
 
 <script>
 let variantCount = 0;
+const enabledLanguages = @json($languages);
+const availableLanguages = @json(\App\Models\Restaurant::AVAILABLE_LANGUAGES);
 
-function addVariantRow(name='', price='', discount='', available=true) {
+function addVariantRow(name='', price='', discount='', available=true, translations={}) {
     const idx = variantCount++;
     const row = document.createElement('div');
     row.className = 'variant-row';
     row.dataset.idx = idx;
 
+    let translationInputs = '';
+    if (enabledLanguages.length > 1) {
+        translationInputs += `<div style="margin-top:8px; border-top:1px dashed #2a2a2a; padding-top:8px; display:grid; gap:8px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">`;
+        enabledLanguages.forEach(lang => {
+            if (lang === 'en') return;
+            const info = availableLanguages[lang];
+            if (!info) return;
+            const val = translations[lang] && translations[lang].name ? translations[lang].name : '';
+            translationInputs += `
+                <div>
+                    <label style="font-size:11px; color:#777; display:block; margin-bottom:2px;">Name (${info.native})</label>
+                    <input type="text"
+                           name="variant_translations[${idx}][${lang}][name]"
+                           value="${escHtml(val)}"
+                           placeholder="Name in ${info.name}"
+                           class="variant-input"
+                           style="padding:5px 8px; font-size:12px;"
+                           dir="${info.rtl ? 'rtl' : 'ltr'}">
+                </div>
+            `;
+        });
+        translationInputs += `</div>`;
+    }
+
     row.innerHTML = `
-        <input type="text"
-               name="variant_names[]"
-               value="${escHtml(name)}"
-               placeholder="e.g. Small / Medium / Large"
-               class="variant-input"
-               oninput="updateVariantCount()">
+        <div class="variant-grid">
+            <input type="text"
+                   name="variant_names[]"
+                   value="${escHtml(name)}"
+                   placeholder="e.g. Small / Medium / Large"
+                   class="variant-input"
+                   oninput="updateVariantCount()">
 
-        <input type="number"
-               name="variant_prices[]"
-               value="${escHtml(price)}"
-               placeholder="Price"
-               step="0.01" min="0"
-               class="variant-input"
-               oninput="updateBasePrice()">
+            <input type="number"
+                   name="variant_prices[]"
+                   value="${escHtml(price)}"
+                   placeholder="Price"
+                   step="0.01" min="0"
+                   class="variant-input"
+                   oninput="updateBasePrice()">
 
-        <input type="number"
-               name="variant_discount_prices[]"
-               value="${escHtml(discount)}"
-               placeholder="Discount"
-               step="0.01" min="0"
-               class="variant-input">
+            <input type="number"
+                   name="variant_discount_prices[]"
+                   value="${escHtml(discount)}"
+                   placeholder="Discount"
+                   step="0.01" min="0"
+                   class="variant-input">
 
-        <button type="button"
-                class="v-avail-btn v-avail ${!available ? 'off' : ''}"
-                title="Toggle availability"
-                onclick="toggleVariantAvail(this)">
-            ${available
-                ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
-                : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`
-            }
-            <input type="hidden" name="variant_available[]" value="${available ? '1' : '0'}">
-        </button>
+            <button type="button"
+                    class="v-avail-btn v-avail ${!available ? 'off' : ''}"
+                    title="Toggle availability"
+                    onclick="toggleVariantAvail(this)">
+                ${available
+                    ? `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
+                    : `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`
+                }
+                <input type="hidden" name="variant_available[]" value="${available ? '1' : '0'}">
+            </button>
 
-        <button type="button" class="v-del-btn" onclick="removeVariantRow(this)">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:13px;height:13px">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-            </svg>
-        </button>
+            <button type="button" class="v-del-btn v-del" onclick="removeVariantRow(this)">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:13px;height:13px">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>
+        </div>
+        ${translationInputs}
     `;
 
     document.getElementById('variantRows').appendChild(row);
@@ -323,28 +386,6 @@ function removeVariantRow(btn) {
     updateBasePrice();
 }
 
-// function toggleVariantAvail(btn) {
-//     const isOn  = !btn.classList.contains('off');
-//     const input = btn.querySelector('input[type="hidden"]');
-
-//     if (isOn) {
-//         // Turn off
-//         btn.classList.add('off');
-//         input.value = '0';
-//         btn.innerHTML = `
-//             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-//             <input type="hidden" name="variant_available[]" value="0">
-//         `;
-//     } else {
-//         // Turn on
-//         btn.classList.remove('off');
-//         input.value = '1';
-//         btn.innerHTML = `
-//             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-//             <input type="hidden" name="variant_available[]" value="1">
-//         `;
-//     }
-// }
 function toggleVariantAvail(btn) {
     const isOn = !btn.classList.contains('off');
     btn.classList.toggle('off', isOn);
@@ -373,7 +414,6 @@ function updateVariantCount() {
 }
 
 function updateBasePrice() {
-    // Auto-set base price to lowest variant price
     const prices = [...document.querySelectorAll('input[name="variant_prices[]"]')]
         .map(i => parseFloat(i.value))
         .filter(v => !isNaN(v) && v > 0);
@@ -411,10 +451,10 @@ function previewImage(input) {
             '{{ addslashes($vName) }}',
             '{{ old("variant_prices." . $i, "") }}',
             '{{ old("variant_discount_prices." . $i, "") }}',
-            {{ old("variant_available." . $i, "1") == "1" ? "true" : "false" }}
+            {{ old("variant_available." . $i, "1") == "1" ? "true" : "false" }},
+            @json(old("variant_translations." . $i, []))
         );
     @endforeach
 @endif
 </script>
-
 @endsection

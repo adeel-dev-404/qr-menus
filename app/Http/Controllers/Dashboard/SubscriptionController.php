@@ -5,47 +5,55 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\RestaurantSubscription;
 use App\Models\Subscription;
+use App\Models\SubscriptionPeriod;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 
 class SubscriptionController extends Controller
 {
-    // public function index()
-    // {
-    //     $restaurant = auth()->user()->restaurant;
-    //     $plans      = Subscription::orderBy('price')->get();
-    //     $history    = RestaurantSubscription::where('restaurant_id', $restaurant->id)
-    //         ->with('subscription')
-    //         ->latest()
-    //         ->get();
-
-    //     return view('dashboard.subscription.index', compact('restaurant', 'plans', 'history'));
-    // }
+    /**
+     * Show subscription plans page with period toggles and trial status.
+     */
     public function index()
     {
         $restaurant    = auth()->user()->restaurant;
-        $plans         = Subscription::orderBy('price')->get();
+        $plans         = Subscription::where('is_active', true)
+            ->with('periods')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
         $currentPlanId = $restaurant->currentPlanId();
 
         $history = RestaurantSubscription::where('restaurant_id', $restaurant->id)
-            ->with('subscription')
+            ->with(['subscription', 'period'])
             ->latest()
             ->get();
-        $currentPlanId = $restaurant->currentPlanId();
+
         return view(
             'dashboard.subscription.index',
             compact('restaurant', 'plans', 'history', 'currentPlanId')
         );
     }
 
-    public function checkout(Subscription $plan)
+    /**
+     * Show checkout form for a specific plan + billing period.
+     */
+    public function checkout(Subscription $plan, SubscriptionPeriod $period)
     {
+        // Make sure the period belongs to this plan
+        abort_if($period->subscription_id !== $plan->id, 404);
+
         $restaurant = auth()->user()->restaurant;
-        return view('dashboard.subscription.checkout', compact('restaurant', 'plan'));
+        return view('dashboard.subscription.checkout', compact('restaurant', 'plan', 'period'));
     }
 
-    public function submit(Request $request, Subscription $plan)
+    /**
+     * Submit payment proof for a specific plan + period.
+     */
+    public function submit(Request $request, Subscription $plan, SubscriptionPeriod $period)
     {
+        abort_if($period->subscription_id !== $plan->id, 404);
+
         $request->validate([
             'transaction_ref' => 'required|string|max:100',
             'payment_proof'   => 'required|image|mimes:jpg,jpeg,png|max:3072',
@@ -58,6 +66,7 @@ class SubscriptionController extends Controller
         $service->submitPaymentRequest(
             auth()->user()->restaurant,
             $plan,
+            $period,
             $request->transaction_ref,
             $path
         );
@@ -66,3 +75,4 @@ class SubscriptionController extends Controller
             ->with('success', 'Payment submitted! Our team will verify and activate your plan within 24 hours.');
     }
 }
+

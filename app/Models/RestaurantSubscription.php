@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class RestaurantSubscription extends Model
 {
     protected $fillable = [
-        'restaurant_id', 'subscription_id', 'status',
+        'restaurant_id', 'subscription_id', 'subscription_period_id', 'status',
         'payment_proof', 'transaction_ref', 'amount_paid',
-        'starts_at', 'expires_at', 'notes',
+        'starts_at', 'expires_at', 'notes', 'is_trial',
         'approved_by', 'approved_at',
     ];
 
@@ -18,7 +18,12 @@ class RestaurantSubscription extends Model
         'expires_at'  => 'datetime',
         'approved_at' => 'datetime',
         'amount_paid' => 'decimal:2',
+        'is_trial'    => 'boolean',
     ];
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Relationships
+    // ──────────────────────────────────────────────────────────────────────────
 
     public function restaurant()
     {
@@ -30,10 +35,20 @@ class RestaurantSubscription extends Model
         return $this->belongsTo(Subscription::class);
     }
 
+    /** The billing period (monthly, quarterly, etc.) chosen at checkout */
+    public function period()
+    {
+        return $this->belongsTo(SubscriptionPeriod::class, 'subscription_period_id');
+    }
+
     public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Helpers
+    // ──────────────────────────────────────────────────────────────────────────
 
     public function isActive(): bool
     {
@@ -43,5 +58,16 @@ class RestaurantSubscription extends Model
     public function isExpired(): bool
     {
         return $this->status === 'active' && $this->expires_at?->isPast();
+    }
+
+    public function isTrial(): bool
+    {
+        return (bool) $this->is_trial;
+    }
+
+    /** Billing cycle label for display (e.g. "Monthly", "Yearly") */
+    public function cycleLabel(): string
+    {
+        return $this->period?->billingLabel() ?? '—';
     }
 }

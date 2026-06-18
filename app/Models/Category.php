@@ -8,10 +8,11 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Models\Scopes\RestaurantScope;
+use App\Traits\HasTranslations;
 
 class Category extends Model implements HasMedia
 {
-    use HasSlug, InteractsWithMedia;
+    use HasSlug, InteractsWithMedia, HasTranslations;
 
     protected $fillable = [
         'restaurant_id', 'name', 'slug', 'status', 'sort_order',

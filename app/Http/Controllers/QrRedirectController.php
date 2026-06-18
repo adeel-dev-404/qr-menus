@@ -6,6 +6,7 @@ use App\Models\QrCode;
 use App\Jobs\LogQrScan;
 use App\Models\ScanLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class QrRedirectController extends Controller
 {
@@ -36,20 +37,23 @@ class QrRedirectController extends Controller
             $request->userAgent() ?? 'unknown',
         );
 
-        // Build query params based on QR type so the menu knows which table/branch the customer is at
-        $params = [];
-
-        if ($qrCode->type === 'table' && $qrCode->table_id) {
-            $params['table']  = $qrCode->table_id;
-            $params['branch'] = $qrCode->branch_id;
-        } elseif ($qrCode->type === 'branch' && $qrCode->branch_id) {
-            $params['branch'] = $qrCode->branch_id;
-        }
-
+        // Build an encrypted context token so table/branch IDs are never exposed in the URL
         $url = route('menu.show', $qrCode->restaurant->slug);
 
-        if (!empty($params)) {
-            $url .= '?' . http_build_query($params);
+        $payload = [
+            'type' => $qrCode->type,
+        ];
+
+        if ($qrCode->type === 'table' && $qrCode->table_id) {
+            $payload['t'] = $qrCode->table_id;
+            $payload['b'] = $qrCode->branch_id;
+        } elseif ($qrCode->type === 'branch' && $qrCode->branch_id) {
+            $payload['b'] = $qrCode->branch_id;
+        }
+
+        // Only append ctx if there's meaningful context (branch or table QR)
+        if ($qrCode->type !== 'restaurant') {
+            $url .= '?ctx=' . urlencode(Crypt::encryptString(json_encode($payload)));
         }
 
         return redirect($url);

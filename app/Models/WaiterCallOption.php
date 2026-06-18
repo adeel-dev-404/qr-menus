@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class WaiterCallOption extends Model
 {
+    use HasTranslations;
     protected $fillable = [
         'restaurant_id',
         'label',

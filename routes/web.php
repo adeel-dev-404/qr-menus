@@ -13,7 +13,7 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\InviteController;
 
 Route::get('/', function () {
-    $plans = \App\Models\Subscription::all();
+    $plans = \App\Models\Subscription::where('is_active', true)->with('periods')->orderBy('sort_order')->orderBy('name')->get();
     return view('welcome', compact('plans'));
 })->name('home');
 Route::post('/', function () {
@@ -98,9 +98,9 @@ Route::get('/invite/{token}',  [InviteController::class, 'show'])->name('invite.
 Route::post('/invite/{token}', [InviteController::class, 'store'])->name('invite.accept.store');
 
 Route::prefix('subscription')->name('dashboard.subscription.')->group(function () {
-    Route::get('/',                      [App\Http\Controllers\Dashboard\SubscriptionController::class, 'index'])->name('index');
-    Route::get('/checkout/{plan}',       [App\Http\Controllers\Dashboard\SubscriptionController::class, 'checkout'])->name('checkout');
-    Route::post('/submit/{plan}',        [App\Http\Controllers\Dashboard\SubscriptionController::class, 'submit'])->name('submit');
+    Route::get('/',                                   [App\Http\Controllers\Dashboard\SubscriptionController::class, 'index'])->name('index');
+    Route::get('/checkout/{plan}/{period}',           [App\Http\Controllers\Dashboard\SubscriptionController::class, 'checkout'])->name('checkout');
+    Route::post('/submit/{plan}/{period}',            [App\Http\Controllers\Dashboard\SubscriptionController::class, 'submit'])->name('submit');
 });
 
 // Profile routes
@@ -109,6 +109,7 @@ Route::prefix('profile')->name('dashboard.profile.')->group(function () {
     Route::post('/personal',          [App\Http\Controllers\Dashboard\ProfileController::class, 'updatePersonal'])->name('personal');
     Route::post('/password',          [App\Http\Controllers\Dashboard\ProfileController::class, 'updatePassword'])->name('password');
     Route::post('/restaurant',        [App\Http\Controllers\Dashboard\ProfileController::class, 'updateRestaurant'])->name('restaurant');
+    Route::post('/languages',         [App\Http\Controllers\Dashboard\ProfileController::class, 'updateLanguages'])->name('languages');
     Route::delete('/logo',            [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteLogo'])->name('logo.delete');
     Route::delete('/cover',           [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteCover'])->name('cover.delete');
     Route::delete('/avatar',          [App\Http\Controllers\Dashboard\ProfileController::class, 'deleteAvatar'])->name('avatar.delete');

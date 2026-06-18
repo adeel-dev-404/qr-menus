@@ -450,6 +450,7 @@
             <button class="tab-btn" onclick="switchTab('restaurant', this)">🏠 Restaurant Profile</button>
             <button class="tab-btn" onclick="switchTab('hours', this)">🕐 Opening Hours</button>
             <button class="tab-btn" onclick="switchTab('social', this)">🔗 Social Links</button>
+            <button class="tab-btn" onclick="switchTab('languages', this)">🌐 Languages</button>
         </div>
 
         {{-- ════ TAB 1: Personal Info ════ --}}
@@ -856,6 +857,71 @@
                         <button type="submit" class="btn-save">Save Social Links</button>
                     </form>
                 </div>
+            </div>
+        </div>
+
+        {{-- ════ TAB 6: Languages ════ --}}
+        <div class="tab-panel" id="tab-languages">
+            <div class="section-card">
+                <div class="section-head">
+                    <div class="section-head-icon" style="background:#0f172a;">🌐</div>
+                    <div>
+                        <h3>Menu Languages</h3>
+                        <p>Enable multiple languages for your public menu. Customers can switch between languages.</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <form method="POST" action="{{ route('dashboard.profile.languages') }}">
+                        @csrf
+
+                        <p style="font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Select Languages</p>
+                        <p style="font-size:12px;color:#555;margin-bottom:16px;">English is always enabled as the default. Select additional languages below.</p>
+
+                        @php $enabledLangs = $restaurant->supported_languages ?? ['en']; @endphp
+
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
+                            @foreach(\App\Models\Restaurant::AVAILABLE_LANGUAGES as $code => $langInfo)
+                                <label style="display:flex; align-items:center; gap:10px; padding:12px 14px; background:#111; border:1px solid {{ in_array($code, $enabledLangs) ? '#1d4ed8' : '#222' }}; border-radius:10px; cursor:{{ $code === 'en' ? 'default' : 'pointer' }}; transition:all .15s;"
+                                    {{ $code === 'en' ? '' : 'onmouseover=this.style.borderColor="#444"' }}
+                                    {{ $code === 'en' ? '' : 'onmouseout=this.style.borderColor="' . (in_array($code, $enabledLangs) ? '#1d4ed8' : '#222') . '"' }}>
+                                    <input type="checkbox" name="supported_languages[]" value="{{ $code }}"
+                                        {{ in_array($code, $enabledLangs) ? 'checked' : '' }}
+                                        {{ $code === 'en' ? 'disabled checked' : '' }}
+                                        style="accent-color:#3b82f6; width:16px; height:16px;">
+                                    @if($code === 'en')
+                                        <input type="hidden" name="supported_languages[]" value="en">
+                                    @endif
+                                    <div>
+                                        <p style="color:#e2e8f0; font-size:14px; font-weight:600; margin:0;">{{ $langInfo['native'] }}</p>
+                                        <p style="color:#555; font-size:12px; margin:2px 0 0;">
+                                            {{ $langInfo['name'] }}
+                                            @if($langInfo['rtl']) <span style="color:#f59e0b; font-size:10px;">RTL</span> @endif
+                                        </p>
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+
+                        {{-- Default Language --}}
+                        <div style="margin-bottom:20px;">
+                            <label class="form-label">Default Language</label>
+                            <select name="default_language" class="form-input" style="max-width:250px;">
+                                @foreach(\App\Models\Restaurant::AVAILABLE_LANGUAGES as $code => $langInfo)
+                                    <option value="{{ $code }}" {{ ($restaurant->default_language ?? 'en') === $code ? 'selected' : '' }}>
+                                        {{ $langInfo['native'] }} ({{ $langInfo['name'] }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p style="font-size:11px;color:#555;margin-top:4px;">The language shown by default when customers open your menu</p>
+                        </div>
+
+                        <button type="submit" class="btn-save">Save Language Settings</button>
+                    </form>
+                </div>
+            </div>
+
+            <div style="background:#0f172a; border:1px solid #1e3a5f; border-radius:10px; padding:14px 16px; margin-top:16px;">
+                <p style="font-size:13px; color:#93c5fd; margin:0;">💡 <strong>Tip:</strong> After enabling languages here, go to your Product and Category forms — you'll see translation tabs where you can enter the translated names and descriptions.</p>
             </div>
         </div>
 

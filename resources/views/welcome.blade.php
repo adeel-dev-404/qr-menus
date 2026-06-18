@@ -327,6 +327,16 @@
             .hero-stats { gap: 24px; }
             .cta-banner { padding: 36px 24px; margin: 0 16px; }
         }
+
+        /* ── Global Switcher on Landing Page ── */
+        .global-switcher-container { display: flex; justify-content: center; margin-top: 24px; }
+        .global-switcher { display: inline-flex; background: var(--bg); border: 1px solid var(--border); border-radius: 99px; padding: 4px; gap: 4px; }
+        .global-cycle-btn { border: none; background: transparent; color: var(--text2); font-size: 13px; font-weight: 600; padding: 8px 20px; border-radius: 99px; cursor: pointer; transition: all .2s ease; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .global-cycle-btn:hover:not(.active) { color: var(--text); }
+        .global-cycle-btn.active { background: var(--accent); color: #fff; }
+        .global-cycle-btn .savings-badge { background: rgba(74, 222, 128, 0.15); color: #4ade80; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 99px; }
+        .global-cycle-btn.active .savings-badge { background: #fff; color: var(--accent); }
+        .plan-btn-disabled { background: var(--surface2) !important; color: var(--text3) !important; border: 1px solid var(--border2) !important; cursor: not-allowed !important; pointer-events: none !important; }
     </style>
 </head>
 <body>
@@ -546,6 +556,28 @@
 {{-- ══════════════════════════════════════════
      PRICING
 ══════════════════════════════════════════ --}}
+@php
+    $cyclesAvailable = ['monthly', 'quarterly', 'half_yearly', 'yearly'];
+    $maxSavingsByCycle = [];
+    foreach ($cyclesAvailable as $cycle) {
+        if ($cycle === 'monthly') continue;
+        $maxSavings = 0;
+        foreach ($plans as $plan) {
+            $monthlyP = $plan->periods->firstWhere('billing_cycle', 'monthly');
+            $cycleP = $plan->periods->firstWhere('billing_cycle', $cycle);
+            if ($monthlyP && $cycleP) {
+                $savings = $cycleP->savingsPercent($monthlyP);
+                if ($savings > $maxSavings) {
+                    $maxSavings = $savings;
+                }
+            }
+        }
+        if ($maxSavings > 0) {
+            $maxSavingsByCycle[$cycle] = $maxSavings;
+        }
+    }
+@endphp
+
 <section id="pricing" class="pricing-section">
     <div class="container text-center fade-up">
         <div class="section-label">💳 <span class="en-text">Pricing</span><span class="ur-text" style="display:none;">قیمتیں</span></div>
@@ -553,13 +585,37 @@
         <h2 class="section-title ur-text" style="display:none;">سادہ، شفاف قیمتیں</h2>
         <p class="section-sub center en-text">Start free. Upgrade when you're ready. No hidden fees, no contracts.</p>
         <p class="section-sub center ur-text" style="display:none;">مفت شروع کریں۔ جب تیار ہوں اپ گریڈ کریں۔ کوئی پوشیدہ فیس نہیں۔</p>
+
+        {{-- Centered Global Switcher --}}
+        <div class="global-switcher-container">
+            <div class="global-switcher">
+                @foreach($cyclesAvailable as $cycle)
+                    @php
+                        $label = \App\Models\SubscriptionPeriod::CYCLE_LABELS[$cycle] ?? ucfirst($cycle);
+                        $savings = $maxSavingsByCycle[$cycle] ?? null;
+                    @endphp
+                    <button type="button"
+                            class="global-cycle-btn {{ $cycle === 'monthly' ? 'active' : '' }}"
+                            data-cycle="{{ $cycle }}"
+                            onclick="switchGlobalCycle('{{ $cycle }}')">
+                        {{ $label }}
+                        @if($savings)
+                            <span class="savings-badge">-{{ $savings }}%</span>
+                        @endif
+                    </button>
+                @endforeach
+            </div>
+        </div>
     </div>
+
     <div class="container">
         <div class="pricing-grid">
             @foreach($plans as $plan)
             @php
-                // Highlight the middle plan (e.g., Basic / ID 3) as popular
-                $isPopular = ($plan->id == 3);
+                $isPopular = ($plan->id == 2);
+                $periods   = $plan->periods;
+                $monthlyPeriod = $periods->firstWhere('billing_cycle', 'monthly');
+                $initialPeriod = $monthlyPeriod ?: $periods->first();
             @endphp
             <div class="pricing-card {{ $isPopular ? 'popular' : '' }} fade-up">
                 @if($isPopular)
@@ -569,11 +625,31 @@
                 <p class="plan-name en-text">{{ $plan->name }}</p>
                 <p class="plan-name ur-text" style="display:none;">{{ $plan->name }}</p>
                 
-                @if($plan->price == 0)
-                <p class="plan-price">Rs.0 <span class="en-text">/ month</span><span class="ur-text" style="display:none;">/ مہینہ</span></p>
-                @else
-                <p class="plan-price">Rs.{{ number_format($plan->price) }} <span class="en-text">/ 30 days</span><span class="ur-text" style="display:none;">/ 30 دن</span></p>
-                @endif
+                {{-- Price Display --}}
+                <div style="margin-bottom:20px; min-height: 72px;" id="price-{{ $plan->id }}">
+                    @if($periods->count() > 0)
+                        @if($initialPeriod)
+                            @php
+                                $initialSavings = $initialPeriod->savingsPercent($monthlyPeriod);
+                            @endphp
+                            <p class="plan-price">
+                                Rs.{{ number_format($initialPeriod->price, 0) }}
+                                <span class="en-text">/ {{ $initialPeriod->duration_days }} days</span>
+                                <span class="ur-text" style="display:none;">/ {{ $initialPeriod->duration_days }} دن</span>
+                            </p>
+                            <div style="font-size:11px;color:var(--text3);margin-top:4px;">
+                                ≈ Rs. {{ number_format($initialPeriod->perMonthPrice(), 0) }}/month
+                                @if($initialSavings)
+                                    <span style="color:#4ade80;font-weight:600;margin-left:4px;">(Save {{ $initialSavings }}%)</span>
+                                @endif
+                            </div>
+                        @else
+                            <p class="plan-price">Free</p>
+                        @endif
+                    @else
+                        <p class="plan-price">Free</p>
+                    @endif
+                </div>
                 
                 <p class="plan-desc en-text">Perfect for your restaurant</p>
                 <p class="plan-desc ur-text" style="display:none;">آپ کے ریسٹورانٹ کے لیے بہترین</p>
@@ -592,13 +668,20 @@
                     <li class="en-text">{{ $productsText }}</li>
                     <li class="en-text">{{ $qrCodesText }}</li>
                     <li class="en-text">{{ $branchesText }}</li>
-                    @if($plan->price > 0)
+                    @if($plan->periods->count() > 0)
                     <li class="en-text">Full Analytics</li>
                     <li class="en-text">Staff Accounts</li>
                     @endif
                 </ul>
-                <a href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} en-text">Get {{ $plan->name }}</a>
-                <a href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} ur-text" style="display:none;">{{ $plan->name }} لیں</a>
+                
+                {{-- CTA Button --}}
+                @if($plan->periods->count() === 0)
+                    <span class="plan-btn plan-btn-outline en-text">Default Plan</span>
+                    <span class="plan-btn plan-btn-outline ur-text" style="display:none;">پہلے سے فعال</span>
+                @else
+                    <a id="checkout-link-{{ $plan->id }}" href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} en-text" data-plan-name="{{ $plan->name }}">Get {{ $plan->name }}</a>
+                    <a id="checkout-link-ur-{{ $plan->id }}" href="/register" class="plan-btn {{ $isPopular ? 'plan-btn-filled' : 'plan-btn-outline' }} ur-text" style="display:none;">{{ $plan->name }} لیں</a>
+                @endif
             </div>
             @endforeach
         </div>
@@ -750,6 +833,112 @@
 </footer>
 
 <script>
+// planPeriods maps planId => cycle => period details, generated server-side
+const planPeriods = {
+    @foreach($plans as $plan)
+        @if($plan->periods->count() > 0)
+        {{ $plan->id }}: {
+            @foreach($plan->periods as $p)
+                @php
+                    $savings = $p->savingsPercent($monthlyPeriod);
+                @endphp
+                "{{ $p->billing_cycle }}": {
+                    id: {{ $p->id }},
+                    price: {{ $p->price }},
+                    duration_days: {{ $p->duration_days }},
+                    label: "{{ $p->billingLabel() }}",
+                    per_month: {{ $p->perMonthPrice() }},
+                    savings_percent: {{ $savings ?? 'null' }},
+                },
+            @endforeach
+        },
+        @endif
+    @endforeach
+};
+
+function switchGlobalCycle(cycle) {
+    // 1. Update active tab/button styling on the global switcher
+    document.querySelectorAll('.global-cycle-btn').forEach(btn => {
+        if (btn.getAttribute('data-cycle') === cycle) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    const isUr = localStorage.getItem('lang') === 'ur';
+
+    // 2. Loop through each plan and update its price & CTA states
+    for (const planId in planPeriods) {
+        const periods = planPeriods[planId];
+        const period = periods[cycle];
+
+        const priceEl = document.getElementById(`price-${planId}`);
+        const linkEl = document.getElementById(`checkout-link-${planId}`);
+        const linkUrEl = document.getElementById(`checkout-link-ur-${planId}`);
+
+        if (!priceEl) continue;
+
+        if (period) {
+            // Update price display
+            const formattedPrice = Number(period.price).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            const formattedPerMonth = Math.round(period.per_month).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+            let priceHtml = `
+                <p class="plan-price">
+                    Rs.${formattedPrice}
+                    <span class="en-text" style="display: ${isUr ? 'none' : ''}">/ ${period.duration_days} days</span>
+                    <span class="ur-text" style="display: ${isUr ? '' : 'none'}">/ ${period.duration_days} دن</span>
+                </p>
+            `;
+            
+            let subtextEn = `≈ Rs. ${formattedPerMonth}/month`;
+            let subtextUr = `≈ Rs. ${formattedPerMonth}/مہینہ`;
+            if (period.savings_percent) {
+                subtextEn += ` <span style="color:#4ade80;font-weight:600;margin-left:4px;">(Save ${period.savings_percent}%)</span>`;
+                subtextUr += ` <span style="color:#4ade80;font-weight:600;margin-right:4px;">(${period.savings_percent}% بچت)</span>`;
+            }
+            
+            priceHtml += `
+                <div style="font-size:11px;color:var(--text3);margin-top:4px;">
+                    <span class="en-text" style="display: ${isUr ? 'none' : ''}">${subtextEn}</span>
+                    <span class="ur-text" style="display: ${isUr ? '' : 'none'}">${subtextUr}</span>
+                </div>
+            `;
+            priceEl.innerHTML = priceHtml;
+
+            if (linkEl) {
+                linkEl.classList.remove('plan-btn-disabled');
+                const planName = linkEl.getAttribute('data-plan-name');
+                linkEl.innerText = `Get ${planName}`;
+            }
+            if (linkUrEl) {
+                linkUrEl.classList.remove('plan-btn-disabled');
+                const planName = linkUrEl.getAttribute('data-plan-name');
+                linkUrEl.innerText = `${planName} لیں`;
+            }
+        } else {
+            // Period not available for this plan
+            priceEl.innerHTML = `
+                <p class="plan-price" style="font-size: 24px;">Not Available</p>
+                <div style="font-size:11px;color:var(--text3);margin-top:4px;">
+                    <span class="en-text" style="display: ${isUr ? 'none' : ''}">Select another period</span>
+                    <span class="ur-text" style="display: ${isUr ? '' : 'none'}">دوسری مدت منتخب کریں</span>
+                </div>
+            `;
+
+            if (linkEl) {
+                linkEl.classList.add('plan-btn-disabled');
+                linkEl.innerText = 'Not Available';
+            }
+            if (linkUrEl) {
+                linkUrEl.classList.add('plan-btn-disabled');
+                linkUrEl.innerText = 'دستیاب نہیں';
+            }
+        }
+    }
+}
+
 // ── Language Toggle ──
 function setLang(lang) {
     const isUr = lang === 'ur';

@@ -32,8 +32,9 @@ class ProductController extends Controller
             return redirect()->route('dashboard.products.index')
                 ->with('error', "Product limit reached ({$restaurant->limitFor('products')}). Please upgrade.");
         }
+        $languages = $restaurant->getLanguages();
         $categories = Category::active()->orderBy('name')->get();
-        return view('dashboard.products.create', compact('categories'));
+        return view('dashboard.products.create', compact('categories', 'languages'));
     }
 
     // public function store(StoreProductRequest $request)
@@ -63,9 +64,10 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load('variants');  // ✅ Must be here
+        $product->load(['translations', 'variants.translations']);
+        $languages = auth()->user()->restaurant->getLanguages();
         $categories = Category::active()->orderBy('name')->get();
-        return view('dashboard.products.edit', compact('product', 'categories'));
+        return view('dashboard.products.edit', compact('product', 'categories', 'languages'));
     }
     // public function update(UpdateProductRequest $request, Product $product)
     // {
@@ -117,13 +119,27 @@ class ProductController extends Controller
             'is_available'   => $request->boolean('is_available', true),
         ]);
 
+        // Save product translations
+        $translations = $request->input('translations', []);
+        foreach ($translations as $locale => $fields) {
+            if ($locale === 'en') continue;
+            $product->setTranslations($locale, [
+                'name'        => $fields['name'] ?? '',
+                'description' => $fields['description'] ?? '',
+            ]);
+        }
+
         // Replace image if new one uploaded
         if ($request->hasFile('image')) {
             $product->clearMediaCollection('image');
             $product->addMediaFromRequest('image')->toMediaCollection('image');
         }
 
-        // Delete ALL old variants then re-save fresh
+        // Delete ALL old variants and their translations then re-save fresh
+        $variantIds = $product->variants()->pluck('id');
+        \App\Models\Translation::where('translatable_type', \App\Models\ProductVariant::class)
+            ->whereIn('translatable_id', $variantIds)
+            ->delete();
         $product->variants()->delete();
         $this->saveVariants($product, $request);
 
@@ -134,6 +150,15 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        // Delete product translations
+        $product->translations()->delete();
+
+        // Delete variant translations
+        $variantIds = $product->variants()->pluck('id');
+        \App\Models\Translation::where('translatable_type', \App\Models\ProductVariant::class)
+            ->whereIn('translatable_id', $variantIds)
+            ->delete();
+
         $product->variants()->delete();
         $product->clearMediaCollection('image');
         $product->delete();
@@ -184,6 +209,16 @@ class ProductController extends Controller
             'is_available'  => $request->boolean('is_available', true),
         ]);
 
+        // Save product translations
+        $translations = $request->input('translations', []);
+        foreach ($translations as $locale => $fields) {
+            if ($locale === 'en') continue;
+            $product->setTranslations($locale, [
+                'name'        => $fields['name'] ?? '',
+                'description' => $fields['description'] ?? '',
+            ]);
+        }
+
         if ($request->hasFile('image')) {
             $product->addMediaFromRequest('image')->toMediaCollection('image');
         }
@@ -209,7 +244,7 @@ class ProductController extends Controller
             if (empty(trim((string) $name))) continue;
             if (empty($prices[$i])) continue;
 
-            \App\Models\ProductVariant::create([
+            $variant = \App\Models\ProductVariant::create([
                 'product_id'     => $product->id,
                 'name'           => trim($name),
                 'price'          => (float) $prices[$i],
@@ -217,6 +252,15 @@ class ProductController extends Controller
                 'is_available'   => isset($available[$i]) && $available[$i] == '1',
                 'sort_order'     => $i,
             ]);
+
+            // Save translations for variant
+            $varTranslations = $request->input("variant_translations.{$i}", []);
+            foreach ($varTranslations as $locale => $fields) {
+                if ($locale === 'en') continue;
+                $variant->setTranslations($locale, [
+                    'name' => $fields['name'] ?? '',
+                ]);
+            }
         }
     }
 }

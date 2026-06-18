@@ -10,6 +10,21 @@ use Spatie\Sluggable\SlugOptions;
 class Restaurant extends Model
 {
     use HasFactory, HasSlug;
+
+    /**
+     * All available languages that restaurants can enable.
+     */
+    const AVAILABLE_LANGUAGES = [
+        'en' => ['name' => 'English',   'native' => 'English',   'rtl' => false],
+        'ur' => ['name' => 'Urdu',      'native' => 'اردو',       'rtl' => true],
+        'ar' => ['name' => 'Arabic',    'native' => 'العربية',     'rtl' => true],
+        'tr' => ['name' => 'Turkish',   'native' => 'Türkçe',    'rtl' => false],
+        'hi' => ['name' => 'Hindi',     'native' => 'हिन्दी',      'rtl' => false],
+        'zh' => ['name' => 'Chinese',   'native' => '中文',        'rtl' => false],
+        'fr' => ['name' => 'French',    'native' => 'Français',  'rtl' => false],
+        'es' => ['name' => 'Spanish',   'native' => 'Español',   'rtl' => false],
+    ];
+
     protected $fillable = [
         'name',
         'slug',
@@ -26,18 +41,45 @@ class Restaurant extends Model
         'status',
         'ordering_enabled',
         'waiter_call_enabled',
+        'supported_languages',
+        'default_language',
         'jazzcash_number',
         'easypaisa_number',
         'whatsapp_number',
         'subscription_id',
         'active_subscription_id',
         'subscription_expires_at',
+        'trial_ends_at',
+        'trial_subscription_id',
     ];
 
     protected $casts = [
-        'opening_hours'          => 'array',
-        'subscription_expires_at' => 'datetime',
+        'opening_hours'            => 'array',
+        'supported_languages'      => 'array',
+        'subscription_expires_at'  => 'datetime',
+        'trial_ends_at'            => 'datetime',
     ];
+
+    /**
+     * Get the list of enabled languages for this restaurant.
+     * Always includes 'en' as the first language.
+     */
+    public function getLanguages(): array
+    {
+        $langs = $this->supported_languages ?? ['en'];
+        if (!in_array('en', $langs)) {
+            array_unshift($langs, 'en');
+        }
+        return $langs;
+    }
+
+    /**
+     * Check if a locale is RTL.
+     */
+    public static function isRtl(string $locale): bool
+    {
+        return self::AVAILABLE_LANGUAGES[$locale]['rtl'] ?? false;
+    }
 
     // Auto-generate slug from name
     public function getSlugOptions(): SlugOptions
@@ -120,7 +162,27 @@ class Restaurant extends Model
 
     public function isOnFreePlan(): bool
     {
-        return is_null($this->active_subscription_id);
+        return is_null($this->active_subscription_id) && !$this->isOnTrial();
+    }
+
+    /** Whether the restaurant is currently in a free trial */
+    public function isOnTrial(): bool
+    {
+        return !$this->hasActiveSubscription()
+            && $this->trial_ends_at?->isFuture() ?? false;
+    }
+
+    /** Number of days remaining in the free trial */
+    public function trialDaysLeft(): int
+    {
+        if (!$this->trial_ends_at) return 0;
+        return max(0, (int) now()->diffInDays($this->trial_ends_at, false));
+    }
+
+    /** Whether the restaurant has ever used a trial (trial_ends_at is set) */
+    public function hasUsedTrial(): bool
+    {
+        return !is_null($this->trial_ends_at);
     }
     public function currentPlanId(): ?int
     {

@@ -1,12 +1,148 @@
+@php
+    $langInfo = \App\Models\Restaurant::AVAILABLE_LANGUAGES[$lang ?? 'en'] ?? null;
+    $isRtl = $langInfo['rtl'] ?? false;
+    $translations = [
+        'en' => [
+            'viewing_only' => 'Viewing menu only — ordering is not available at this time.',
+            'items' => 'items',
+            'choose_size' => 'Choose size / option',
+            'sold_out' => 'Sold out',
+            'unavailable' => 'Unavailable',
+            'add' => 'Add',
+            'no_results' => 'No results',
+            'try_different' => 'Try a different keyword',
+            'nothing_here' => 'Nothing here yet',
+            'being_prepared' => 'This category is being prepared',
+            'coming_soon' => 'Menu coming soon',
+            'setting_up' => "We're setting things up",
+            'powered_by' => 'Powered by',
+            'view_cart' => 'View Cart',
+            'your_order' => 'Your Order',
+            'cart_empty' => 'Your cart is empty',
+            'total' => 'Total',
+            'order_type' => 'Order Type',
+            'dine_in' => 'Dine-in',
+            'takeaway' => 'Takeaway',
+            'your_details' => 'Your Details',
+            'name' => 'Name',
+            'phone' => 'Phone',
+            'email' => 'Email (for order updates)',
+            'address' => 'Delivery Address',
+            'notes' => 'Special Notes',
+            'payment_method' => 'Payment Method',
+            'pay_counter' => 'Pay at Counter',
+            'pay_ready' => 'Pay when order is ready',
+            'place_order' => 'Place Order',
+            'call_waiter' => 'Call Waiter',
+            'loading_options' => 'Loading options...',
+            'no_options' => 'No options available right now.',
+            'failed_options' => 'Failed to load options.',
+            'invalid_link' => 'Invalid Menu Link',
+            'invalid_link_desc' => "This link appears to be modified or expired.\nPlease scan the QR code again to access the menu.",
+            'go_back' => 'Go Back',
+            'accepting_orders' => 'Accepting Orders',
+            'search_placeholder' => 'Search dishes...',
+            'send_jazzcash' => 'Send payment to JazzCash:',
+            'send_easypaisa' => 'Send payment to Easypaisa:',
+        ],
+        'ur' => [
+            'viewing_only' => 'صرف مینو دیکھ رہے ہیں — اس وقت آرڈر دستیاب نہیں ہے۔',
+            'items' => 'اشیاء',
+            'choose_size' => 'سائز / آپشن منتخب کریں',
+            'sold_out' => 'ختم ہو گیا',
+            'unavailable' => 'دستیاب نہیں',
+            'add' => 'شامل کریں',
+            'no_results' => 'کوئی نتیجہ نہیں ملا',
+            'try_different' => 'کچھ اور تلاش کرنے کی کوشش کریں',
+            'nothing_here' => 'ابھی یہاں کچھ نہیں ہے',
+            'being_prepared' => 'یہ کیٹیگری تیار کی جا رہی ہے',
+            'coming_soon' => 'مینو جلد آرہا ہے',
+            'setting_up' => 'ہم چیزیں ترتیب دے رہے ہیں',
+            'powered_by' => 'پیش کردہ بذریعہ',
+            'view_cart' => 'کارٹ دیکھیں',
+            'your_order' => 'آپ کا آرڈر',
+            'cart_empty' => 'آپ کی کارٹ خالی ہے',
+            'total' => 'کل رقم',
+            'order_type' => 'آرڈر کی قسم',
+            'dine_in' => 'یہاں کھائیں',
+            'takeaway' => 'باہر لے جائیں',
+            'your_details' => 'آپ کی معلومات',
+            'name' => 'نام',
+            'phone' => 'فون نمبر',
+            'email' => 'ای میل (آرڈر اپڈیٹس کے لیے)',
+            'address' => 'ڈیلیوری کا پتہ',
+            'notes' => 'خصوصی ہدایات',
+            'payment_method' => 'ادائیگی کا طریقہ',
+            'pay_counter' => 'کاؤنٹر پر ادائیگی کریں',
+            'pay_ready' => 'آرڈر تیار ہونے پر ادائیگی کریں',
+            'place_order' => 'آرڈر کریں',
+            'call_waiter' => 'ویٹر کو بلائیں',
+            'loading_options' => 'لوڈ ہو رہا ہے...',
+            'no_options' => 'اس وقت کوئی آپشن دستیاب نہیں ہے۔',
+            'failed_options' => 'لوڈ کرنے میں ناکامی۔',
+            'invalid_link' => 'غلط مینو لنک',
+            'invalid_link_desc' => "یہ لنک تبدیل شدہ یا میعاد ختم شدہ معلوم ہوتا ہے۔\nمینو تک رسائی کے لیے براہ کرم دوبارہ کیو آر کوڈ اسکین کریں۔",
+            'go_back' => 'واپس جائیں',
+            'accepting_orders' => 'آرڈر قبول کیے جا رہے ہیں',
+            'search_placeholder' => 'ڈشز تلاش کریں...',
+            'send_jazzcash' => 'جاز کیش پر رقم بھیجیں:',
+            'send_easypaisa' => 'ایزی پیسہ پر رقم بھیجیں:',
+        ],
+        'ar' => [
+            'viewing_only' => 'عرض القائمة فقط - الطلب غير متاح في هذا الوقت.',
+            'items' => 'عناصر',
+            'choose_size' => 'اختر الحجم / الخيار',
+            'sold_out' => 'نفدت الكمية',
+            'unavailable' => 'غير متوفر',
+            'add' => 'إضافة',
+            'no_results' => 'لا توجد نتائج',
+            'try_different' => 'حاول البحث عن كلمة أخرى',
+            'nothing_here' => 'لا يوجد شيء هنا بعد',
+            'being_prepared' => 'يتم إعداد هذا القسم حالياً',
+            'coming_soon' => 'القائمة ستتوفر قريباً',
+            'setting_up' => 'نحن نقوم بإعداد الأشياء',
+            'powered_by' => 'مشغل بواسطة',
+            'view_cart' => 'عرض السلة',
+            'your_order' => 'طلبك',
+            'cart_empty' => 'سلة التسوق فارغة',
+            'total' => 'الإجمالي',
+            'order_type' => 'نوع الطلب',
+            'dine_in' => 'تناول الطعام هنا',
+            'takeaway' => 'سفري / خارج المطعم',
+            'your_details' => 'بياناتك',
+            'name' => 'الاسم',
+            'phone' => 'رقم الهاتف',
+            'email' => 'البريد الإلكتروني (لتحديثات الطلب)',
+            'address' => 'عنوان التوصيل',
+            'notes' => 'ملاحظات خاصة',
+            'payment_method' => 'طريقة الدفع',
+            'pay_counter' => 'الدفع عند الكاونتر',
+            'pay_ready' => 'الدفع عند استلام الطلب',
+            'place_order' => 'إرسال الطلب',
+            'call_waiter' => 'استدعاء النادل',
+            'loading_options' => 'جاري التحميل...',
+            'no_options' => 'لا توجد خيارات متاحة حالياً.',
+            'failed_options' => 'فشل في تحميل الخيارات.',
+            'invalid_link' => 'رابط قائمة غير صالح',
+            'invalid_link_desc' => "يبدو أن هذا الرابط قد تم تعديله أو انتهت صلاحيته.\nيرجى مسح رمز QR مجدداً للوصول إلى القائمة.",
+            'go_back' => 'العودة',
+            'accepting_orders' => 'متاح للطلب',
+            'search_placeholder' => 'ابحث عن أطباق...',
+            'send_jazzcash' => 'أرسل الدفع إلى جاز كاش:',
+            'send_easypaisa' => 'أرسل الدفع إلى إيزي بيسا:',
+        ]
+    ];
+    $trans = $translations[$lang ?? 'en'] ?? $translations['en'];
+@endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ $lang ?? 'en' }}" @if($isRtl) dir="rtl" @endif>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#080808">
-    <title>{{ $restaurant->name }} — Menu</title>
+    <title>{{ $restaurant->name }} — {{ $trans['your_order'] }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         *,
@@ -32,6 +168,27 @@
             --accent-border: rgba(232, 80, 42, .2);
             --safe-b: env(safe-area-inset-bottom, 0px);
         }
+
+        @if($isRtl)
+        body {
+            font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .item-count {
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+        .cart-btn-left {
+            flex-direction: row-reverse !important;
+        }
+        #toTop {
+            right: auto !important;
+            left: 14px !important;
+        }
+        #waiterCallBtn {
+            right: auto !important;
+            left: 14px !important;
+        }
+        @endif
 
         html {
             scroll-behavior: smooth;
@@ -1072,12 +1229,69 @@
                 width: 88px;
             }
         }
+
+        /* ── TAMPER / RESCAN MODAL ── */
+        .tamper-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .tamper-modal {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 20px;
+            padding: 36px 28px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .tamper-modal .tamper-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .tamper-modal h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .tamper-modal p {
+            font-size: 14px;
+            color: var(--text2);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .tamper-modal button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s;
+        }
+
+        .tamper-modal button:hover {
+            background: var(--accent2);
+        }
     </style>
 </head>
 
 <body>
 
-    {{-- HEADER --}}
     <header class="header">
         <div class="header-inner">
             @if ($restaurant->logo)
@@ -1098,10 +1312,28 @@
                     </span>
                     @endif
                     @if ($restaurant->isOrderingEnabled())
-                    <span style="color:#4ade80;">● Accepting Orders</span>
+                    <span style="color:#4ade80;">● {{ $trans['accepting_orders'] }}</span>
                     @endif
                 </div>
             </div>
+
+            {{-- Language Toggle --}}
+            @php $supportedLangs = $restaurant->supported_languages ?? ['en']; @endphp
+            @if(count($supportedLangs) > 1)
+            <div style="margin-inline-start: auto; display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: 99px; border: 1px solid var(--border2); z-index: 5;" id="langToggle">
+                @foreach($supportedLangs as $slang)
+                    @php $sInfo = \App\Models\Restaurant::AVAILABLE_LANGUAGES[$slang] ?? null; @endphp
+                    @if($sInfo)
+                        <button onclick="switchLanguage('{{ $slang }}')"
+                                style="background: {{ ($lang ?? 'en') === $slang ? 'var(--accent)' : 'none' }};
+                                       color: {{ ($lang ?? 'en') === $slang ? '#fff' : 'var(--text2)' }};
+                                       border: none; padding: 4px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .15s; white-space: nowrap;">
+                            {{ $sInfo['native'] }}
+                        </button>
+                    @endif
+                @endforeach
+            </div>
+            @endif
         </div>
         <div class="search-wrap">
             <div class="search-inner">
@@ -1110,7 +1342,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Search dishes…" autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="{{ $trans['search_placeholder'] }}" autocomplete="off">
                     <button id="clearBtn" onclick="clearSearch()"><svg fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1126,12 +1358,12 @@
     <nav class="cat-bar">
         <div class="cat-bar-inner">
             @foreach ($categories as $cat)
-            <a href="{{ route('menu.show', $restaurant->slug) }}?category={{ $cat->slug }}"
+            <a href="{{ route('menu.show', $restaurant->slug) }}?category={{ $cat->slug }}{{ request()->has('ctx') ? '&ctx=' . urlencode(request()->get('ctx')) : '' }}&lang={{ $lang ?? 'en' }}"
                 class="cat-pill {{ isset($activeCategory) && $activeCategory->id === $cat->id ? 'active' : '' }}">
                 @if ($cat->getFirstMediaUrl('image'))
                 <img src="{{ $cat->image_url }}" alt="">
                 @endif
-                {{ $cat->name }}
+                {{ $cat->trans('name', $lang ?? 'en') }}
             </a>
             @endforeach
         </div>
@@ -1142,7 +1374,7 @@
     <main class="main">
 
         @if (!$restaurant->isOrderingEnabled())
-        <div class="ordering-disabled">📋 Viewing menu only — ordering is not available at this time.</div>
+        <div class="ordering-disabled">📋 {{ $trans['viewing_only'] }}</div>
         @endif
 
         @if (isset($activeCategory) && $products->count() > 0)
@@ -1151,8 +1383,8 @@
             @if ($activeCategory->getFirstMediaUrl('image'))
             <img src="{{ $activeCategory->image_url }}" alt="">
             @endif
-            <h2>{{ $activeCategory->name }}</h2>
-            <span class="item-count">{{ $products->count() }} items</span>
+            <h2>{{ $activeCategory->trans('name', $lang ?? 'en') }}</h2>
+            <span class="item-count">{{ $products->count() }} {{ $trans['items'] }}</span>
         </div>
 
         <div class="product-list" id="productList">
@@ -1166,35 +1398,36 @@
             @endphp
 
             <article class="product-card"
-                data-name="{{ strtolower($product->name . ' ' . ($product->description ?? '')) }}"
-                data-id="{{ $product->id }}" data-name-text="{{ $product->name }}"
+                data-name="{{ strtolower($product->trans('name', $lang ?? 'en') . ' ' . ($product->trans('description', $lang ?? 'en') ?? '')) }}"
+                data-id="{{ $product->id }}" data-name-text="{{ $product->trans('name', $lang ?? 'en') }}"
                 data-price="{{ $basePrice }}" data-image="{{ $product->image_url }}"
                 data-has-variants="{{ $hasV ? '1' : '0' }}">
 
                 <div class="thumb">
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" loading="lazy">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->trans('name', $lang ?? 'en') }}" loading="lazy">
                     @if (!$product->is_available)
-                    <div class="thumb-na"><span>Unavailable</span></div>
+                    <div class="thumb-na"><span>{{ $trans['unavailable'] }}</span></div>
                     @endif
                 </div>
 
                 <div class="card-body">
-                    <p class="card-name">{{ $product->name }}</p>
-                    @if ($product->description)
-                    <p class="card-desc">{{ $product->description }}</p>
+                    <p class="card-name">{{ $product->trans('name', $lang ?? 'en') }}</p>
+                    @if ($product->trans('description', $lang ?? 'en'))
+                    <p class="card-desc">{{ $product->trans('description', $lang ?? 'en') }}</p>
                     @endif
 
                     @if ($hasV)
                     <div class="variants-block">
-                        <p class="v-title">Choose size / option</p>
+                        <p class="v-title">{{ $trans['choose_size'] }}</p>
                         <div class="v-grid">
                             @foreach ($availV as $v)
+                            @php $vName = $v->trans('name', $lang ?? 'en'); @endphp
                             <div class="v-pill"
-                                onclick="selectVariant(this, {{ $product->id }}, {{ $v->id }}, '{{ addslashes($v->name) }}', {{ $v->discount_price ?? $v->price }})"
+                                onclick="selectVariant(this, {{ $product->id }}, {{ $v->id }}, '{{ addslashes($vName) }}', {{ $v->discount_price ?? $v->price }})"
                                 data-variant-id="{{ $v->id }}"
-                                data-variant-name="{{ $v->name }}"
+                                data-variant-name="{{ $vName }}"
                                 data-variant-price="{{ $v->discount_price ?? $v->price }}">
-                                <span class="v-pill-name">{{ $v->name }}</span>
+                                <span class="v-pill-name">{{ $vName }}</span>
                                 <span
                                     class="v-pill-price">Rs.&nbsp;{{ number_format($v->discount_price ?? $v->price, 0) }}</span>
                                 @if ($v->discount_price)
@@ -1205,8 +1438,8 @@
                             @endforeach
                             @foreach ($unavailV as $v)
                             <div class="v-pill na">
-                                <span class="v-pill-name">{{ $v->name }}</span>
-                                <span class="v-pill-price">Sold out</span>
+                                <span class="v-pill-name">{{ $v->trans('name', $lang ?? 'en') }}</span>
+                                <span class="v-pill-price">{{ $trans['sold_out'] }}</span>
                             </div>
                             @endforeach
                         </div>
@@ -1218,7 +1451,7 @@
                             {{ number_format($product->discount_price, 0) }}</span>
                         <span class="p-old">Rs. {{ number_format($product->price, 0) }}</span>
                         @php $pct = round((($product->price - $product->discount_price)/$product->price)*100); @endphp
-                        <span class="p-off">{{ $pct }}% off</span>
+                        <span class="p-off">{{ $pct }}% {{ $lang === 'ur' ? 'رعایت' : ($lang === 'ar' ? 'خصم' : 'off') }}</span>
                         @else
                         <span class="p-main">Rs. {{ number_format($product->price, 0) }}</span>
                         @endif
@@ -1234,7 +1467,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                     d="M12 4v16m8-8H4" />
                             </svg>
-                            Add
+                            {{ $trans['add'] }}
                         </button>
                         <div class="qty-control" id="qty-{{ $product->id }}">
                             <button class="qty-btn"
@@ -1253,27 +1486,27 @@
         <div class="no-results" id="noResults">
             <div class="empty">
                 <div class="empty-icon">🔍</div>
-                <h3>No results</h3>
-                <p>Try a different keyword</p>
+                <h3>{{ $trans['no_results'] }}</h3>
+                <p>{{ $trans['try_different'] }}</p>
             </div>
         </div>
         @elseif(isset($activeCategory))
         <div class="empty">
             <div class="empty-icon">🍽</div>
-            <h3>Nothing here yet</h3>
-            <p>This category is being prepared</p>
+            <h3>{{ $trans['nothing_here'] }}</h3>
+            <p>{{ $trans['being_prepared'] }}</p>
         </div>
         @else
         <div class="empty">
             <div class="empty-icon">🍽</div>
-            <h3>Menu coming soon</h3>
-            <p>We're setting things up</p>
+            <h3>{{ $trans['coming_soon'] }}</h3>
+            <p>{{ $trans['setting_up'] }}</p>
         </div>
         @endif
 
     </main>
 
-    <footer>Powered by <strong>QR Menu</strong></footer>
+    <footer>{{ $trans['powered_by'] }} <strong>QR Menu</strong></footer>
 
     {{-- CART BUTTON --}}
     @if ($restaurant->isOrderingEnabled())
@@ -1282,7 +1515,7 @@
             <button class="cart-btn" onclick="openCart()">
                 <div class="cart-btn-left">
                     <span class="cart-count-badge" id="cartCountBadge">0</span>
-                    View Cart
+                    {{ $trans['view_cart'] }}
                 </div>
                 <span id="cartTotalDisplay">Rs. 0</span>
             </button>
@@ -1302,19 +1535,19 @@
     <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
     <div class="drawer" id="cartDrawer">
         <div class="drawer-handle"></div>
-        <div class="drawer-title">Your Order 🛒</div>
+        <div class="drawer-title">{{ $trans['your_order'] }} 🛒</div>
 
         {{-- Cart items --}}
         <div id="cartItemsContainer">
             <div class="empty-cart" id="emptyCartMsg">
                 <div style="font-size:32px;">🛒</div>
-                <p>Your cart is empty</p>
+                <p>{{ $trans['cart_empty'] }}</p>
             </div>
         </div>
 
         {{-- Cart total --}}
         <div class="cart-total" id="cartTotalRow" style="display:none;">
-            <span class="cart-total-label">Total</span>
+            <span class="cart-total-label">{{ $trans['total'] }}</span>
             <span class="cart-total-amount" id="cartTotalAmount">Rs. 0</span>
         </div>
 
@@ -1324,66 +1557,66 @@
             {{-- Order type --}}
             <p
                 style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">
-                Order Type</p>
+                {{ $trans['order_type'] }}</p>
             <div class="order-type-row">
                 <button class="order-type-btn active" id="type-dine" onclick="setOrderType('dine_in')">🍽
-                    Dine-in</button>
+                    {{ $trans['dine_in'] }}</button>
                 <button class="order-type-btn" id="type-take" onclick="setOrderType('takeaway')">🥡
-                    Takeaway</button>
+                    {{ $trans['takeaway'] }}</button>
             </div>
 
             {{-- Customer details --}}
             <p
                 style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
-                Your Details</p>
+                {{ $trans['your_details'] }}</p>
             <div class="drawer-field">
-                <label class="drawer-label">Name *</label>
-                <input type="text" id="customerName" class="drawer-input" placeholder="Your name">
+                <label class="drawer-label">{{ $trans['name'] }} *</label>
+                <input type="text" id="customerName" class="drawer-input" placeholder="{{ $trans['name'] }}">
             </div>
             <div class="drawer-field">
-                <label class="drawer-label">Phone *</label>
+                <label class="drawer-label">{{ $trans['phone'] }} *</label>
                 <input type="tel" id="customerPhone" class="drawer-input" placeholder="0300-1234567">
             </div>
             <div class="drawer-field">
-                <label class="drawer-label">Email (for order updates)</label>
+                <label class="drawer-label">{{ $trans['email'] }}</label>
                 <input type="email" id="customerEmail" class="drawer-input"
                     placeholder="your@email.com (optional)">
             </div>
             <div class="drawer-field" id="addressField" style="display:none;">
-                <label class="drawer-label">Delivery Address *</label>
-                <textarea id="customerAddress" class="drawer-input" rows="2" placeholder="Your delivery address"
+                <label class="drawer-label">{{ $trans['address'] }} *</label>
+                <textarea id="customerAddress" class="drawer-input" rows="2" placeholder="{{ $trans['address'] }}"
                     style="resize:none;"></textarea>
             </div>
             <div class="drawer-field">
-                <label class="drawer-label">Special Notes</label>
+                <label class="drawer-label">{{ $trans['notes'] }}</label>
                 <input type="text" id="orderNotes" class="drawer-input"
-                    placeholder="Any special requests...">
+                    placeholder="{{ $trans['notes'] }}...">
             </div>
 
             {{-- Payment method --}}
             <p
                 style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 8px;">
-                Payment Method</p>
+                {{ $trans['payment_method'] }}</p>
             <div class="payment-row">
                 @if ($restaurant->jazzcash_number)
                 <label class="payment-opt" onclick="setPayment('jazzcash', this)">
                     <input type="radio" name="payment" value="jazzcash"
-                        style="accent-color:var(--accent);">
+                         style="accent-color:var(--accent);">
                     <span class="payment-opt-icon">💚</span>
                     <div class="payment-opt-info">
                         <h4>JazzCash</h4>
-                        <p>Pay via JazzCash mobile account</p>
+                        <p>{{ $lang === 'ur' ? 'جاز کیش موبائل اکاؤنٹ کے ذریعے ادائیگی کریں' : ($lang === 'ar' ? 'ادفع عبر حساب جاز كاش للهاتف المحمول' : 'Pay via JazzCash mobile account') }}</p>
                     </div>
                 </label>
                 @endif
                 @if ($restaurant->easypaisa_number)
                 <label class="payment-opt" onclick="setPayment('easypaisa', this)">
                     <input type="radio" name="payment" value="easypaisa"
-                        style="accent-color:var(--accent);">
+                         style="accent-color:var(--accent);">
                     <span class="payment-opt-icon">💙</span>
                     <div class="payment-opt-info">
                         <h4>Easypaisa</h4>
-                        <p>Pay via Easypaisa account</p>
+                        <p>{{ $lang === 'ur' ? 'ایزی پیسہ اکاؤنٹ کے ذریعے ادائیگی کریں' : ($lang === 'ar' ? 'ادفع عبر حساب إيزي بيسا' : 'Pay via Easypaisa account') }}</p>
                     </div>
                 </label>
                 @endif
@@ -1392,24 +1625,24 @@
                         checked>
                     <span class="payment-opt-icon">💵</span>
                     <div class="payment-opt-info">
-                        <h4>Pay at Counter</h4>
-                        <p>Pay when order is ready</p>
+                        <h4>{{ $trans['pay_counter'] }}</h4>
+                        <p>{{ $trans['pay_ready'] }}</p>
                     </div>
                 </label>
             </div>
 
             {{-- JazzCash account info --}}
             <div class="payment-account" id="jazzcash-info">
-                <p>Send payment to JazzCash:</p>
+                <p>{{ $trans['send_jazzcash'] }}</p>
                 <strong>{{ $restaurant->jazzcash_number }}</strong>
             </div>
             <div class="payment-account" id="easypaisa-info">
-                <p>Send payment to Easypaisa:</p>
+                <p>{{ $trans['send_easypaisa'] }}</p>
                 <strong>{{ $restaurant->easypaisa_number }}</strong>
             </div>
 
             <button class="place-order-btn" onclick="placeOrder()">
-                Place Order →
+                {{ $trans['place_order'] }} →
             </button>
         </div>
 
@@ -1434,8 +1667,8 @@
     {{-- TOAST --}}
     <div id="toast"></div>
 
-    @if($restaurant->waiter_call_enabled)
-    {{-- WAITER CALL BUTTON --}}
+    @if($restaurant->waiter_call_enabled && isset($qrContext) && ($qrContext['type'] ?? '') === 'table')
+    {{-- WAITER CALL BUTTON — only for table QR scans --}}
     <button id="waiterCallBtn" onclick="openWaiterDrawer()">
         🛎️
     </button>
@@ -1445,11 +1678,23 @@
     <div class="drawer" id="waiterDrawer">
         <div class="drawer-handle"></div>
         <div class="drawer-title">
-            Call Waiter 🛎️
+            {{ $trans['call_waiter'] }} 🛎️
             <span id="waiterTableBadge" style="display:none;font-size:13px;font-weight:500;color:var(--text3);margin-left:8px;"></span>
         </div>
         <div id="waiterOptionsContainer" style="display:flex; flex-direction:column; gap:10px;">
-            <div style="text-align:center; padding: 20px; color: var(--text3);">Loading options...</div>
+            <div style="text-align:center; padding: 20px; color: var(--text3);">{{ $trans['loading_options'] }}</div>
+        </div>
+    </div>
+    @endif
+
+    {{-- TAMPER DETECTION MODAL --}}
+    @if(!empty($qrTampered))
+    <div class="tamper-overlay" id="tamperModal">
+        <div class="tamper-modal">
+            <div class="tamper-icon">⚠️</div>
+            <h2>Invalid Menu Link</h2>
+            <p>This link appears to be modified or expired.<br>Please scan the QR code again to access the menu.</p>
+            <button onclick="window.history.length > 1 ? window.history.back() : window.location.href='/';">← Go Back</button>
         </div>
     </div>
     @endif
@@ -1460,10 +1705,10 @@
         let orderType = 'dine_in';
         let paymentMethod = 'pay_later';
 
-        // ── Read table/branch from URL (set by QR redirect) ──
-        const _urlParams = new URLSearchParams(window.location.search);
-        const _tableId  = _urlParams.get('table')  || '';
-        const _branchId = _urlParams.get('branch') || '';
+        // ── Read table/branch from encrypted QR context (server-injected) ──
+        const _tableId  = '{{ ($qrContext["t"] ?? "") }}';
+        const _branchId = '{{ ($qrContext["b"] ?? "") }}';
+        const _qrType   = '{{ ($qrContext["type"] ?? "") }}';
 
         // Pre-fill hidden order form fields if table QR was scanned
         if (_tableId)  document.getElementById('f_table_id').value  = _tableId;
@@ -1682,6 +1927,23 @@
             document.getElementById('easypaisa-info').classList.toggle('show', method === 'easypaisa');
         }
 
+        const _currentLang = '{{ $lang ?? 'en' }}';
+
+        const _trans = {
+            name_required: "{{ $lang === 'ur' ? 'براہ کرم اپنا نام درج کریں۔' : ($lang === 'ar' ? 'يرجى إدخال اسمك.' : 'Please enter your name.') }}",
+            phone_required: "{{ $lang === 'ur' ? 'براہ کرم اپنا فون نمبر درج کریں۔' : ($lang === 'ar' ? 'يرجى إدخال رقم هاتفك.' : 'Please enter your phone number.') }}",
+            address_required: "{{ $lang === 'ur' ? 'براہ کرم ڈلیوری کا پتہ درج کریں۔' : ($lang === 'ar' ? 'يرجى إدخال عنوان التوصيل.' : 'Please enter your delivery address.') }}",
+            loading_options: "{{ $trans['loading_options'] }}",
+            no_options: "{{ $trans['no_options'] }}",
+            failed_options: "{{ $trans['failed_options'] }}"
+        };
+
+        function switchLanguage(lang) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            window.location.href = url.toString();
+        }
+
         function placeOrder() {
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
@@ -1691,17 +1953,17 @@
 
             if (!name) {
                 document.getElementById('customerName').focus();
-                alert('Please enter your name.');
+                alert(_trans.name_required);
                 return;
             }
             if (!phone) {
                 document.getElementById('customerPhone').focus();
-                alert('Please enter your phone number.');
+                alert(_trans.phone_required);
                 return;
             }
             if (orderType === 'takeaway' && !addr) {
                 document.getElementById('customerAddress').focus();
-                alert('Please enter your delivery address.');
+                alert(_trans.address_required);
                 return;
             }
 
@@ -1788,12 +2050,12 @@
                 badge.style.display = 'inline';
             }
 
-            fetch(`{{ route('waiter.options', $restaurant->slug) }}`)
+            fetch(`{{ route('waiter.options', $restaurant->slug) }}?lang=${_currentLang}`)
                 .then(res => res.json())
                 .then(data => {
                     const container = document.getElementById('waiterOptionsContainer');
                     if (data.length === 0) {
-                        container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text3);">No options available right now.</div>';
+                        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text3);">${_trans.no_options}</div>`;
                         return;
                     }
                     let html = '';
@@ -1808,7 +2070,7 @@
                     container.innerHTML = html;
                 })
                 .catch(err => {
-                    document.getElementById('waiterOptionsContainer').innerHTML = '<div style="text-align:center; padding: 20px; color: #ef4444;">Failed to load options.</div>';
+                    document.getElementById('waiterOptionsContainer').innerHTML = `<div style="text-align:center; padding: 20px; color: #ef4444;">${_trans.failed_options}</div>`;
                 });
         }
 
@@ -1829,6 +2091,7 @@
                         option_id: optionId,
                         table_id:  _tableId  ? parseInt(_tableId)  : null,
                         branch_id: _branchId ? parseInt(_branchId) : null,
+                        lang:      _currentLang,
                     })
                 })
                 .then(async res => {

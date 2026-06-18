@@ -86,6 +86,22 @@ class RestaurantSubscriptionResource extends Resource
                     ->color('info')
                     ->icon('heroicon-o-credit-card'),
 
+                Tables\Columns\TextColumn::make('subscription_period.billing_cycle')
+                    ->label('Period')
+                    ->formatStateUsing(fn ($state) => \App\Models\SubscriptionPeriod::CYCLE_LABELS[$state] ?? '—')
+                    ->badge()
+                    ->color('purple')
+                    ->placeholder('—'),
+
+                Tables\Columns\IconColumn::make('is_trial')
+                    ->label('Trial')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-gift')
+                    ->trueColor('success')
+                    ->falseIcon('heroicon-o-minus')
+                    ->falseColor('gray')
+                    ->alignCenter(),
+
                 Tables\Columns\TextColumn::make('amount_paid')
                     ->label('Amount')
                     ->money('PKR')

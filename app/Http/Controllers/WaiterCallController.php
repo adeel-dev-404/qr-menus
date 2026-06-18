@@ -11,14 +11,26 @@ use Illuminate\Http\Request;
 class WaiterCallController extends Controller
 {
     // Get available call options for a restaurant (JSON for menu page)
-    public function options(Restaurant $restaurant)
+    public function options(Request $request, Restaurant $restaurant)
     {
-        $options = WaiterCallOption::where('restaurant_id', $restaurant->id)
+        $lang = $request->get('lang', $restaurant->default_language ?? 'en');
+        app()->setLocale($lang);
+
+        $options = WaiterCallOption::with('translations')
+            ->where('restaurant_id', $restaurant->id)
             ->where('is_active', true)
             ->orderBy('sort_order')
-            ->get(['id', 'label', 'icon']);
+            ->get();
 
-        return response()->json($options);
+        $mapped = $options->map(function ($opt) use ($lang) {
+            return [
+                'id'    => $opt->id,
+                'label' => $opt->trans('label', $lang),
+                'icon'  => $opt->icon,
+            ];
+        });
+
+        return response()->json($mapped);
     }
 
     // Customer submits a waiter call
@@ -28,7 +40,11 @@ class WaiterCallController extends Controller
             'option_id' => 'required|exists:waiter_call_options,id',
             'table_id'  => 'nullable|exists:tables,id',
             'branch_id' => 'nullable|exists:branches,id',
+            'lang'      => 'nullable|string',
         ]);
+
+        $lang = $request->get('lang', $restaurant->default_language ?? 'en');
+        app()->setLocale($lang);
 
         $option = WaiterCallOption::find($request->option_id);
         $table  = $request->table_id
@@ -53,20 +69,22 @@ class WaiterCallController extends Controller
             ], 429);
         }
 
+        $label = $option->trans('label', $lang);
+
         WaiterCall::create([
             'restaurant_id'         => $restaurant->id,
             'branch_id'             => $branchId,
             'table_id'              => $request->table_id,
             'waiter_call_option_id' => $option->id,
             'table_label'           => $table ? 'Table ' . $table->table_number : null,
-            'call_label'            => $option->label,
+            'call_label'            => $label,
             'call_icon'             => $option->icon,
             'status'                => 'pending',
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => $option->label . ' request sent!',
+            'message' => $label . ' request sent!',
         ]);
     }
 }

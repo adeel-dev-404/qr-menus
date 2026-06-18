@@ -20,14 +20,23 @@
 
 <div style="max-width:580px; display:flex; flex-direction:column; gap:16px;">
 
-    {{-- Plan Summary Banner --}}
+    {{-- Plan + Period Summary Banner --}}
     <div style="background:linear-gradient(135deg,#4c1d95,#1e1b4b);border-radius:14px;padding:20px;">
-        <p style="font-size:12px;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin:0 0 6px;">Subscribing to</p>
-        <h2 style="font-size:22px;font-weight:800;color:#fff;margin:0 0 8px;">{{ $plan->name }} Plan</h2>
+        <p style="font-size:12px;color:#a78bfa;text-transform:uppercase;letter-spacing:.08em;margin:0 0 4px;">Subscribing to</p>
+        <h2 style="font-size:22px;font-weight:800;color:#fff;margin:0 0 6px;">{{ $plan->name }} Plan</h2>
+
+        {{-- Period chip --}}
+        <span style="display:inline-block;background:#312e81;color:#a5b4fc;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:12px;">
+            🗓 {{ $period->billingLabel() }} — {{ $period->duration_days }} days
+        </span>
+
         <div style="display:flex;align-items:baseline;gap:6px;">
-            <span style="font-size:32px;font-weight:800;color:#fff;">Rs. {{ number_format($plan->price, 0) }}</span>
-            <span style="font-size:14px;color:#a78bfa;">/ {{ $plan->duration }} days</span>
+            <span style="font-size:32px;font-weight:800;color:#fff;">Rs. {{ number_format($period->price, 0) }}</span>
+            <span style="font-size:14px;color:#a78bfa;">/ {{ $period->duration_days }} days</span>
         </div>
+        <p style="font-size:12px;color:#7c6fd0;margin:4px 0 0;">
+            ≈ Rs. {{ number_format($period->perMonthPrice(), 0) }} per month
+        </p>
     </div>
 
     {{-- Bank Transfer Instructions --}}
@@ -51,8 +60,12 @@
                 <span style="font-family:monospace;font-size:14px;font-weight:700;color:#a78bfa;">03448371946</span>
             </div>
             <div class="bank-row">
+                <span style="font-size:13px;color:#666;">Plan & Period</span>
+                <span style="font-size:13px;font-weight:600;color:#c4b5fd;">{{ $plan->name }} — {{ $period->billingLabel() }}</span>
+            </div>
+            <div class="bank-row">
                 <span style="font-size:13px;color:#666;">Amount to Send</span>
-                <span style="font-size:15px;font-weight:800;color:#86efac;">Rs. {{ number_format($plan->price, 0) }}</span>
+                <span style="font-size:15px;font-weight:800;color:#86efac;">Rs. {{ number_format($period->price, 0) }}</span>
             </div>
         </div>
 
@@ -69,7 +82,7 @@
         </div>
 
         <form method="POST"
-              action="{{ route('dashboard.subscription.submit', $plan) }}"
+              action="{{ route('dashboard.subscription.submit', [$plan, $period]) }}"
               enctype="multipart/form-data">
             @csrf
 
@@ -115,7 +128,7 @@
             <div style="background:#0f172a;border:1px solid #1e3a5f;border-radius:10px;padding:14px;margin-bottom:20px;">
                 <p style="font-size:12px;color:#64748b;margin:0;line-height:1.6;">
                     🕐 After submitting, our team will verify your payment within <strong style="color:#93c5fd;">24 hours</strong>.
-                    Your plan will activate automatically once approved.
+                    Your <strong style="color:#c4b5fd;">{{ $plan->name }} ({{ $period->billingLabel() }})</strong> plan will activate automatically once approved.
                 </p>
             </div>
 
@@ -124,7 +137,7 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    Submit Payment
+                    Submit Payment — Rs. {{ number_format($period->price, 0) }}
                 </button>
                 <a href="{{ route('dashboard.subscription.index') }}" class="btn-secondary">← Back to Plans</a>
             </div>

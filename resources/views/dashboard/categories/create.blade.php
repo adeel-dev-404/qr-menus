@@ -31,11 +31,32 @@
 
             {{-- Name --}}
             <div style="margin-bottom:16px;">
-                <label class="form-label">Name *</label>
+                <label class="form-label">Name (English) *</label>
                 <input type="text" name="name" value="{{ old('name') }}" placeholder="e.g. Burgers"
                        class="form-input {{ $errors->has('name') ? 'error' : '' }}">
                 @error('name') <p class="form-error">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Translation fields for enabled languages --}}
+            @if(count($languages) > 1)
+            <div style="margin-bottom:16px; background:#111; border:1px solid #222; border-radius:10px; padding:16px;">
+                <p style="font-size:12px; font-weight:600; color:#888; text-transform:uppercase; letter-spacing:.05em; margin:0 0 12px;">
+                    🌐 Translations
+                </p>
+                @foreach($languages as $lang)
+                    @if($lang === 'en') @continue @endif
+                    @php $langInfo = \App\Models\Restaurant::AVAILABLE_LANGUAGES[$lang] ?? null; @endphp
+                    @if(!$langInfo) @continue @endif
+                    <div style="margin-bottom:10px;">
+                        <label class="form-label">Name ({{ $langInfo['native'] }})</label>
+                        <input type="text" name="translations[{{ $lang }}][name]"
+                               value="{{ old('translations.' . $lang . '.name') }}"
+                               placeholder="Category name in {{ $langInfo['name'] }}"
+                               class="form-input" dir="{{ $langInfo['rtl'] ? 'rtl' : 'ltr' }}">
+                    </div>
+                @endforeach
+            </div>
+            @endif
 
             {{-- Image Upload --}}
             <div style="margin-bottom:16px;">

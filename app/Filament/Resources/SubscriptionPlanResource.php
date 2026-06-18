@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SubscriptionPlanResource\Pages;
 use App\Models\Subscription;
+use App\Models\SubscriptionPeriod;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,30 +23,45 @@ class SubscriptionPlanResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
+
+            // ── Plan Identity ──────────────────────────────────────────────────
             Forms\Components\Section::make('Plan Details')
-                ->description('Define the subscription plan pricing and duration')
+                ->description('Define the plan tier, features, and visibility')
                 ->schema([
                     Forms\Components\TextInput::make('name')
                         ->label('Plan Name')
                         ->required()
                         ->maxLength(255)
-                        ->placeholder('e.g., Basic, Pro, Enterprise'),
-                    Forms\Components\TextInput::make('price')
-                        ->label('Price')
-                        ->required()
+                        ->placeholder('e.g., Starter, Professional, Enterprise'),
+
+                    Forms\Components\TextInput::make('sort_order')
+                        ->label('Sort Order')
                         ->numeric()
-                        ->prefix('Rs.')
-                        ->minValue(0),
-                    Forms\Components\TextInput::make('duration')
-                        ->label('Duration (days)')
-                        ->required()
-                        ->numeric()
-                        ->minValue(1)
-                        ->default(30)
-                        ->suffix('days')
-                        ->helperText('How many days this plan lasts'),
+                        ->default(0)
+                        ->minValue(0)
+                        ->helperText('Lower numbers display first'),
+
+                    Forms\Components\Toggle::make('is_active')
+                        ->label('Visible to Restaurants')
+                        ->helperText('Inactive plans are hidden on the subscription page')
+                        ->default(true)
+                        ->inline(false),
                 ])->columns(3),
 
+            // ── Free Trial ─────────────────────────────────────────────────────
+            Forms\Components\Section::make('Free Trial')
+                ->description('Set a free trial duration for this plan. Leave 0 for no trial.')
+                ->schema([
+                    Forms\Components\TextInput::make('trial_days')
+                        ->label('Trial Duration (days)')
+                        ->numeric()
+                        ->default(0)
+                        ->minValue(0)
+                        ->suffix('days')
+                        ->helperText('0 = No free trial. New restaurants automatically receive a trial on the plan with the highest trial_days value.'),
+                ])->columns(1),
+
+            // ── Feature Limits ─────────────────────────────────────────────────
             Forms\Components\Section::make('Feature Limits')
                 ->description('Set resource limits for this plan. Use 999 for unlimited.')
                 ->schema([
@@ -68,6 +84,75 @@ class SubscriptionPlanResource extends Resource
                         ->minValue(1)
                         ->helperText('999 = unlimited'),
                 ])->columns(3),
+
+            // ── Billing Periods ────────────────────────────────────────────────
+            Forms\Components\Section::make('Billing Periods & Pricing')
+                ->description('Define prices for each billing cycle. Add as many cycles as needed.')
+                ->schema([
+                    Forms\Components\Repeater::make('periods')
+                        ->relationship('periods')
+                        ->label('')
+                        ->schema([
+                            Forms\Components\Select::make('billing_cycle')
+                                ->label('Billing Cycle')
+                                ->options(SubscriptionPeriod::CYCLE_LABELS)
+                                ->required()
+                                ->native(false)
+                                ->live()
+                                ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                    $days = SubscriptionPeriod::CYCLE_DAYS[$state] ?? null;
+                                    if ($days) {
+                                        $set('duration_days', $days);
+                                    }
+                                }),
+
+                            Forms\Components\TextInput::make('price')
+                                ->label('Price')
+                                ->numeric()
+                                ->prefix('Rs.')
+                                ->minValue(0)
+                                ->required(fn (Forms\Get $get) => $get('billing_cycle') === 'monthly')
+                                ->disabled(fn (Forms\Get $get) => $get('billing_cycle') !== 'monthly' && $get('billing_cycle') !== null)
+                                ->dehydrated()
+                                ->placeholder(fn (Forms\Get $get) => $get('billing_cycle') !== 'monthly' ? 'Auto-calculated' : ''),
+
+                            Forms\Components\TextInput::make('discount_percent')
+                                ->label('Discount %')
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->suffix('%')
+                                ->required(fn (Forms\Get $get) => $get('billing_cycle') !== 'monthly' && $get('billing_cycle') !== null)
+                                ->disabled(fn (Forms\Get $get) => $get('billing_cycle') === 'monthly')
+                                ->dehydrated()
+                                ->placeholder(fn (Forms\Get $get) => $get('billing_cycle') === 'monthly' ? '0' : ''),
+
+                            Forms\Components\TextInput::make('duration_days')
+                                ->label('Duration (days)')
+                                ->required()
+                                ->numeric()
+                                ->minValue(1)
+                                ->suffix('days')
+                                ->helperText('Auto-filled on cycle select'),
+
+                            Forms\Components\TextInput::make('sort_order')
+                                ->label('Sort Order')
+                                ->numeric()
+                                ->default(0)
+                                ->minValue(0),
+                        ])
+                        ->columns(5)
+                        ->addActionLabel('+ Add Billing Period')
+                        ->defaultItems(0)
+                        ->reorderableWithButtons()
+                        ->collapsible()
+                        ->itemLabel(fn (array $state): ?string =>
+                            isset($state['billing_cycle'])
+                                ? (SubscriptionPeriod::CYCLE_LABELS[$state['billing_cycle']] ?? $state['billing_cycle'])
+                                  . ' — Rs. ' . number_format($state['price'] ?? 0, 0)
+                                : null
+                        ),
+                ]),
         ]);
     }
 
@@ -80,20 +165,38 @@ class SubscriptionPlanResource extends Resource
                     ->weight('bold')
                     ->searchable()
                     ->sortable()
-                    ->icon('heroicon-o-rectangle-stack'),
+                    ->icon('heroicon-o-rectangle-stack')
+                    ->description(fn (Subscription $r): string =>
+                        $r->trial_days > 0 ? "🎁 {$r->trial_days}-day free trial" : 'No free trial'
+                    ),
 
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Price')
-                    ->money('PKR')
-                    ->sortable()
-                    ->weight('bold')
-                    ->color('success'),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean()
+                    ->alignCenter(),
 
-                Tables\Columns\TextColumn::make('duration')
-                    ->label('Duration')
-                    ->suffix(' days')
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Sort Order')
+                    ->numeric()
                     ->sortable()
-                    ->color('gray'),
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('trial_days')
+                    ->label('Trial')
+                    ->formatStateUsing(fn ($state): string => $state > 0 ? "{$state} days" : '—')
+                    ->badge()
+                    ->color(fn ($state): string => $state > 0 ? 'success' : 'gray')
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('periods_summary')
+                    ->label('Periods & Prices')
+                    ->state(fn (Subscription $record): string =>
+                        $record->periods->map(fn ($p) =>
+                            SubscriptionPeriod::CYCLE_LABELS[$p->billing_cycle] . ': Rs.' . number_format($p->price, 0)
+                        )->join(' | ') ?: '—'
+                    )
+                    ->color('gray')
+                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('features.products')
                     ->label('Products')

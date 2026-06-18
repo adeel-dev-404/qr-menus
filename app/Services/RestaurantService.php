@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Restaurant;
 use App\Models\User;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -61,6 +62,8 @@ class RestaurantService
                 ]);
             }
 
+            // Auto-start free trial if any active plan has trial_days configured
+            (new SubscriptionService())->startAutoTrial($restaurant);
 
             return [
                 'restaurant' => $restaurant,

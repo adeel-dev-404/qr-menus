@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class ProductVariant extends Model
 {
+    use HasTranslations;
     protected $fillable = [
         'product_id', 'name', 'price', 'discount_price',
         'is_available', 'sort_order',
