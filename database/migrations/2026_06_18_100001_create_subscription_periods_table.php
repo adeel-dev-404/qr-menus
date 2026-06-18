@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unique(['subscription_id', 'billing_cycle']);
         });
     }
-
     public function down(): void
     {
         Schema::dropIfExists('subscription_periods');
