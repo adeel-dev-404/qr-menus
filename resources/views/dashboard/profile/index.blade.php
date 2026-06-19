@@ -450,6 +450,7 @@
             <button class="tab-btn" onclick="switchTab('restaurant', this)">🏠 Restaurant Profile</button>
             <button class="tab-btn" onclick="switchTab('hours', this)">🕐 Opening Hours</button>
             <button class="tab-btn" onclick="switchTab('social', this)">🔗 Social Links</button>
+            <button class="tab-btn" onclick="switchTab('wifi', this)">📶 Wi-Fi Settings</button>
             <button class="tab-btn" onclick="switchTab('languages', this)">🌐 Languages</button>
         </div>
 
@@ -853,6 +854,40 @@
             </div>
         </div>
 
+        {{-- ════ TAB 7: Wi-Fi Settings ════ --}}
+        <div class="tab-panel" id="tab-wifi">
+            <div class="section-card">
+                <div class="section-head">
+                    <div class="section-head-icon" style="background:#0b132b;">📶</div>
+                    <div>
+                        <h3>Wi-Fi Configuration</h3>
+                        <p>Configure local Wi-Fi details. If provided, they will show on printed QR code templates for customers to connect.</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <form method="POST" action="{{ route('dashboard.profile.restaurant') }}">
+                        @csrf
+                        <input type="hidden" name="section" value="wifi">
+
+                        <div class="two-col" style="margin-bottom:20px;">
+                            <div>
+                                <label class="form-label">Wi-Fi Network Name (SSID)</label>
+                                <input type="text" name="wifi_ssid" value="{{ old('wifi_ssid', $restaurant->wifi_ssid) }}"
+                                    class="form-input" placeholder="e.g. MyRestaurant_Guest">
+                            </div>
+                            <div>
+                                <label class="form-label">Wi-Fi Password</label>
+                                <input type="text" name="wifi_password" value="{{ old('wifi_password', $restaurant->wifi_password) }}"
+                                    class="form-input" placeholder="e.g. restaurant123">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-save">Save Wi-Fi Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         {{-- ════ TAB 6: Languages ════ --}}
         <div class="tab-panel" id="tab-languages">
             <div class="section-card">
@@ -1034,7 +1069,8 @@
             'restaurant': 2,
             'hours': 3,
             'social': 4,
-            'languages': 5
+            'wifi': 5,
+            'languages': 6
         };
         if (tabBtnMap[activeSection] !== undefined) {
             const btnIndex = tabBtnMap[activeSection];

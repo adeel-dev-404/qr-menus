@@ -120,6 +120,24 @@ class ProfileController extends Controller
             return back()->with('success', 'Social links updated.')->with('section', 'social');
         }
 
+        if ($section === 'wifi') {
+            // Wi-Fi Configuration
+            $request->validate([
+                'wifi_ssid'     => 'nullable|string|max:100',
+                'wifi_password' => 'nullable|string|max:100',
+            ]);
+
+            $restaurant->update($request->only([
+                'wifi_ssid',
+                'wifi_password',
+            ]));
+
+            // Clear menu cache
+            \Illuminate\Support\Facades\Cache::forget("restaurant:slug:{$restaurant->slug}");
+
+            return back()->with('success', 'Wi-Fi settings updated.')->with('section', 'wifi');
+        }
+
         // Default / Restaurant Profile section
         $request->validate([
             'name'      => 'required|string|max:255',

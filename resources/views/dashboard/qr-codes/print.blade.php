@@ -82,6 +82,54 @@
             margin-bottom: 24px;
         }
 
+        .wifi-info {
+            background: #222;
+            border: 1px dashed #3a3a3a;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            max-width: 280px;
+        }
+
+        .wifi-icon {
+            font-size: 20px;
+        }
+
+        .wifi-details {
+            font-size: 12px;
+        }
+
+        .wifi-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #c084fc;
+            margin-bottom: 2px;
+        }
+
+        .wifi-text {
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .wifi-text strong {
+            color: #e2e8f0;
+        }
+
+        .wifi-text code {
+            font-family: monospace;
+            background: #2e2e2e;
+            padding: 1px 5px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 11px;
+        }
+
         .divider {
             border: none;
             border-top: 1px dashed #2a2a2a;
@@ -187,6 +235,24 @@
 
             .divider { border-color: #eee !important; }
 
+            .wifi-info {
+                background: #f8fafc !important;
+                border: 1px dashed #cbd5e1 !important;
+            }
+            .wifi-label {
+                color: #7c3aed !important;
+            }
+            .wifi-text {
+                color: #475569 !important;
+            }
+            .wifi-text strong {
+                color: #0f172a !important;
+            }
+            .wifi-text code {
+                background: #f1f5f9 !important;
+                color: #0f172a !important;
+            }
+
             .scan-label   { color: #555 !important; }
             .scan-instruction { color: #777 !important; }
 
@@ -221,6 +287,21 @@
             @else 🪑 Table {{ $qrCode->table?->table_number ?? '' }}
             @endif
         </span>
+
+        @if(!empty(auth()->user()->restaurant->wifi_ssid))
+            <div class="wifi-info">
+                <span class="wifi-icon">📶</span>
+                <div class="wifi-details">
+                    <p class="wifi-label">Wi-Fi Connection</p>
+                    <p class="wifi-text">
+                        SSID: <strong>{{ auth()->user()->restaurant->wifi_ssid }}</strong>
+                        @if(!empty(auth()->user()->restaurant->wifi_password))
+                            <br>Password: <code>{{ auth()->user()->restaurant->wifi_password }}</code>
+                        @endif
+                    </p>
+                </div>
+            </div>
+        @endif
 
         <hr class="divider">
 

@@ -42,6 +42,8 @@ class Restaurant extends Model
         'ordering_enabled',
         'deals_enabled',
         'menu_layout',
+        'wifi_ssid',
+        'wifi_password',
         'waiter_call_enabled',
         'supported_languages',
         'default_language',
