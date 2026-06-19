@@ -23,10 +23,12 @@ class Product extends Model implements HasMedia
         'price',
         'discount_price',
         'is_available',
+        'is_deal',
     ];
 
     protected $casts = [
         'is_available'   => 'boolean',
+        'is_deal'        => 'boolean',
         'price'          => 'decimal:2',
         'discount_price' => 'decimal:2',
     ];

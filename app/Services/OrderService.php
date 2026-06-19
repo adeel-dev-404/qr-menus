@@ -44,7 +44,8 @@ class OrderService
             foreach ($cartItems as $item) {
                 OrderItem::create([
                     'order_id'          => $order->id,
-                    'product_id'        => $item['product_id'],
+                    'product_id'        => $item['product_id'] ?? null,
+                    'deal_id'           => $item['deal_id'] ?? null,
                     'product_variant_id' => $item['variant_id'] ?? null,
                     'product_name'      => $item['name'],
                     'variant_name'      => $item['variant_name'] ?? null,

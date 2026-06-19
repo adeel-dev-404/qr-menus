@@ -99,6 +99,7 @@ class ProductController extends Controller
             'price'                     => 'required|numeric|min:0',
             'discount_price'            => 'nullable|numeric|min:0',
             'is_available'              => 'boolean',
+            'is_deal'                   => 'boolean',
             'image'                     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'variant_names'             => 'nullable|array',
             'variant_names.*'           => 'nullable|string|max:100',
@@ -117,6 +118,7 @@ class ProductController extends Controller
             'price'          => $validated['price'],
             'discount_price' => $validated['discount_price'] ?? null,
             'is_available'   => $request->boolean('is_available', true),
+            'is_deal'        => $request->boolean('is_deal', false),
         ]);
 
         // Save product translations
@@ -189,6 +191,7 @@ class ProductController extends Controller
             'price'                     => 'required|numeric|min:0',
             'discount_price'            => 'nullable|numeric|min:0',
             'is_available'              => 'boolean',
+            'is_deal'                   => 'boolean',
             'image'                     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'variant_names'             => 'nullable|array',
             'variant_names.*'           => 'nullable|string|max:100',
@@ -207,6 +210,7 @@ class ProductController extends Controller
             'discount_price' => $validated['discount_price'] ?? null,
             'restaurant_id' => $restaurant->id,
             'is_available'  => $request->boolean('is_available', true),
+            'is_deal'       => $request->boolean('is_deal', false),
         ]);
 
         // Save product translations

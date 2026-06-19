@@ -442,6 +442,39 @@
             transition: border-color .18s;
         }
 
+        .product-list.grid-2, .product-list.grid-3 {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .product-list.grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .product-list.grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media(max-width: 480px) {
+            .product-list.grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .product-list.grid-2 .product-card, .product-list.grid-3 .product-card {
+            flex-direction: column;
+        }
+
+        .product-list.grid-2 .thumb, .product-list.grid-3 .thumb {
+            width: 100%;
+            height: 120px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-list.grid-2 .card-body, .product-list.grid-3 .card-body {
+            padding: 10px;
+        }
+
         .product-card:hover {
             border-color: var(--border2);
         }
@@ -1315,6 +1348,33 @@
                     <span style="color:#4ade80;">● {{ $trans['accepting_orders'] }}</span>
                     @endif
                 </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; font-size:11px;">
+                    @if($restaurant->facebook || $restaurant->instagram || $restaurant->whatsapp)
+                    <div style="display:flex; gap:6px;">
+                        @if($restaurant->facebook)
+                        <a href="{{ $restaurant->facebook }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">FB</a>
+                        @endif
+                        @if($restaurant->instagram)
+                        <a href="{{ $restaurant->instagram }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">IG</a>
+                        @endif
+                        @if($restaurant->whatsapp)
+                        <a href="https://wa.me/{{ $restaurant->whatsapp }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">WA</a>
+                        @endif
+                    </div>
+                    @endif
+                    @if($restaurant->opening_hours)
+                    @php
+                        $today = strtolower(now()->timezone('Asia/Karachi')->format('l'));
+                        $todayHours = $restaurant->opening_hours[$today] ?? null;
+                    @endphp
+                    @if($todayHours)
+                        <div style="color:var(--text3); display:flex; align-items:center;">
+                            🕒 {{ $todayHours['open'] ? $todayHours['from'] . ' - ' . $todayHours['to'] : 'Closed' }}
+                        </div>
+                    @endif
+                    @endif
+                </div>
             </div>
 
             {{-- Language Toggle --}}
@@ -1354,12 +1414,27 @@
     </header>
 
     {{-- CATEGORY BAR --}}
-    @if ($categories->count() > 0)
+    @php
+        $hasDeals = isset($deals) && $deals->count() > 0;
+        $isDealsActive = $hasDeals && (request()->get('category') === 'deals' || (!request()->has('category') && $hasDeals));
+    @endphp
+    @if ($categories->count() > 0 || $hasDeals)
     <nav class="cat-bar">
         <div class="cat-bar-inner">
+            @if ($hasDeals)
+            <a href="{{ route('menu.show', $restaurant->slug) }}?category=deals{{ request()->has('ctx') ? '&ctx=' . urlencode(request()->get('ctx')) : '' }}&lang={{ $lang ?? 'en' }}"
+                class="cat-pill {{ $isDealsActive ? 'active' : '' }}">
+                <span>🔥</span>
+                {{ $lang === 'ur' ? 'ڈیلز' : ($lang === 'ar' ? 'العروض' : 'Deals') }}
+            </a>
+            @endif
+
             @foreach ($categories as $cat)
+            @php
+                $isCatActive = !$isDealsActive && ((isset($activeCategory) && $activeCategory->id === $cat->id) || (!request()->has('category') && !$hasDeals && $loop->first));
+            @endphp
             <a href="{{ route('menu.show', $restaurant->slug) }}?category={{ $cat->slug }}{{ request()->has('ctx') ? '&ctx=' . urlencode(request()->get('ctx')) : '' }}&lang={{ $lang ?? 'en' }}"
-                class="cat-pill {{ isset($activeCategory) && $activeCategory->id === $cat->id ? 'active' : '' }}">
+                class="cat-pill {{ $isCatActive ? 'active' : '' }}">
                 @if ($cat->getFirstMediaUrl('image'))
                 <img src="{{ $cat->image_url }}" alt="">
                 @endif
@@ -1377,7 +1452,77 @@
         <div class="ordering-disabled">📋 {{ $trans['viewing_only'] }}</div>
         @endif
 
-        @if (isset($activeCategory) && $products->count() > 0)
+        {{-- DEALS SECTION --}}
+        @if(isset($deals) && $deals->count() > 0 && $isDealsActive && !request('search'))
+        <div style="margin-bottom: 24px;">
+            <div class="section-heading" style="margin-bottom:12px;">
+                <h2 style="font-size:18px; color:var(--accent);">🔥 {{ $lang === 'ur' ? 'ہاٹ ڈیلز' : ($lang === 'ar' ? 'عروض ساخنة' : 'Hot Deals') }}</h2>
+                <span class="item-count">{{ $deals->count() }} {{ $trans['items'] }}</span>
+            </div>
+            
+            <div class="product-list {{ $restaurant->menu_layout ?? 'list' }}" id="dealsList">
+                @foreach($deals as $deal)
+                    <div class="product-card"
+                        data-name="{{ strtolower($deal->name . ' ' . ($deal->description ?? '')) }}"
+                        data-id="deal-{{ $deal->id }}" data-name-text="{{ $deal->name }}"
+                        data-price="{{ $deal->price }}" data-image="{{ $deal->image_url }}"
+                        data-has-variants="0" data-is-deal="1">
+                        <div class="thumb">
+                            <img src="{{ $deal->image_url }}" alt="{{ $deal->name }}" loading="lazy">
+                            <div style="position:absolute; top:8px; right:8px; background:var(--accent); color:#fff; font-size:9px; font-weight:800; padding:2px 8px; border-radius:99px; box-shadow:0 4px 10px rgba(232,80,42,0.3); z-index:2;">DEAL</div>
+                            @if (!$deal->is_available)
+                            <div class="thumb-na"><span>{{ $trans['unavailable'] }}</span></div>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            <p class="card-name">{{ $deal->name }}</p>
+                            
+                            {{-- Included Items --}}
+                            <div style="font-size:11px; color:var(--text3); margin-top:2px; margin-bottom:6px; display:flex; flex-direction:column; gap:1px; line-height:1.3;">
+                                @foreach($deal->items as $item)
+                                    @if($item->product)
+                                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            • {{ $item->quantity }}x {{ $item->product->trans('name', $lang ?? 'en') }}
+                                            @if($item->variant)
+                                                ({{ $item->variant->trans('name', $lang ?? 'en') }})
+                                            @endif
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+
+                            @if ($deal->description)
+                            <p class="card-desc">{{ $deal->description }}</p>
+                            @endif
+                            
+                            <div class="price-block">
+                                <span class="p-main">Rs. {{ number_format($deal->price, 0) }}</span>
+                            </div>
+                            @if ($deal->is_available && $restaurant->isOrderingEnabled())
+                            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+                                <button class="add-btn add-btn-deal-{{ $deal->id }}" onclick="addToCart('deal-{{ $deal->id }}')">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        style="width:13px;height:13px">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    {{ $trans['add'] }}
+                                </button>
+                                <div class="qty-control qty-deal-{{ $deal->id }}">
+                                    <button class="qty-btn" onclick="changeQty('deal-{{ $deal->id }}', -1)">−</button>
+                                    <div class="qty-num qty-num-deal-{{ $deal->id }}">1</div>
+                                    <button class="qty-btn" onclick="changeQty('deal-{{ $deal->id }}', 1)">+</button>
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        @if (isset($activeCategory) && !$isDealsActive && $products->count() > 0)
 
         <div class="section-heading">
             @if ($activeCategory->getFirstMediaUrl('image'))
@@ -1387,7 +1532,7 @@
             <span class="item-count">{{ $products->count() }} {{ $trans['items'] }}</span>
         </div>
 
-        <div class="product-list" id="productList">
+        <div class="product-list {{ $restaurant->menu_layout ?? 'list' }}" id="productList">
             @foreach ($products as $product)
             @php
             $variants = $product->relationLoaded('variants') ? $product->variants : collect();
@@ -1460,7 +1605,7 @@
 
                     @if ($product->is_available && $restaurant->isOrderingEnabled())
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <button class="add-btn" id="add-btn-{{ $product->id }}"
+                        <button class="add-btn add-btn-{{ $product->id }}"
                             onclick="addToCart({{ $product->id }})">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 style="width:13px;height:13px">
@@ -1469,10 +1614,10 @@
                             </svg>
                             {{ $trans['add'] }}
                         </button>
-                        <div class="qty-control" id="qty-{{ $product->id }}">
+                        <div class="qty-control qty-{{ $product->id }}">
                             <button class="qty-btn"
                                 onclick="changeQty({{ $product->id }}, -1)">−</button>
-                            <div class="qty-num" id="qty-num-{{ $product->id }}">1</div>
+                            <div class="qty-num qty-num-{{ $product->id }}">1</div>
                             <button class="qty-btn"
                                 onclick="changeQty({{ $product->id }}, 1)">+</button>
                         </div>
@@ -1496,7 +1641,7 @@
             <h3>{{ $trans['nothing_here'] }}</h3>
             <p>{{ $trans['being_prepared'] }}</p>
         </div>
-        @else
+        @elseif(!$isDealsActive)
         <div class="empty">
             <div class="empty-icon">🍽</div>
             <h3>{{ $trans['coming_soon'] }}</h3>
@@ -1718,8 +1863,11 @@
         function getProductData(productId) {
             const card = document.querySelector(`[data-id="${productId}"]`);
             if (!card) return null;
+            const isDeal = card.dataset.isDeal === '1';
             return {
-                id: parseInt(productId),
+                id: isDeal ? productId : parseInt(productId),
+                isDeal: isDeal,
+                dealId: isDeal ? parseInt(productId.replace('deal-', '')) : null,
                 name: card.dataset.nameText,
                 price: parseFloat(card.dataset.price),
                 image: card.dataset.image,
@@ -1741,8 +1889,8 @@
             card.dataset.selectedVariantPrice = variantPrice;
 
             // Update add button
-            const addBtn = document.getElementById('add-btn-' + productId);
-            if (addBtn) addBtn.textContent = '+ Add';
+            const addBtns = document.querySelectorAll('.add-btn-' + productId);
+            addBtns.forEach(btn => btn.textContent = '+ Add');
         }
 
         function getCartKey(productId, variantId) {
@@ -1771,7 +1919,9 @@
             } else {
                 cart[key] = {
                     key,
-                    productId,
+                    productId: p.isDeal ? null : p.id,
+                    dealId: p.dealId,
+                    isDeal: p.isDeal,
                     variantId: p.variantId,
                     name: p.name,
                     variantName: p.variantName,
@@ -1795,27 +1945,19 @@
             if (cart[key].qty <= 0) {
                 delete cart[key];
                 // Show add button again
-                document.getElementById('add-btn-' + productId).style.display = '';
-                const qtyEl = document.getElementById('qty-' + productId);
-                if (qtyEl) qtyEl.style.display = 'none';
+                document.querySelectorAll('.add-btn-' + productId).forEach(b => b.style.display = '');
+                document.querySelectorAll('.qty-' + productId).forEach(q => q.style.display = 'none');
             } else {
-                const numEl = document.getElementById('qty-num-' + productId);
-                if (numEl) numEl.textContent = cart[key].qty;
+                document.querySelectorAll('.qty-num-' + productId).forEach(n => n.textContent = cart[key].qty);
             }
 
             showCartButton();
         }
 
         function updateCartUI(productId, key) {
-            const addBtn = document.getElementById('add-btn-' + productId);
-            const qtyEl = document.getElementById('qty-' + productId);
-            const numEl = document.getElementById('qty-num-' + productId);
-
-            if (addBtn) addBtn.style.display = 'none';
-            if (qtyEl) {
-                qtyEl.style.display = 'flex';
-            }
-            if (numEl) numEl.textContent = cart[key]?.qty ?? 1;
+            document.querySelectorAll('.add-btn-' + productId).forEach(b => b.style.display = 'none');
+            document.querySelectorAll('.qty-' + productId).forEach(q => q.style.display = 'flex');
+            document.querySelectorAll('.qty-num-' + productId).forEach(n => n.textContent = cart[key]?.qty ?? 1);
         }
 
         function showCartButton() {
@@ -1968,10 +2110,11 @@
             }
 
             const cartArr = Object.values(cart).map(i => ({
-                product_id: i.productId,
-                variant_id: i.variantId,
+                product_id: i.isDeal ? null : i.productId,
+                deal_id: i.isDeal ? i.dealId : null,
+                variant_id: i.variantId || null,
                 name: i.name,
-                variant_name: i.variantName,
+                variant_name: i.variantName || null,
                 price: i.price,
                 quantity: i.qty,
             }));

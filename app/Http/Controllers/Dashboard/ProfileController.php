@@ -50,7 +50,7 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return back()->with('success', 'Personal info updated.');
+        return back()->with('success', 'Personal info updated.')->with('section', 'personal');
     }
 
     // ── Update password ──
@@ -62,21 +62,65 @@ class ProfileController extends Controller
         ]);
 
         if (!Hash::check($request->current_password, auth()->user()->password)) {
-            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+            return back()->withErrors(['current_password' => 'Current password is incorrect.'])->withInput();
         }
 
         auth()->user()->update([
             'password' => Hash::make($request->password),
         ]);
 
-        return back()->with('success', 'Password updated successfully.');
+        return back()->with('success', 'Password updated successfully.')->with('section', 'password');
     }
 
     // ── Update restaurant info ──
     public function updateRestaurant(Request $request)
     {
         $restaurant = auth()->user()->restaurant;
+        $section = $request->input('section', 'restaurant');
 
+        if ($section === 'hours') {
+            // Opening hours
+            $hours = [];
+            $days  = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            foreach ($days as $day) {
+                $hours[$day] = [
+                    'open'   => $request->boolean("hours_{$day}_open"),
+                    'from'   => $request->input("hours_{$day}_from", '09:00'),
+                    'to'     => $request->input("hours_{$day}_to",   '22:00'),
+                ];
+            }
+
+            $restaurant->update([
+                'opening_hours' => $hours,
+            ]);
+
+            // Clear menu cache
+            \Illuminate\Support\Facades\Cache::forget("restaurant:slug:{$restaurant->slug}");
+
+            return back()->with('success', 'Opening hours updated.')->with('section', 'hours');
+        }
+
+        if ($section === 'social') {
+            // Social links
+            $request->validate([
+                'whatsapp'  => 'nullable|string|max:20',
+                'instagram' => 'nullable|string|max:100',
+                'facebook'  => 'nullable|string|max:100',
+            ]);
+
+            $restaurant->update($request->only([
+                'whatsapp',
+                'instagram',
+                'facebook',
+            ]));
+
+            // Clear menu cache
+            \Illuminate\Support\Facades\Cache::forget("restaurant:slug:{$restaurant->slug}");
+
+            return back()->with('success', 'Social links updated.')->with('section', 'social');
+        }
+
+        // Default / Restaurant Profile section
         $request->validate([
             'name'      => 'required|string|max:255',
             'phone'     => 'nullable|string|max:20',
@@ -84,15 +128,12 @@ class ProfileController extends Controller
             'address'   => 'nullable|string|max:500',
             'about'     => 'nullable|string|max:1000',
 
-            'ordering_enabled' => 'nullable',
+            'ordering_enabled'    => 'nullable',
+            'deals_enabled'       => 'nullable',
             'waiter_call_enabled' => 'nullable',
             'jazzcash_number'  => 'nullable|string|max:20',
             'easypaisa_number' => 'nullable|string|max:20',
             'whatsapp_number'  => 'nullable|string|max:20',
-
-            'whatsapp'  => 'nullable|string|max:20',
-            'instagram' => 'nullable|string|max:100',
-            'facebook'  => 'nullable|string|max:100',
 
             'logo'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'cover_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
@@ -104,15 +145,14 @@ class ProfileController extends Controller
             'email',
             'address',
             'about',
-            'whatsapp',
-            'instagram',
-            'facebook',
             'jazzcash_number',
             'easypaisa_number',
             'whatsapp_number',
         ]);
 
-        $data['ordering_enabled'] = $request->boolean('ordering_enabled');
+        $data['ordering_enabled']    = $request->boolean('ordering_enabled');
+        $data['deals_enabled']       = $request->boolean('deals_enabled');
+        $data['menu_layout']         = $request->input('menu_layout', 'list');
         $data['waiter_call_enabled'] = $request->boolean('waiter_call_enabled');
 
         // Logo upload
@@ -127,24 +167,12 @@ class ProfileController extends Controller
             $data['cover_image'] = $request->file('cover_image')->store('covers', 'public');
         }
 
-        // Opening hours
-        $hours = [];
-        $days  = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-        foreach ($days as $day) {
-            $hours[$day] = [
-                'open'   => $request->boolean("hours_{$day}_open"),
-                'from'   => $request->input("hours_{$day}_from", '09:00'),
-                'to'     => $request->input("hours_{$day}_to",   '22:00'),
-            ];
-        }
-        $data['opening_hours'] = $hours;
-
         $restaurant->update($data);
 
         // Clear menu cache
         \Illuminate\Support\Facades\Cache::forget("restaurant:slug:{$restaurant->slug}");
 
-        return back()->with('success', 'Restaurant profile updated.');
+        return back()->with('success', 'Restaurant profile updated.')->with('section', 'restaurant');
     }
 
     // ── Update language settings ──
@@ -176,6 +204,6 @@ class ProfileController extends Controller
             'default_language'    => $defaultLang,
         ]);
 
-        return back()->with('success', 'Language settings updated.');
+        return back()->with('success', 'Language settings updated.')->with('section', 'languages');
     }
 }

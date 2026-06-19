@@ -33,11 +33,26 @@ class MenuController extends Controller
             ->orderBy('name')
             ->get();
 
+        $deals = collect();
+        if ($restaurant->deals_enabled ?? true) {
+            $deals = \App\Models\Deal::where('restaurant_id', $restaurant->id)
+                ->where('is_available', true)
+                ->with(['items.product', 'items.variant'])
+                ->get();
+        }
+
         // Active category filter
         $activeCategorySlug = $request->get('category');
-        $activeCategory = $activeCategorySlug
+        $hasDeals = $deals->isNotEmpty();
+
+        // If deals exist and no category is specified, default to deals
+        if (!$activeCategorySlug && $hasDeals) {
+            $activeCategorySlug = 'deals';
+        }
+
+        $activeCategory = $activeCategorySlug && $activeCategorySlug !== 'deals'
             ? $categories->firstWhere('slug', $activeCategorySlug)
-            : $categories->first();
+            : ($activeCategorySlug === 'deals' ? null : $categories->first());
 
         $products = collect();
         if ($activeCategory) {
@@ -69,7 +84,7 @@ class MenuController extends Controller
             }
         }
 
-        return view('menu.show', compact('restaurant', 'categories', 'products', 'activeCategory', 'qrContext', 'qrTampered', 'lang'));
+        return view('menu.show', compact('restaurant', 'categories', 'products', 'deals', 'activeCategory', 'qrContext', 'qrTampered', 'lang'));
     }
 
     // Single category page: /r/{restaurant}/category/{category}
@@ -101,7 +116,15 @@ class MenuController extends Controller
             ->where('is_available', true)
             ->get();
 
-        return view('menu.show', compact('restaurant', 'categories', 'products', 'lang'))
+        $deals = collect();
+        if ($restaurant->deals_enabled ?? true) {
+            $deals = \App\Models\Deal::where('restaurant_id', $restaurant->id)
+                ->where('is_available', true)
+                ->with(['items.product', 'items.variant'])
+                ->get();
+        }
+
+        return view('menu.show', compact('restaurant', 'categories', 'products', 'deals', 'lang'))
             ->with('activeCategory', $category)
             ->with('qrContext', null)
             ->with('qrTampered', false);

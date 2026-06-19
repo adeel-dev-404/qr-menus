@@ -40,6 +40,8 @@ class Restaurant extends Model
         'address',
         'status',
         'ordering_enabled',
+        'deals_enabled',
+        'menu_layout',
         'waiter_call_enabled',
         'supported_languages',
         'default_language',
@@ -56,6 +58,7 @@ class Restaurant extends Model
     protected $casts = [
         'opening_hours'            => 'array',
         'supported_languages'      => 'array',
+        'deals_enabled'            => 'boolean',
         'subscription_expires_at'  => 'datetime',
         'trial_ends_at'            => 'datetime',
     ];
@@ -113,6 +116,11 @@ class Restaurant extends Model
     public function qrCodes()
     {
         return $this->hasMany(QrCode::class);
+    }
+
+    public function deals()
+    {
+        return $this->hasMany(Deal::class);
     }
 
     public function subscription()

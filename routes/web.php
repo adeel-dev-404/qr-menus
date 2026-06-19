@@ -44,7 +44,13 @@ Route::prefix('dashboard')->name('dashboard.')->middleware([
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::resource('products', ProductController::class);
+    Route::patch('products/{product}/toggle', [ProductController::class, 'toggleAvailability'])->name('products.toggle');
+    
     Route::resource('categories', CategoryController::class);
+    
+    Route::resource('deals', \App\Http\Controllers\Dashboard\DealController::class);
+    Route::patch('deals/{deal}/toggle', [\App\Http\Controllers\Dashboard\DealController::class, 'toggleAvailability'])->name('deals.toggle');
+
     Route::resource('qr-codes', QrCodeController::class);
     Route::resource('branches', BranchController::class);
 
@@ -54,9 +60,6 @@ Route::prefix('dashboard')->name('dashboard.')->middleware([
     Route::patch('branches/{branch}/tables/{table}',     [BranchController::class, 'updateTable'])->name('branches.tables.update');
     Route::delete('branches/{branch}/tables/{table}',    [BranchController::class, 'destroyTable'])->name('branches.tables.destroy');
 });
-
-Route::patch('products/{product}/toggle', [App\Http\Controllers\Dashboard\ProductController::class, 'toggleAvailability'])
-    ->name('dashboard.products.toggle');
 
 // ---- Public QR Menu Routes ----
 Route::prefix('r')->name('menu.')->group(function () {

@@ -11,6 +11,7 @@ class OrderItem extends Model
         'order_id',
         'product_id',
         'product_variant_id',
+        'deal_id',
         'product_name',
         'variant_name',
         'price',
@@ -30,5 +31,9 @@ class OrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function deal()
+    {
+        return $this->belongsTo(Deal::class);
     }
 }

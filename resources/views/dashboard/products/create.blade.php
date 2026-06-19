@@ -285,6 +285,19 @@
                 <label for="is_available" style="color:#888;font-size:13px;cursor:pointer;">Active</label>
             </div>
         </div>
+        <div class="toggle-row" style="margin-top:8px;">
+            <div>
+                <p style="color:#e2e8f0;font-size:14px;font-weight:600;margin:0;">Highlight as Deal / Promo</p>
+                <p style="color:#555;font-size:12px;margin:2px 0 0;">Show this product prominently at the top of the menu in the Deals section</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <input type="hidden" name="is_deal" value="0">
+                <input type="checkbox" name="is_deal" value="1" id="is_deal"
+                       {{ old('is_deal', 0) ? 'checked' : '' }}
+                       style="width:18px;height:18px;accent-color:#3b82f6;cursor:pointer;">
+                <label for="is_deal" style="color:#888;font-size:13px;cursor:pointer;">Yes</label>
+            </div>
+        </div>
     </div>
 
     {{-- Buttons --}}

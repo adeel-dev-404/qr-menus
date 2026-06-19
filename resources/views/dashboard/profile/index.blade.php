@@ -466,6 +466,7 @@
                 <div class="section-body">
                     <form method="POST" action="{{ route('dashboard.profile.personal') }}" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="section" value="personal">
 
                         {{-- Avatar --}}
                         <div class="avatar-wrap">
@@ -533,6 +534,7 @@
                 <div class="section-body">
                     <form method="POST" action="{{ route('dashboard.profile.password') }}">
                         @csrf
+                        <input type="hidden" name="section" value="password">
 
                         <div style="margin-bottom:14px;">
                             <label class="form-label">Current Password *</label>
@@ -578,6 +580,7 @@
         <div class="tab-panel" id="tab-restaurant">
             <form method="POST" action="{{ route('dashboard.profile.restaurant') }}" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="section" value="restaurant">
 
                 {{-- Cover Image --}}
                 <div class="section-card">
@@ -633,11 +636,26 @@
                                     {{ $restaurant->ordering_enabled ? 'checked' : '' }}>
                                 Enable Online Ordering
                             </label>
+                            <label style="display:block; margin-bottom: 8px;">
+                                <input type="checkbox" name="deals_enabled" value="1"
+                                    {{ $restaurant->deals_enabled ?? true ? 'checked' : '' }}>
+                                Enable Deals Section
+                            </label>
                             <label style="display:block;">
                                 <input type="checkbox" name="waiter_call_enabled" value="1"
                                     {{ $restaurant->waiter_call_enabled ? 'checked' : '' }}>
                                 Enable Waiter Call Feature
                             </label>
+                        </div>
+
+                        <div style="margin-bottom:15px;">
+                            <label class="form-label">Menu Item Layout</label>
+                            <select name="menu_layout" class="form-input">
+                                <option value="list" {{ ($restaurant->menu_layout ?? 'list') === 'list' ? 'selected' : '' }}>1 Item per row (List)</option>
+                                <option value="grid-2" {{ ($restaurant->menu_layout ?? '') === 'grid-2' ? 'selected' : '' }}>2 Items per row (Grid)</option>
+                                <option value="grid-3" {{ ($restaurant->menu_layout ?? '') === 'grid-3' ? 'selected' : '' }}>3 Items per row (Grid)</option>
+                            </select>
+                            <p style="font-size:11px;color:#555;margin-top:4px;">Choose how menu items are displayed to customers.</p>
                         </div>
 
                         <div class="two-col" style="margin-bottom:14px;">
@@ -754,16 +772,7 @@
                     <form method="POST" action="{{ route('dashboard.profile.restaurant') }}"
                         enctype="multipart/form-data">
                         @csrf
-
-                        {{-- Hidden fields to preserve other restaurant data --}}
-                        <input type="hidden" name="name" value="{{ $restaurant->name }}">
-                        <input type="hidden" name="phone" value="{{ $restaurant->phone }}">
-                        <input type="hidden" name="email" value="{{ $restaurant->email }}">
-                        <input type="hidden" name="address" value="{{ $restaurant->address }}">
-                        <input type="hidden" name="about" value="{{ $restaurant->about }}">
-                        <input type="hidden" name="whatsapp" value="{{ $restaurant->whatsapp }}">
-                        <input type="hidden" name="instagram" value="{{ $restaurant->instagram }}">
-                        <input type="hidden" name="facebook" value="{{ $restaurant->facebook }}">
+                        <input type="hidden" name="section" value="hours">
 
                         <div style="margin-bottom:20px;">
                             @foreach ($days as $day)
@@ -804,23 +813,7 @@
                     <form method="POST" action="{{ route('dashboard.profile.restaurant') }}"
                         enctype="multipart/form-data">
                         @csrf
-
-                        {{-- Hidden fields --}}
-                        <input type="hidden" name="name" value="{{ $restaurant->name }}">
-                        <input type="hidden" name="phone" value="{{ $restaurant->phone }}">
-                        <input type="hidden" name="email" value="{{ $restaurant->email }}">
-                        <input type="hidden" name="address" value="{{ $restaurant->address }}">
-                        <input type="hidden" name="about" value="{{ $restaurant->about }}">
-                        @foreach ($days as $day)
-                            @php $h = $openingHours[$day] ?? ['open'=>true,'from'=>'09:00','to'=>'22:00']; @endphp
-                            <input type="hidden" name="hours_{{ $day }}_from"
-                                value="{{ $h['from'] ?? '09:00' }}">
-                            <input type="hidden" name="hours_{{ $day }}_to"
-                                value="{{ $h['to'] ?? '22:00' }}">
-                            @if ($h['open'] ?? true)
-                                <input type="hidden" name="hours_{{ $day }}_open" value="1">
-                            @endif
-                        @endforeach
+                        <input type="hidden" name="section" value="social">
 
                         <div class="social-row">
                             <div class="social-icon" style="background:#052e16;">💬</div>
@@ -873,6 +866,7 @@
                 <div class="section-body">
                     <form method="POST" action="{{ route('dashboard.profile.languages') }}">
                         @csrf
+                        <input type="hidden" name="section" value="languages">
 
                         <p style="font-size:12px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Select Languages</p>
                         <p style="font-size:12px;color:#555;margin-bottom:16px;">English is always enabled as the default. Select additional languages below.</p>
@@ -1029,12 +1023,24 @@
             document.getElementById('strengthLabel').style.color = map[score].bg;
         }
 
-        // ── Auto-open correct tab on validation error ──
-        @if ($errors->has('current_password') || $errors->has('password'))
-            switchTab('password', document.querySelectorAll('.tab-btn')[1]);
-        @elseif ($errors->has('name') || $errors->has('email'))
-            // Could be personal or restaurant — check which form was submitted
-        @endif
+        // ── Auto-open correct tab on validation error or redirected page load ──
+        @php
+            $activeSection = old('section') ?? session('section') ?? 'personal';
+        @endphp
+        const activeSection = "{{ $activeSection }}";
+        const tabBtnMap = {
+            'personal': 0,
+            'password': 1,
+            'restaurant': 2,
+            'hours': 3,
+            'social': 4,
+            'languages': 5
+        };
+        if (tabBtnMap[activeSection] !== undefined) {
+            const btnIndex = tabBtnMap[activeSection];
+            const btn = document.querySelectorAll('.tab-btn')[btnIndex];
+            if (btn) switchTab(activeSection, btn);
+        }
     </script>
 
 @endsection

@@ -80,7 +80,7 @@ class TestRestaurantSeeder extends Seeder
         // 4. Seed 5 Categories & 30 Products
         $menuData = [
             'Karahi & Handi' => [
-                ['name' => 'Chicken Karahi Half', 'price' => 1199, 'desc' => 'Traditional Lahore style stir-fried chicken in Karahi masala.'],
+                ['name' => 'Chicken Karahi Half', 'price' => 1199, 'desc' => 'Traditional Lahore style stir-fried chicken in Karahi masala.', 'is_deal' => true],
                 ['name' => 'Mutton Karahi Half', 'price' => 1799, 'desc' => 'Flesh mutton cooked in spices and tomato gravy.'],
                 ['name' => 'Chicken White Handi', 'price' => 1399, 'desc' => 'Mild creamy white sauce chicken cooked in clay pot.'],
                 ['name' => 'Paneer Reshmi Handi', 'price' => 999, 'desc' => 'Soft cottage cheese cubes in silky cream masala gravy.'],
@@ -154,7 +154,8 @@ class TestRestaurantSeeder extends Seeder
                         'category_id'    => $category->id,
                         'description'    => $prodData['desc'],
                         'price'          => $prodData['price'],
-                        'is_available'   => true
+                        'is_available'   => true,
+                        'is_deal'        => $prodData['is_deal'] ?? false,
                     ]
                 );
             }
