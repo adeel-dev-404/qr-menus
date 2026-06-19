@@ -1353,13 +1353,19 @@
                     @if($restaurant->facebook || $restaurant->instagram || $restaurant->whatsapp)
                     <div style="display:flex; gap:6px;">
                         @if($restaurant->facebook)
-                        <a href="{{ $restaurant->facebook }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">FB</a>
+                        <a href="{{ $restaurant->facebook }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:6px; border-radius:8px; border:1px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; transition: background 0.2s;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                        </a>
                         @endif
                         @if($restaurant->instagram)
-                        <a href="{{ $restaurant->instagram }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">IG</a>
+                        <a href="{{ $restaurant->instagram }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:6px; border-radius:8px; border:1px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; transition: background 0.2s;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.012-3.584.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.956a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
+                        </a>
                         @endif
                         @if($restaurant->whatsapp)
-                        <a href="https://wa.me/{{ $restaurant->whatsapp }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:2px 8px; border-radius:4px; border:1px solid var(--border2);">WA</a>
+                        <a href="https://wa.me/{{ $restaurant->whatsapp }}" target="_blank" style="color:var(--text); text-decoration:none; background:var(--surface2); padding:6px; border-radius:8px; border:1px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; transition: background 0.2s;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12.015 2.008a9.982 9.982 0 00-8.498 15.263L2 22l4.887-1.48A9.974 9.974 0 0012.015 22c5.516 0 9.996-4.482 9.996-9.996S17.531 2.008 12.015 2.008zm5.495 14.364c-.234.658-1.18 1.252-1.84 1.346-.435.062-1.002.112-3.153-.78-2.585-1.074-4.225-3.708-4.354-3.882-.129-.174-1.04-1.385-1.04-2.64 0-1.254.654-1.873.886-2.128.232-.255.503-.319.67-.319.167 0 .335.002.483.008.155.007.362-.06.56.417.206.495.706 1.722.768 1.848.062.126.104.272.02.438-.084.167-.127.272-.25.405-.124.133-.263.29-.374.405-.122.126-.25.265-.107.513.142.247.632 1.05 1.359 1.696.938.835 1.72 1.09 1.966 1.218.246.128.39.108.536-.054.146-.162.632-.74.802-.993.17-.253.338-.21.564-.127.227.082 1.43.676 1.677.801.246.126.41.19.47.296.06.105.06.608-.174 1.266z"/></svg>
+                        </a>
                         @endif
                     </div>
                     @endif
@@ -1369,8 +1375,10 @@
                         $todayHours = $restaurant->opening_hours[$today] ?? null;
                     @endphp
                     @if($todayHours)
-                        <div style="color:var(--text3); display:flex; align-items:center;">
-                            🕒 {{ $todayHours['open'] ? $todayHours['from'] . ' - ' . $todayHours['to'] : 'Closed' }}
+                        <div style="background:var(--surface2); border:1px solid var(--border2); padding:4px 12px; border-radius:99px; display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--text); box-shadow:0 1px 2px rgba(0,0,0,0.05); font-weight:500;">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span style="color: {{ $todayHours['open'] ? '#10b981' : '#ef4444' }}; font-size: 8px;">●</span>
+                            {{ $todayHours['open'] ? $todayHours['from'] . ' - ' . $todayHours['to'] : 'Closed' }}
                         </div>
                     @endif
                     @endif
@@ -1395,14 +1403,18 @@
             </div>
             @endif
         </div>
-        <div class="search-wrap">
-            <div class="search-inner">
-                <div class="search-box">
+        <div class="header-actions" style="display: flex; align-items: center; justify-content: flex-end; margin-inline-start: auto; gap: 8px; position: relative;">
+            <button id="searchToggleBtn" onclick="toggleSearch()" style="background: var(--surface2); border: 1px solid var(--border2); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--text); cursor: pointer; transition: all 0.2s; z-index: 10;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </button>
+
+            <div id="searchWrapContainer" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 10px; width: 100vw; max-width: 400px; z-index: 20; padding: 0 16px;">
+                <div class="search-box" style="background: var(--surface); box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 1px solid var(--border2); border-radius: 16px; margin: 0;">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input type="text" id="searchInput" placeholder="{{ $trans['search_placeholder'] }}" autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="{{ $trans['search_placeholder'] }}" autocomplete="off" style="background: transparent;">
                     <button id="clearBtn" onclick="clearSearch()"><svg fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -1410,6 +1422,28 @@
                         </svg></button>
                 </div>
             </div>
+            
+            <script>
+                function toggleSearch() {
+                    const searchWrap = document.getElementById('searchWrapContainer');
+                    const searchInput = document.getElementById('searchInput');
+                    if (searchWrap.style.display === 'none') {
+                        searchWrap.style.display = 'block';
+                        searchInput.focus();
+                    } else {
+                        searchWrap.style.display = 'none';
+                    }
+                }
+                
+                // Close search when clicking outside
+                document.addEventListener('click', function(event) {
+                    const searchWrap = document.getElementById('searchWrapContainer');
+                    const searchToggleBtn = document.getElementById('searchToggleBtn');
+                    if (searchWrap.style.display === 'block' && !searchWrap.contains(event.target) && !searchToggleBtn.contains(event.target)) {
+                        searchWrap.style.display = 'none';
+                    }
+                });
+            </script>
         </div>
     </header>
 
@@ -1458,6 +1492,17 @@
             <div class="section-heading" style="margin-bottom:12px;">
                 <h2 style="font-size:18px; color:var(--accent);">🔥 {{ $lang === 'ur' ? 'ہاٹ ڈیلز' : ($lang === 'ar' ? 'عروض ساخنة' : 'Hot Deals') }}</h2>
                 <span class="item-count">{{ $deals->count() }} {{ $trans['items'] }}</span>
+                <div class="layout-toggles" style="display:flex; gap:4px; background:var(--surface2); border:1px solid var(--border); padding:2px; border-radius:8px; margin-left:8px;">
+                    <button class="layout-btn layout-btn-list" onclick="changeLayout('list')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="List View">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    </button>
+                    <button class="layout-btn layout-btn-grid-2" onclick="changeLayout('grid-2')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="2 Grid View">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    </button>
+                    <button class="layout-btn layout-btn-grid-3" onclick="changeLayout('grid-3')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="3 Grid View">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+                    </button>
+                </div>
             </div>
             
             <div class="product-list {{ $restaurant->menu_layout ?? 'list' }}" id="dealsList">
@@ -1530,6 +1575,17 @@
             @endif
             <h2>{{ $activeCategory->trans('name', $lang ?? 'en') }}</h2>
             <span class="item-count">{{ $products->count() }} {{ $trans['items'] }}</span>
+            <div class="layout-toggles" style="display:flex; gap:4px; background:var(--surface2); border:1px solid var(--border); padding:2px; border-radius:8px; margin-left:8px;">
+                <button class="layout-btn layout-btn-list" onclick="changeLayout('list')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="List View">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <button class="layout-btn layout-btn-grid-2" onclick="changeLayout('grid-2')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="2 Grid View">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                </button>
+                <button class="layout-btn layout-btn-grid-3" onclick="changeLayout('grid-3')" style="background:transparent; border:none; padding:4px; border-radius:6px; cursor:pointer; color:var(--text3); display:flex; align-items:center; justify-content:center; transition:0.2s;" title="3 Grid View">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/></svg>
+                </button>
+            </div>
         </div>
 
         <div class="product-list {{ $restaurant->menu_layout ?? 'list' }}" id="productList">
@@ -2257,6 +2313,28 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+
+        // ── Layout Switcher ──
+        function changeLayout(layout) {
+            const lists = document.querySelectorAll('.product-list');
+            lists.forEach(list => {
+                list.classList.remove('list', 'grid-2', 'grid-3');
+                list.classList.add(layout);
+            });
+            // Update button active states
+            document.querySelectorAll('.layout-btn').forEach(btn => btn.style.color = 'var(--text3)');
+            document.querySelectorAll('.layout-btn-' + layout).forEach(btn => btn.style.color = 'var(--text)');
+            // Save to localStorage
+            localStorage.setItem('menuLayout', layout);
+        }
+        
+        // Restore layout from localStorage on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLayout = localStorage.getItem('menuLayout');
+            if (savedLayout) {
+                changeLayout(savedLayout);
+            }
+        });
     </script>
 
 </body>
