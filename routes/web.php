@@ -65,6 +65,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware([
 Route::prefix('r')->name('menu.')->group(function () {
     Route::get('/{restaurant:slug}', [App\Http\Controllers\MenuController::class, 'show'])->name('show');
     Route::get('/{restaurant:slug}/category/{category:slug}', [App\Http\Controllers\MenuController::class, 'category'])->name('category');
+    Route::get('/{restaurant:slug}/manifest.json', [App\Http\Controllers\MenuController::class, 'manifest'])->name('manifest');
 });
 
 // ---- QR Token Redirect ----

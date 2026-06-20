@@ -142,6 +142,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#080808">
+
+    <!-- PWA Settings -->
+    <link rel="manifest" href="{{ route('menu.manifest', ['restaurant' => $restaurant->slug, 'qr_token' => request()->get('qr_token')]) }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="{{ $restaurant->name }}">
+    @if($restaurant->logo)
+        <link rel="apple-touch-icon" href="{{ Storage::url($restaurant->logo) }}">
+    @endif
+
     <title>{{ $restaurant->name }} — {{ $trans['your_order'] }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
@@ -1900,6 +1910,21 @@
     </div>
     @endif
 
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" style="display:none; position:fixed; bottom: 80px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 600px; background: rgba(17, 17, 17, 0.95); border: 1px solid var(--border2); border-radius: 16px; padding: 14px 18px; z-index: 9999; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="font-size: 24px; padding: 6px; background: rgba(232, 80, 42, 0.1); border-radius: 10px;">📱</div>
+            <div>
+                <p style="font-size: 13px; font-weight: 700; color: #fff; margin: 0;">Add to Home Screen</p>
+                <p style="font-size: 11px; color: var(--text2); margin: 2px 0 0;">Install our app for a faster ordering experience!</p>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <button id="pwa-install-btn" style="background: var(--accent); color: #fff; border: none; padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: background 0.2s;">Install</button>
+            <button id="pwa-close-btn" style="background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 4px;">✕</button>
+        </div>
+    </div>
+
     <script>
         // ── Cart State ──
         let cart = {};
@@ -2334,6 +2359,58 @@
             if (savedLayout) {
                 changeLayout(savedLayout);
             }
+
+            // Register Service Worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('PWA Service Worker registered.'))
+                    .catch(err => console.log('PWA Service Worker registration failed:', err));
+            }
+
+            // PWA Installation Handling
+            let deferredPrompt;
+            const installBanner = document.getElementById('pwa-install-banner');
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+            if (!isStandalone) {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    if (installBanner) installBanner.style.display = 'flex';
+                });
+
+                // Detect iOS Safari
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                
+                if (isIOS && isSafari) {
+                    const bannerText = document.querySelector('#pwa-install-banner p:nth-child(2)');
+                    const installBtn = document.getElementById('pwa-install-btn');
+                    if (bannerText && installBtn) {
+                        bannerText.textContent = "Tap share button ⎋ and select 'Add to Home Screen'.";
+                        installBtn.style.display = 'none';
+                    }
+                    setTimeout(() => {
+                        if (installBanner) installBanner.style.display = 'flex';
+                    }, 4000);
+                }
+            }
+
+            document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                if (installBanner) installBanner.style.display = 'none';
+            });
+
+            document.getElementById('pwa-close-btn')?.addEventListener('click', () => {
+                if (installBanner) installBanner.style.display = 'none';
+            });
+
+            window.addEventListener('appinstalled', () => {
+                if (installBanner) installBanner.style.display = 'none';
+            });
         });
     </script>
 

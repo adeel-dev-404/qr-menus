@@ -129,5 +129,45 @@ class MenuController extends Controller
             ->with('qrContext', null)
             ->with('qrTampered', false);
     }
+
+    // Serving dynamic PWA manifest
+    public function manifest(Request $request, Restaurant $restaurant)
+    {
+        $qrToken = $request->get('qr_token');
+        
+        // Start URL is either the tracking scan redirect URL or the public menu page
+        $startUrl = $qrToken ? '/m/' . $qrToken : route('menu.show', $restaurant->slug, false);
+
+        // Get logo URL, fall back to a default high-quality asset if not present
+        $logoUrl = $restaurant->logo 
+            ? \Illuminate\Support\Facades\Storage::url($restaurant->logo)
+            : asset('images/placeholder.png');
+
+        $manifest = [
+            'name'             => $restaurant->name . ' Menu',
+            'short_name'       => $restaurant->name,
+            'description'      => 'Browse the digital menu of ' . $restaurant->name . ' and place your orders.',
+            'start_url'        => $startUrl,
+            'display'          => 'standalone',
+            'background_color' => '#080808',
+            'theme_color'      => '#e8502a',
+            'orientation'      => 'portrait',
+            'icons'            => [
+                [
+                    'src'   => $logoUrl,
+                    'sizes' => '192x192',
+                    'type'  => 'image/png',
+                ],
+                [
+                    'src'   => $logoUrl,
+                    'sizes' => '512x512',
+                    'type'  => 'image/png',
+                ],
+            ],
+        ];
+
+        return response()->json($manifest)
+            ->header('Content-Type', 'application/manifest+json');
+    }
 }
 

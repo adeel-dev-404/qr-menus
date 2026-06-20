@@ -40,6 +40,10 @@ class QrRedirectController extends Controller
         // Build an encrypted context token so table/branch IDs are never exposed in the URL
         $url = route('menu.show', $qrCode->restaurant->slug);
 
+        $params = [
+            'qr_token' => $token,
+        ];
+
         $payload = [
             'type' => $qrCode->type,
         ];
@@ -53,8 +57,10 @@ class QrRedirectController extends Controller
 
         // Only append ctx if there's meaningful context (branch or table QR)
         if ($qrCode->type !== 'restaurant') {
-            $url .= '?ctx=' . urlencode(Crypt::encryptString(json_encode($payload)));
+            $params['ctx'] = Crypt::encryptString(json_encode($payload));
         }
+
+        $url .= '?' . http_build_query($params);
 
         return redirect($url);
     }
