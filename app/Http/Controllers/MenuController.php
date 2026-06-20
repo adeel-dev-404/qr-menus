@@ -134,13 +134,9 @@ class MenuController extends Controller
     public function manifest(Request $request, Restaurant $restaurant)
     {
         $qrToken = $request->get('qr_token');
-        $ctx = $request->get('ctx');
         
-        // Start URL must return 200 OK to be installable as PWA (cannot be a 302 redirect /m/TOKEN).
-        // We point directly to the show menu route with qr_token and ctx parameters to satisfy PWA criteria while preserving context.
-        $startUrl = $qrToken 
-            ? route('menu.show', ['restaurant' => $restaurant->slug, 'qr_token' => $qrToken, 'ctx' => $ctx], false)
-            : route('menu.show', $restaurant->slug, false);
+        // Start URL is either the tracking scan redirect URL or the public menu page
+        $startUrl = $qrToken ? '/m/' . $qrToken : route('menu.show', $restaurant->slug, false);
 
         // Get logo URL, fall back to a default high-quality asset if not present
         $logoUrl = $restaurant->logo 

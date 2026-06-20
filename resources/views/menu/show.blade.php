@@ -144,7 +144,7 @@
     <meta name="theme-color" content="#080808">
 
     <!-- PWA Settings -->
-    <link rel="manifest" href="{{ route('menu.manifest', ['restaurant' => $restaurant->slug, 'qr_token' => request()->get('qr_token'), 'ctx' => request()->get('ctx')]) }}">
+    <link rel="manifest" href="{{ route('menu.manifest', ['restaurant' => $restaurant->slug, 'qr_token' => request()->get('qr_token')]) }}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="{{ $restaurant->name }}">
