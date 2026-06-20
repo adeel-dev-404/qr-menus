@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             SubscriptionPlansSeeder::class,
             TestRestaurantSeeder::class,
+            WaiterCallOptionSeeder::class,
         ]);
 
         // User::factory(10)->create();

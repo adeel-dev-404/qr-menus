@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qrmenu-pwa-v1';
+const CACHE_NAME = 'qrmenu-pwa-v2';
 
 // Install event - caching the offline Shell & assets
 self.addEventListener('install', event => {
@@ -26,6 +26,28 @@ self.addEventListener('fetch', event => {
     if (!event.request.url.startsWith('http')) return;
 
     const url = new URL(event.request.url);
+
+    // List of path prefixes that should completely bypass the service worker cache
+    const bypassPrefixes = [
+        '/login',
+        '/register',
+        '/forgot-password',
+        '/reset-password',
+        '/logout',
+        '/invite',
+        '/pending',
+        '/dashboard',
+        '/profile',
+        '/order',
+        '/waiter',
+        '/up'
+    ];
+
+    const shouldBypass = bypassPrefixes.some(prefix => url.pathname.startsWith(prefix));
+
+    if (shouldBypass) {
+        return; // Let browser fetch directly from network without caching or service worker interference
+    }
 
     // If it's a redirect / scan tracking URL
     if (url.pathname.includes('/m/')) {
@@ -78,12 +100,24 @@ self.addEventListener('fetch', event => {
                 }
 
                 // Dynamically cache menu views, images, and static resources
+                const isMenuPage = url.pathname.startsWith('/r/');
+                const isStorage = url.pathname.startsWith('/storage/');
+                const isBuild = url.pathname.startsWith('/build/');
+                const isStaticAsset = url.pathname.endsWith('.css') || 
+                                      url.pathname.endsWith('.js') || 
+                                      url.pathname.endsWith('.png') || 
+                                      url.pathname.endsWith('.jpg') || 
+                                      url.pathname.endsWith('.jpeg') || 
+                                      url.pathname.endsWith('.gif') || 
+                                      url.pathname.endsWith('.svg') || 
+                                      url.pathname.endsWith('.woff2') || 
+                                      url.pathname.endsWith('.json');
+
                 const shouldCache = event.request.method === 'GET' && (
-                    url.pathname.includes('/r/') || 
-                    url.pathname.includes('/storage/') ||
-                    url.pathname.includes('/build/') ||
-                    event.request.headers.get('accept').includes('text/html') ||
-                    event.request.headers.get('accept').includes('image/')
+                    isMenuPage || 
+                    isStorage || 
+                    isBuild || 
+                    isStaticAsset
                 );
 
                 if (shouldCache) {
@@ -96,7 +130,7 @@ self.addEventListener('fetch', event => {
                 return networkResponse;
             }).catch(() => {
                 // Return fallback message for failed HTML navigations
-                if (event.request.headers.get('accept').includes('text/html')) {
+                if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
                     return new Response(
                         '<h1>Connection Lost</h1><p>You are currently offline. Please check your internet connection.</p>',
                         {
