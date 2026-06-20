@@ -143,6 +143,16 @@ class MenuController extends Controller
             ? \Illuminate\Support\Facades\Storage::url($restaurant->logo)
             : asset('images/placeholder.png');
 
+        $logoPath = $restaurant->logo ?: 'images/placeholder.png';
+        $extension = pathinfo($logoPath, PATHINFO_EXTENSION);
+        $iconType = match (strtolower($extension)) {
+            'png' => 'image/png',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'webp' => 'image/webp',
+            'svg' => 'image/svg+xml',
+            default => 'image/png',
+        };
+
         $manifest = [
             'name'             => $restaurant->name . ' Menu',
             'short_name'       => $restaurant->name,
@@ -156,12 +166,12 @@ class MenuController extends Controller
                 [
                     'src'   => $logoUrl,
                     'sizes' => '192x192',
-                    'type'  => 'image/png',
+                    'type'  => $iconType,
                 ],
                 [
                     'src'   => $logoUrl,
                     'sizes' => '512x512',
-                    'type'  => 'image/png',
+                    'type'  => $iconType,
                 ],
             ],
         ];

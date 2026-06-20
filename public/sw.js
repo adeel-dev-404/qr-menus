@@ -28,7 +28,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
     // If it's a redirect / scan tracking URL
-    if (url.pathname.startsWith('/m/')) {
+    if (url.pathname.includes('/m/')) {
         event.respondWith(
             fetch(event.request).catch(async () => {
                 // If offline, attempt to retrieve a cached menu page starting with /r/
@@ -37,7 +37,7 @@ self.addEventListener('fetch', event => {
                 
                 const cachedMenuRequest = keys.find(req => {
                     const reqUrl = new URL(req.url);
-                    return reqUrl.pathname.startsWith('/r/');
+                    return reqUrl.pathname.includes('/r/');
                 });
 
                 if (cachedMenuRequest) {
@@ -79,7 +79,7 @@ self.addEventListener('fetch', event => {
 
                 // Dynamically cache menu views, images, and static resources
                 const shouldCache = event.request.method === 'GET' && (
-                    url.pathname.startsWith('/r/') || 
+                    url.pathname.includes('/r/') || 
                     url.pathname.includes('/storage/') ||
                     url.pathname.includes('/build/') ||
                     event.request.headers.get('accept').includes('text/html') ||

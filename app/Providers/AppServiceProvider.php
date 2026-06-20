@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (request()->secure() || request()->header('X-Forwarded-Proto') === 'https') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Max 60 QR scans per minute per IP
         RateLimiter::for('qr-scan', function (Request $request) {
             return Limit::perMinute(60)->by($request->ip());
