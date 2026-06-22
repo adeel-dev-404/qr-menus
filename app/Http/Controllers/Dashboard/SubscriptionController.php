@@ -44,7 +44,9 @@ class SubscriptionController extends Controller
         abort_if($period->subscription_id != $plan->id, 404);
 
         $restaurant = auth()->user()->restaurant;
-        return view('dashboard.subscription.checkout', compact('restaurant', 'plan', 'period'));
+        $paymentMethods = \App\Models\PaymentMethod::where('is_active', true)->get();
+
+        return view('dashboard.subscription.checkout', compact('restaurant', 'plan', 'period', 'paymentMethods'));
     }
 
     /**
@@ -55,6 +57,10 @@ class SubscriptionController extends Controller
         abort_if($period->subscription_id != $plan->id, 404);
 
         $request->validate([
+            'payment_method_id' => [
+                'required',
+                \Illuminate\Validation\Rule::exists('payment_methods', 'id')->where('is_active', true)
+            ],
             'transaction_ref' => 'required|string|max:100',
             'payment_proof'   => 'required|image|mimes:jpg,jpeg,png|max:3072',
         ]);
@@ -68,7 +74,8 @@ class SubscriptionController extends Controller
             $plan,
             $period,
             $request->transaction_ref,
-            $path
+            $path,
+            $request->payment_method_id
         );
 
         return redirect()->route('dashboard.subscription.index')

@@ -10,7 +10,7 @@ class RestaurantSubscription extends Model
         'restaurant_id', 'subscription_id', 'subscription_period_id', 'status',
         'payment_proof', 'transaction_ref', 'amount_paid',
         'starts_at', 'expires_at', 'notes', 'is_trial',
-        'approved_by', 'approved_at',
+        'approved_by', 'approved_at', 'payment_method_id',
     ];
 
     protected $casts = [
@@ -44,6 +44,11 @@ class RestaurantSubscription extends Model
     public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
     }
 
     // ──────────────────────────────────────────────────────────────────────────

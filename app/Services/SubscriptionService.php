@@ -72,7 +72,8 @@ class SubscriptionService
         Subscription $plan,
         SubscriptionPeriod $period,
         string $transactionRef,
-        string $paymentProofPath
+        string $paymentProofPath,
+        ?int $paymentMethodId = null
     ): RestaurantSubscription {
         $request = RestaurantSubscription::create([
             'restaurant_id'          => $restaurant->id,
@@ -83,6 +84,7 @@ class SubscriptionService
             'payment_proof'          => $paymentProofPath,
             'amount_paid'            => $period->price,
             'is_trial'               => false,
+            'payment_method_id'      => $paymentMethodId,
         ]);
 
         // Notify all super admins about the new payment request

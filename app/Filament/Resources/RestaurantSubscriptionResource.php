@@ -39,6 +39,11 @@ class RestaurantSubscriptionResource extends Resource
                         ->label('Transaction Reference')
                         ->disabled()
                         ->prefix('#'),
+                    Forms\Components\TextInput::make('paymentMethod.name')
+                        ->label('Payment Method')
+                        ->disabled()
+                        ->placeholder('N/A')
+                        ->prefix('💳'),
                     Forms\Components\TextInput::make('amount_paid')
                         ->label('Amount Paid')
                         ->disabled()
@@ -55,7 +60,7 @@ class RestaurantSubscriptionResource extends Resource
                         ->label('Admin Notes')
                         ->rows(3)
                         ->columnSpanFull(),
-                ])->columns(3),
+                ])->columns(4),
 
             Forms\Components\Section::make('Payment Proof')
                 ->schema([
@@ -114,6 +119,13 @@ class RestaurantSubscriptionResource extends Resource
                     ->color('gray')
                     ->copyable()
                     ->limit(15),
+
+                Tables\Columns\TextColumn::make('paymentMethod.name')
+                    ->label('Method')
+                    ->badge()
+                    ->color('primary')
+                    ->placeholder('N/A')
+                    ->icon('heroicon-o-credit-card'),
 
                 Tables\Columns\BadgeColumn::make('status')
                     ->colors([
