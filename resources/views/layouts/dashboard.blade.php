@@ -298,8 +298,10 @@
             </a>
 
             {{-- ── Operations ── --}}
+            @if(auth()->user()->restaurant?->ordering_allowed || auth()->user()->restaurant?->waiter_call_allowed)
             <p class="nav-label">Operations</p>
 
+            @if(auth()->user()->restaurant?->ordering_allowed)
             <a href="{{ route('dashboard.orders.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.orders.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -319,8 +321,9 @@
                             padding:1px 7px;border-radius:99px;">{{ $pendingOrders }}</span>
                 @endif
             </a>
+            @endif
 
-            @if(auth()->user()->restaurant?->waiter_call_enabled)
+            @if(auth()->user()->restaurant?->isWaiterCallEnabled())
             <a href="{{ route('dashboard.waiter-calls.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.waiter-calls.*') ? 'active' : '' }}"
                 id="waiter-nav-link">
@@ -334,10 +337,13 @@
                     style="display:none;margin-left:auto;background:#e8502a;color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;animation:pulse-badge 2s infinite;">0</span>
             </a>
             @endif
+            @endif
 
             {{-- ── Menu ── --}}
+            @if(auth()->user()->restaurant?->categories_allowed || auth()->user()->restaurant?->products_allowed || auth()->user()->restaurant?->isDealsEnabled())
             <p class="nav-label">Menu</p>
 
+            @if(auth()->user()->restaurant?->categories_allowed)
             <a href="{{ route('dashboard.categories.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.categories.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -347,7 +353,9 @@
                 </svg>
                 Categories
             </a>
+            @endif
 
+            @if(auth()->user()->restaurant?->products_allowed)
             <a href="{{ route('dashboard.products.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.products.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -357,7 +365,9 @@
                 </svg>
                 Products
             </a>
+            @endif
 
+            @if(auth()->user()->restaurant?->isDealsEnabled())
             <a href="{{ route('dashboard.deals.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.deals.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -367,8 +377,11 @@
                 </svg>
                 Deals & Bundles
             </a>
+            @endif
+            @endif
 
             {{-- ── QR Codes ── --}}
+            @if(auth()->user()->restaurant?->qr_codes_allowed)
             <p class="nav-label">QR Codes</p>
 
             <a href="{{ route('dashboard.qr-codes.index') }}"
@@ -380,10 +393,12 @@
                 </svg>
                 QR Codes
             </a>
+            @endif
 
             {{-- ── Restaurant ── --}}
             <p class="nav-label">Restaurant</p>
 
+            @if(auth()->user()->restaurant?->branches_allowed)
             <a href="{{ route('dashboard.branches.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.branches.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -393,8 +408,9 @@
                 </svg>
                 Branches
             </a>
+            @endif
 
-            @if(auth()->user()->hasRole('restaurant_owner|super_admin'))
+            @if(auth()->user()->restaurant?->staff_allowed && auth()->user()->hasRole('restaurant_owner|super_admin'))
             <a href="{{ route('staff.index') }}"
                 class="nav-link {{ request()->routeIs('dashboard.staff.*') || request()->routeIs('staff.*') ? 'active' : '' }}">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -659,7 +675,7 @@
         }
 
         // Only run on dashboard pages
-        if (document.getElementById('waiter-badge') && {{ auth()->user()->restaurant?->waiter_call_enabled ? 'true' : 'false' }}) {
+        if (document.getElementById('waiter-badge') && {{ auth()->user()->restaurant?->isWaiterCallEnabled() ? 'true' : 'false' }}) {
             pollWaiterCalls();
             setInterval(pollWaiterCalls, 10000);
         }

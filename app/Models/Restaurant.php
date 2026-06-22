@@ -55,14 +55,32 @@ class Restaurant extends Model
         'subscription_expires_at',
         'trial_ends_at',
         'trial_subscription_id',
+        'ordering_allowed',
+        'waiter_call_allowed',
+        'deals_allowed',
+        'categories_allowed',
+        'products_allowed',
+        'qr_codes_allowed',
+        'branches_allowed',
+        'staff_allowed',
     ];
 
     protected $casts = [
         'opening_hours'            => 'array',
         'supported_languages'      => 'array',
+        'ordering_enabled'         => 'boolean',
         'deals_enabled'            => 'boolean',
+        'waiter_call_enabled'      => 'boolean',
         'subscription_expires_at'  => 'datetime',
         'trial_ends_at'            => 'datetime',
+        'ordering_allowed'         => 'boolean',
+        'waiter_call_allowed'      => 'boolean',
+        'deals_allowed'            => 'boolean',
+        'categories_allowed'       => 'boolean',
+        'products_allowed'         => 'boolean',
+        'qr_codes_allowed'         => 'boolean',
+        'branches_allowed'         => 'boolean',
+        'staff_allowed'            => 'boolean',
     ];
 
     /**
@@ -253,6 +271,16 @@ class Restaurant extends Model
 
     public function isOrderingEnabled(): bool
     {
-        return (bool) $this->ordering_enabled;
+        return (bool) ($this->ordering_allowed && $this->ordering_enabled);
+    }
+
+    public function isWaiterCallEnabled(): bool
+    {
+        return (bool) ($this->waiter_call_allowed && $this->waiter_call_enabled);
+    }
+
+    public function isDealsEnabled(): bool
+    {
+        return (bool) ($this->deals_allowed && $this->deals_enabled);
     }
 }

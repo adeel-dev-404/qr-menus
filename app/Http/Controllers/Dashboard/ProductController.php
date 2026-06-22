@@ -37,6 +37,67 @@ class ProductController extends Controller
         return view('dashboard.products.create', compact('categories', 'languages'));
     }
 
+    public function bulkCreate()
+    {
+        $restaurant = auth()->user()->restaurant;
+        if (!$restaurant->canAdd('products')) {
+            return redirect()->route('dashboard.products.index')
+                ->with('error', "Product limit reached ({$restaurant->limitFor('products')}). Please upgrade.");
+        }
+        $categories = Category::active()->orderBy('name')->get();
+        $limit = $restaurant->limitFor('products');
+        $currentCount = $restaurant->products()->count();
+        $remaining = $limit >= 999 ? 999 : ($limit - $currentCount);
+        return view('dashboard.products.bulk', compact('categories', 'remaining'));
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $restaurant = auth()->user()->restaurant;
+        $limit = $restaurant->limitFor('products');
+        $currentCount = $restaurant->products()->count();
+
+        $productsData = collect($request->input('products', []))->filter(function ($item) {
+            return !empty(trim($item['name'] ?? ''));
+        });
+
+        $newCount = $productsData->count();
+
+        if ($limit < 999 && ($currentCount + $newCount > $limit)) {
+            $remaining = $limit - $currentCount;
+            return redirect()->back()->withInput()
+                ->with('error', "Cannot add {$newCount} products. Your remaining limit is {$remaining} products. Please upgrade.");
+        }
+
+        $request->validate([
+            'products' => 'required|array',
+            'products.*.name' => 'required|string|max:255',
+            'products.*.category_id' => 'required|exists:categories,id',
+            'products.*.price' => 'required|numeric|min:0',
+            'products.*.discount_price' => 'nullable|numeric|min:0',
+            'products.*.description' => 'nullable|string|max:1000',
+            'products.*.is_available' => 'nullable|boolean',
+        ]);
+
+        $count = 0;
+        foreach ($productsData as $prodData) {
+            Product::create([
+                'restaurant_id' => $restaurant->id,
+                'category_id'   => $prodData['category_id'],
+                'name'          => trim($prodData['name']),
+                'price'         => (float)$prodData['price'],
+                'discount_price'=> !empty($prodData['discount_price']) ? (float)$prodData['discount_price'] : null,
+                'description'   => $prodData['description'] ?? null,
+                'is_available'  => isset($prodData['is_available']) ? (bool)$prodData['is_available'] : true,
+                'is_deal'       => false,
+            ]);
+            $count++;
+        }
+
+        return redirect()->route('dashboard.products.index')
+            ->with('success', "Successfully added {$count} products.");
+    }
+
     // public function store(StoreProductRequest $request)
     // {
     //     $restaurant = auth()->user()->restaurant;

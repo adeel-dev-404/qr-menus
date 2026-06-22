@@ -43,22 +43,37 @@ Route::prefix('dashboard')->name('dashboard.')->middleware([
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    Route::resource('products', ProductController::class);
-    Route::patch('products/{product}/toggle', [ProductController::class, 'toggleAvailability'])->name('products.toggle');
+    Route::middleware('module.access:products')->group(function () {
+        Route::get('products/bulk', [ProductController::class, 'bulkCreate'])->name('products.bulk');
+        Route::post('products/bulk', [ProductController::class, 'bulkStore'])->name('products.bulk.store');
+        Route::resource('products', ProductController::class);
+        Route::patch('products/{product}/toggle', [ProductController::class, 'toggleAvailability'])->name('products.toggle');
+    });
     
-    Route::resource('categories', CategoryController::class);
+    Route::middleware('module.access:categories')->group(function () {
+        Route::get('categories/bulk', [CategoryController::class, 'bulkCreate'])->name('categories.bulk');
+        Route::post('categories/bulk', [CategoryController::class, 'bulkStore'])->name('categories.bulk.store');
+        Route::resource('categories', CategoryController::class);
+    });
     
-    Route::resource('deals', \App\Http\Controllers\Dashboard\DealController::class);
-    Route::patch('deals/{deal}/toggle', [\App\Http\Controllers\Dashboard\DealController::class, 'toggleAvailability'])->name('deals.toggle');
+    Route::middleware('module.access:deals')->group(function () {
+        Route::resource('deals', \App\Http\Controllers\Dashboard\DealController::class);
+        Route::patch('deals/{deal}/toggle', [\App\Http\Controllers\Dashboard\DealController::class, 'toggleAvailability'])->name('deals.toggle');
+    });
 
-    Route::resource('qr-codes', QrCodeController::class);
-    Route::resource('branches', BranchController::class);
+    Route::middleware('module.access:qr-codes')->group(function () {
+        Route::resource('qr-codes', QrCodeController::class);
+    });
 
-    // ── Nested table management under branches ──
-    Route::post('branches/{branch}/tables',              [BranchController::class, 'storeTable'])->name('branches.tables.store');
-    Route::post('branches/{branch}/tables/bulk',         [BranchController::class, 'bulkStoreTables'])->name('branches.tables.bulk');
-    Route::patch('branches/{branch}/tables/{table}',     [BranchController::class, 'updateTable'])->name('branches.tables.update');
-    Route::delete('branches/{branch}/tables/{table}',    [BranchController::class, 'destroyTable'])->name('branches.tables.destroy');
+    Route::middleware('module.access:branches')->group(function () {
+        Route::resource('branches', BranchController::class);
+
+        // ── Nested table management under branches ──
+        Route::post('branches/{branch}/tables',              [BranchController::class, 'storeTable'])->name('branches.tables.store');
+        Route::post('branches/{branch}/tables/bulk',         [BranchController::class, 'bulkStoreTables'])->name('branches.tables.bulk');
+        Route::patch('branches/{branch}/tables/{table}',     [BranchController::class, 'updateTable'])->name('branches.tables.update');
+        Route::delete('branches/{branch}/tables/{table}',    [BranchController::class, 'destroyTable'])->name('branches.tables.destroy');
+    });
 });
 
 // ---- Public QR Menu Routes ----
@@ -81,22 +96,25 @@ Route::prefix('r')->name('menu.')->middleware('throttle:public-menu')->group(fun
     Route::get('/{restaurant:slug}/category/{category:slug}', [App\Http\Controllers\MenuController::class, 'category'])->name('category');
 });
 
-Route::resource('qr-codes', App\Http\Controllers\Dashboard\QrCodeController::class)
-    ->except(['show', 'edit', 'update']);
+Route::middleware(['auth', 'restaurant', 'module.access:qr-codes'])->group(function () {
+    Route::resource('qr-codes', App\Http\Controllers\Dashboard\QrCodeController::class)
+        ->except(['show', 'edit', 'update']);
 
-Route::get('qr-codes/{qrCode}/download', [App\Http\Controllers\Dashboard\QrCodeController::class, 'download'])
-    ->name('dashboard.qr-codes.download');
+    Route::get('qr-codes/{qrCode}/download', [App\Http\Controllers\Dashboard\QrCodeController::class, 'download'])
+        ->name('dashboard.qr-codes.download');
 
-Route::get('qr-codes/{qrCode}/preview', [App\Http\Controllers\Dashboard\QrCodeController::class, 'preview'])
-    ->name('dashboard.qr-codes.preview');
+    Route::get('qr-codes/{qrCode}/preview', [App\Http\Controllers\Dashboard\QrCodeController::class, 'preview'])
+        ->name('dashboard.qr-codes.preview');
 
-Route::get('qr-codes/{qrCode}/print', function (App\Models\QrCode $qrCode) {
-    return view('dashboard.qr-codes.print', compact('qrCode'));
-})->name('dashboard.qr-codes.print')->middleware(['auth', 'restaurant']);
+    Route::get('qr-codes/{qrCode}/print', function (App\Models\QrCode $qrCode) {
+        return view('dashboard.qr-codes.print', compact('qrCode'));
+    })->name('dashboard.qr-codes.print');
+});
 
-Route::resource('staff', App\Http\Controllers\Dashboard\StaffController::class)
-    ->only(['index', 'create', 'store', 'destroy'])
-    ->middleware('role:restaurant_owner|super_admin');
+Route::middleware(['auth', 'restaurant', 'role:restaurant_owner|super_admin', 'module.access:staff'])->group(function () {
+    Route::resource('staff', App\Http\Controllers\Dashboard\StaffController::class)
+        ->only(['index', 'create', 'store', 'destroy']);
+});
 
 Route::get('/invite/{token}',  [InviteController::class, 'show'])->name('invite.accept');
 Route::post('/invite/{token}', [InviteController::class, 'store'])->name('invite.accept.store');
@@ -126,7 +144,7 @@ Route::prefix('order')->name('order.')->group(function () {
 });
 
 // ── Dashboard Order Routes ──
-Route::prefix('dashboard/orders')->name('dashboard.orders.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+Route::prefix('dashboard/orders')->name('dashboard.orders.')->middleware(['auth', 'verified', 'restaurant', 'module.access:orders'])->group(function () {
     Route::get('/',                     [App\Http\Controllers\Dashboard\OrderController::class, 'index'])->name('index');
     Route::get('/{order}',              [App\Http\Controllers\Dashboard\OrderController::class, 'show'])->name('show');
     Route::patch('/{order}/status',      [App\Http\Controllers\Dashboard\OrderController::class, 'updateStatus'])->name('status');
@@ -140,7 +158,7 @@ Route::prefix('waiter')->name('waiter.')->group(function () {
 });
 
 // ── Dashboard waiter calls ──
-Route::prefix('dashboard/waiter-calls')->name('dashboard.waiter-calls.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+Route::prefix('dashboard/waiter-calls')->name('dashboard.waiter-calls.')->middleware(['auth', 'verified', 'restaurant', 'module.access:waiter-calls'])->group(function () {
     Route::get('/',               [App\Http\Controllers\Dashboard\WaiterCallController::class, 'index'])->name('index');
     Route::get('/live',           [App\Http\Controllers\Dashboard\WaiterCallController::class, 'live'])->name('live');
     Route::patch('/{call}/seen',   [App\Http\Controllers\Dashboard\WaiterCallController::class, 'markSeen'])->name('seen');
@@ -149,7 +167,7 @@ Route::prefix('dashboard/waiter-calls')->name('dashboard.waiter-calls.')->middle
 });
 
 // ── Dashboard call options management ──
-Route::prefix('dashboard/call-options')->name('dashboard.call-options.')->middleware(['auth', 'verified', 'restaurant'])->group(function () {
+Route::prefix('dashboard/call-options')->name('dashboard.call-options.')->middleware(['auth', 'verified', 'restaurant', 'module.access:waiter-calls'])->group(function () {
     Route::get('/',          [App\Http\Controllers\Dashboard\CallOptionController::class, 'index'])->name('index');
     Route::post('/',          [App\Http\Controllers\Dashboard\CallOptionController::class, 'store'])->name('store');
     Route::patch('/{option}', [App\Http\Controllers\Dashboard\CallOptionController::class, 'update'])->name('update');

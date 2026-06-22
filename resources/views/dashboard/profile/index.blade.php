@@ -632,20 +632,32 @@
                     <div class="section-body">
 
                         <div style="margin-bottom:15px;">
-                            <label style="display:block; margin-bottom: 8px;">
+                            <label style="display:block; margin-bottom: 8px; {{ !$restaurant->ordering_allowed ? 'opacity: 0.5;' : '' }}">
                                 <input type="checkbox" name="ordering_enabled" value="1"
-                                    {{ $restaurant->ordering_enabled ? 'checked' : '' }}>
+                                    {{ $restaurant->ordering_enabled ? 'checked' : '' }}
+                                    {{ !$restaurant->ordering_allowed ? 'disabled' : '' }}>
                                 Enable Online Ordering
+                                @if(!$restaurant->ordering_allowed)
+                                    <span style="font-size: 11px; color: #ef4444; margin-left: 8px;">🔒 Locked by Admin</span>
+                                @endif
                             </label>
-                            <label style="display:block; margin-bottom: 8px;">
+                            <label style="display:block; margin-bottom: 8px; {{ !$restaurant->deals_allowed ? 'opacity: 0.5;' : '' }}">
                                 <input type="checkbox" name="deals_enabled" value="1"
-                                    {{ $restaurant->deals_enabled ?? true ? 'checked' : '' }}>
+                                    {{ ($restaurant->deals_enabled ?? true) ? 'checked' : '' }}
+                                    {{ !$restaurant->deals_allowed ? 'disabled' : '' }}>
                                 Enable Deals Section
+                                @if(!$restaurant->deals_allowed)
+                                    <span style="font-size: 11px; color: #ef4444; margin-left: 8px;">🔒 Locked by Admin</span>
+                                @endif
                             </label>
-                            <label style="display:block;">
+                            <label style="display:block; {{ !$restaurant->waiter_call_allowed ? 'opacity: 0.5;' : '' }}">
                                 <input type="checkbox" name="waiter_call_enabled" value="1"
-                                    {{ $restaurant->waiter_call_enabled ? 'checked' : '' }}>
+                                    {{ $restaurant->waiter_call_enabled ? 'checked' : '' }}
+                                    {{ !$restaurant->waiter_call_allowed ? 'disabled' : '' }}>
                                 Enable Waiter Call Feature
+                                @if(!$restaurant->waiter_call_allowed)
+                                    <span style="font-size: 11px; color: #ef4444; margin-left: 8px;">🔒 Locked by Admin</span>
+                                @endif
                             </label>
                         </div>
 

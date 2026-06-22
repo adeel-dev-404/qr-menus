@@ -33,10 +33,17 @@
                 ⚡ Upgrade to Add More
             </a>
         @else
-            <a href="{{ route('dashboard.products.create') }}" class="btn-primary">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:15px;height:15px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                New Product
-            </a>
+            <div style="display:flex; gap:8px;">
+                <a href="{{ route('dashboard.products.bulk') }}"
+                   style="padding:9px 16px;background:#0f1729;color:#60a5fa;border:1px solid #1e3a5f;border-radius:8px;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:15px;height:15px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                    Bulk Add
+                </a>
+                <a href="{{ route('dashboard.products.create') }}" class="btn-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:15px;height:15px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    New Product
+                </a>
+            </div>
         @endif
     </div>
 

@@ -82,6 +82,35 @@ class RestaurantResource extends Resource
                     Forms\Components\Tabs\Tab::make('Features & Settings')
                         ->icon('heroicon-o-cog-6-tooth')
                         ->schema([
+                            Forms\Components\Section::make('Super Admin Module Access')
+                                ->description('Control which modules this restaurant is allowed to use (gives rights)')
+                                ->schema([
+                                    Forms\Components\Toggle::make('ordering_allowed')
+                                        ->label('Allow Ordering')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('waiter_call_allowed')
+                                        ->label('Allow Waiter Call')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('deals_allowed')
+                                        ->label('Allow Deals')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('categories_allowed')
+                                        ->label('Allow Categories')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('products_allowed')
+                                        ->label('Allow Products')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('qr_codes_allowed')
+                                        ->label('Allow QR Codes')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('branches_allowed')
+                                        ->label('Allow Branches')
+                                        ->default(true),
+                                    Forms\Components\Toggle::make('staff_allowed')
+                                        ->label('Allow Staff')
+                                        ->default(true),
+                                ])->columns(4),
+
                             Forms\Components\Section::make('Feature Toggles')
                                 ->description('Enable or disable restaurant features')
                                 ->schema([

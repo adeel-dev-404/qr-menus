@@ -21,6 +21,40 @@ class CategoryController extends Controller
         return view('dashboard.categories.create', compact('languages'));
     }
 
+    public function bulkCreate()
+    {
+        $languages = auth()->user()->restaurant->getLanguages();
+        return view('dashboard.categories.bulk', compact('languages'));
+    }
+
+    public function bulkStore(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'categories' => 'required|array',
+            'categories.*.name' => 'required|string|max:255',
+            'categories.*.sort_order' => 'nullable|integer|min:0',
+            'categories.*.status' => 'nullable|boolean',
+        ]);
+
+        $count = 0;
+        foreach ($request->input('categories', []) as $catData) {
+            if (empty(trim($catData['name'] ?? ''))) {
+                continue;
+            }
+
+            Category::create([
+                'restaurant_id' => auth()->user()->restaurant_id,
+                'name'          => trim($catData['name']),
+                'sort_order'    => isset($catData['sort_order']) && $catData['sort_order'] !== '' ? (int)$catData['sort_order'] : 0,
+                'status'        => isset($catData['status']) ? (bool)$catData['status'] : true,
+            ]);
+            $count++;
+        }
+
+        return redirect()->route('dashboard.categories.index')
+            ->with('success', "Successfully added {$count} categories.");
+    }
+
     public function store(StoreCategoryRequest $request)
     {
         $category = Category::create([

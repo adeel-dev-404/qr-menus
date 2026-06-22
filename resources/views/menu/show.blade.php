@@ -1717,7 +1717,7 @@
 
     </main>
 
-    <footer>{{ $trans['powered_by'] }} <strong>QR Menu</strong></footer>
+    <footer>{{ $trans['powered_by'] }} <strong><a href="https://wa.me/923263598498?text=Hello!%20I%20am%20interested%20in%20a%20demo%20of%20QR%20Menu." target="_blank" style="color: inherit; text-decoration: none;">QR Menu</a></strong></footer>
 
     {{-- CART BUTTON --}}
     @if ($restaurant->isOrderingEnabled())
@@ -1878,7 +1878,7 @@
     {{-- TOAST --}}
     <div id="toast"></div>
 
-    @if($restaurant->waiter_call_enabled && isset($qrContext) && ($qrContext['type'] ?? '') === 'table')
+    @if($restaurant->isWaiterCallEnabled() && isset($qrContext) && ($qrContext['type'] ?? '') === 'table')
     {{-- WAITER CALL BUTTON — only for table QR scans --}}
     <button id="waiterCallBtn" onclick="openWaiterDrawer()">
         🛎️

@@ -367,10 +367,15 @@
                 <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
                 <button class="lang-btn"         id="btn-ur" onclick="setLang('ur')">اردو</button>
             </div>
-            <a href="/login"    class="btn-ghost en-text">Login</a>
-            <a href="/register" class="btn-accent en-text">Get Started</a>
-            <a href="/login"    class="btn-ghost ur-text" style="display:none;">لاگ ان</a>
-            <a href="/register" class="btn-accent ur-text" style="display:none;">شروع کریں</a>
+            @auth
+                <a href="/dashboard" class="btn-accent en-text">Dashboard</a>
+                <a href="/dashboard" class="btn-accent ur-text" style="display:none;">ڈیش بورڈ</a>
+            @else
+                <a href="/login"    class="btn-ghost en-text">Login</a>
+                <a href="/register" class="btn-accent en-text">Get Started</a>
+                <a href="/login"    class="btn-ghost ur-text" style="display:none;">لاگ ان</a>
+                <a href="/register" class="btn-accent ur-text" style="display:none;">شروع کریں</a>
+            @endauth
         </div>
 
         <button class="hamburger" onclick="toggleMenu()">
@@ -386,8 +391,12 @@
     <a href="#features">Features / خصوصیات</a>
     <a href="#pricing">Pricing / قیمتیں</a>
     <a href="#faq">FAQ / سوالات</a>
-    <a href="/login">Login / لاگ ان</a>
-    <a href="/register" style="color:var(--accent);font-weight:700;">Get Started / شروع کریں</a>
+    @auth
+        <a href="/dashboard" style="color:var(--accent);font-weight:700;">Dashboard / ڈیش بورڈ</a>
+    @else
+        <a href="/login">Login / لاگ ان</a>
+        <a href="/register" style="color:var(--accent);font-weight:700;">Get Started / شروع کریں</a>
+    @endauth
 </div>
 
 {{-- ══════════════════════════════════════════
@@ -421,15 +430,24 @@
         </p>
 
         <div class="hero-buttons">
-            <a href="/register" class="btn-primary-lg en-text">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                </svg>
-                Start Free Today
-            </a>
-            <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
-                آج مفت شروع کریں
-            </a>
+            @auth
+                <a href="/dashboard" class="btn-primary-lg en-text">
+                    Go to Dashboard
+                </a>
+                <a href="/dashboard" class="btn-primary-lg ur-text" style="display:none;">
+                    ڈیش بورڈ پر جائیں
+                </a>
+            @else
+                <a href="/register" class="btn-primary-lg en-text">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Start Free Today
+                </a>
+                <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
+                    آج مفت شروع کریں
+                </a>
+            @endauth
             <a href="#how-it-works" class="btn-secondary-lg en-text">See How it Works</a>
             <a href="#how-it-works" class="btn-secondary-lg ur-text" style="display:none;">دیکھیں کیسے کام کرتا ہے</a>
         </div>
@@ -770,12 +788,21 @@
         <p class="en-text">Join 500+ Pakistani restaurants already using QR Menu. Start free today.</p>
         <p class="ur-text" style="display:none;">500+ پاکستانی ریسٹورانٹس میں شامل ہوں جو پہلے سے QR Menu استعمال کر رہے ہیں۔ آج مفت شروع کریں۔</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;">
-            <a href="/register" class="btn-primary-lg en-text">
-                🚀 Start Free — No Credit Card
-            </a>
-            <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
-                🚀 مفت شروع کریں — کریڈٹ کارڈ نہیں
-            </a>
+            @auth
+                <a href="/dashboard" class="btn-primary-lg en-text">
+                    🚀 Go to Dashboard
+                </a>
+                <a href="/dashboard" class="btn-primary-lg ur-text" style="display:none;">
+                    🚀 ڈیش بورڈ پر جائیں
+                </a>
+            @else
+                <a href="/register" class="btn-primary-lg en-text">
+                    🚀 Start Free — No Credit Card
+                </a>
+                <a href="/register" class="btn-primary-lg ur-text" style="display:none;">
+                    🚀 مفت شروع کریں — کریڈٹ کارڈ نہیں
+                </a>
+            @endauth
             <a href="https://wa.me/923263598498" target="_blank"
                style="display:inline-flex;align-items:center;gap:8px;padding:14px 24px;background:#25D366;color:#fff;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:opacity .2s;"
                onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
@@ -809,9 +836,12 @@
             <div class="footer-col">
                 <h4 class="en-text">Account</h4>
                 <h4 class="ur-text" style="display:none;">اکاؤنٹ</h4>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-                <a href="/dashboard">Dashboard</a>
+                @auth
+                    <a href="/dashboard">Dashboard</a>
+                @else
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
+                @endauth
             </div>
             <div class="footer-col">
                 <h4 class="en-text">Contact</h4>

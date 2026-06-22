@@ -94,7 +94,7 @@ class HomeController extends Controller
 
         // ── Waiter call stats ──
         $waiterStats = null;
-        if ($restaurant->waiter_call_enabled) {
+        if ($restaurant->isWaiterCallEnabled()) {
             $waiterStats = [
                 'pending'  => WaiterCall::forRestaurant($restaurantId)->where('status', 'pending')->count(),
                 'seen'     => WaiterCall::forRestaurant($restaurantId)->where('status', 'seen')->count(),

@@ -22,10 +22,16 @@
             <h2 style="font-size:20px; font-weight:700; color:#fff; margin:0;">Categories</h2>
             <p style="font-size:13px; color:#666; margin:4px 0 0;">Manage your menu categories</p>
         </div>
-        <a href="{{ route('dashboard.categories.create') }}" class="btn-primary">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            New Category
-        </a>
+        <div style="display:flex; gap:8px;">
+            <a href="{{ route('dashboard.categories.bulk') }}" class="btn-edit" style="display:inline-flex; align-items:center; gap:6px; padding:10px 18px; font-size:14px;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                Bulk Add
+            </a>
+            <a href="{{ route('dashboard.categories.create') }}" class="btn-primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                New Category
+            </a>
+        </div>
     </div>
 
     {{-- Table Card --}}

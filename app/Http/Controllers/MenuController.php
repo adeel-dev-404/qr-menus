@@ -34,7 +34,7 @@ class MenuController extends Controller
             ->get();
 
         $deals = collect();
-        if ($restaurant->deals_enabled ?? true) {
+        if ($restaurant->isDealsEnabled()) {
             $deals = \App\Models\Deal::where('restaurant_id', $restaurant->id)
                 ->where('is_available', true)
                 ->with(['items.product', 'items.variant'])
@@ -117,7 +117,7 @@ class MenuController extends Controller
             ->get();
 
         $deals = collect();
-        if ($restaurant->deals_enabled ?? true) {
+        if ($restaurant->isDealsEnabled()) {
             $deals = \App\Models\Deal::where('restaurant_id', $restaurant->id)
                 ->where('is_available', true)
                 ->with(['items.product', 'items.variant'])

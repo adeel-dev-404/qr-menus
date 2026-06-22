@@ -713,7 +713,7 @@
 </main>
 
 <footer class="site-footer">
-    Powered by <strong>QR Menu</strong>
+    Powered by <strong><a href="https://wa.me/923263598498?text=Hello!%20I%20am%20interested%20in%20a%20demo%20of%20QR%20Menu." target="_blank" style="color: inherit; text-decoration: none;">QR Menu</a></strong>
 </footer>
 
 <button id="toTop" aria-label="Scroll to top">

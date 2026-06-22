@@ -168,10 +168,10 @@ class ProfileController extends Controller
             'whatsapp_number',
         ]);
 
-        $data['ordering_enabled']    = $request->boolean('ordering_enabled');
-        $data['deals_enabled']       = $request->boolean('deals_enabled');
+        $data['ordering_enabled']    = $restaurant->ordering_allowed ? $request->boolean('ordering_enabled') : false;
+        $data['deals_enabled']       = $restaurant->deals_allowed ? $request->boolean('deals_enabled') : false;
         $data['menu_layout']         = $request->input('menu_layout', 'list');
-        $data['waiter_call_enabled'] = $request->boolean('waiter_call_enabled');
+        $data['waiter_call_enabled'] = $restaurant->waiter_call_allowed ? $request->boolean('waiter_call_enabled') : false;
 
         // Logo upload
         if ($request->hasFile('logo')) {
